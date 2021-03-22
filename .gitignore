@@ -158,3 +158,5 @@ out
 *.xml
 *.gz
 *.toc
+
+!MUM-Task1-Report.pdf
