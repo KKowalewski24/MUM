@@ -12,7 +12,7 @@ def _insert_missing_values(df: pd.DataFrame, percent: int) -> pd.DataFrame:
 
 
 def read(percents_of_missing_values: List[int]) -> List[pd.DataFrame]:
-    df = pd.read_csv('../heart.csv')
+    df = pd.read_csv('data/heart.csv')
     return [
         _insert_missing_values(df.copy(), percent)
         for percent in percents_of_missing_values
