@@ -1,5 +1,8 @@
 import subprocess
 import sys
+from module.reader import read
+from module.imputation import mean, interpolate, hot_deck, regression
+from module.statistics import calculate_statistics
 
 """
 """
@@ -9,6 +12,27 @@ import sys
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
+
+    for ds, label in zip(read([5, 15, 30, 45]), ['5%', '15%', '30%', '45%']):
+        print("------------------------------------------------------------------------")
+        print(label, "missing values\n\n")
+
+        print("List wise deletion")
+        calculate_statistics(ds.dropna())
+
+        print("Mean imputation")
+        calculate_statistics(mean(ds))
+
+        print("Interpolation")
+        calculate_statistics(interpolate(ds))
+
+        print("Hot deck")
+        calculate_statistics(hot_deck(ds))
+
+        print("Regression")
+        # calculate_statistics(regression(ds))
+        print("------------------------------------------------------------------------")
+
     display_finish()
 
 
