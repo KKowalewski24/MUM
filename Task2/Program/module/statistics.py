@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def calculate_statistics(df: pd.DataFrame) -> None:
+def calculate_statistics(df: pd.DataFrame, save_tables: bool) -> None:
     if df.isna().sum().sum() != 0:
         print(df.isna())
         raise MissingValuesException
