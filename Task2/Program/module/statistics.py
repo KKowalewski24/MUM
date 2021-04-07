@@ -51,9 +51,10 @@ def calculate_mode(df: pd.DataFrame, save_tables: bool,
     statistic_type = "Mode"
     mode = df.mode()
     display_result(statistic_type, mode)
-    if save_tables:
+    # TODO CHECK THIS WITH JANEK!!!
+    if save_tables and len(mode.values) > 0:
         generate_table(
-            mode.index, mode.values,
+            mode.columns.tolist(), mode.values[0].tolist(),
             create_filename(missing_values_level, description, statistic_type)
         )
 
@@ -65,7 +66,7 @@ def calculate_first_quantile(df: pd.DataFrame, save_tables: bool,
     display_result(statistic_type, quantile)
     if save_tables:
         generate_table(
-            quantile.index, quantile.values,
+            quantile.columns.tolist(), quantile.values[0].tolist(),
             create_filename(missing_values_level, description, statistic_type)
         )
 
@@ -77,7 +78,7 @@ def calculate_median(df: pd.DataFrame, save_tables: bool,
     display_result(statistic_type, median)
     if save_tables:
         generate_table(
-            median.index, median.values,
+            median.index.tolist(), median.values.tolist(),
             create_filename(missing_values_level, description, statistic_type)
         )
 
@@ -89,7 +90,7 @@ def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
     display_result(statistic_type, quantile)
     if save_tables:
         generate_table(
-            quantile.index, quantile.values,
+            quantile.columns.tolist(), quantile.values[0].tolist(),
             create_filename(missing_values_level, description, statistic_type)
         )
 
