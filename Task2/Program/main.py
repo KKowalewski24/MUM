@@ -17,7 +17,7 @@ def main() -> None:
     save_to_files: bool = args.save
 
     for ds, label in zip(read([5, 15, 30, 45]), ['5%', '15%', '30%', '45%']):
-        print("\n" + label, "missing values\n\n")
+        print("\n" + label, "missing values")
         calculate_statistics(ds.dropna(), save_to_files, label, "List wise deletion")
         calculate_statistics(mean(ds), save_to_files, label, "Mean imputation")
         calculate_statistics(interpolate(ds), save_to_files, label, "Interpolation")
