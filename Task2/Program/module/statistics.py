@@ -21,42 +21,42 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
 
 
 def calculate_mean(df: pd.DataFrame, save_tables: bool,
-                   missing_values_level: str, description: str):
+                   missing_values_level: str, description: str) -> None:
     statistic_type = "Mean"
     mean = df.mean()
     display_result(statistic_type, mean)
 
 
 def calculate_std(df: pd.DataFrame, save_tables: bool,
-                  missing_values_level: str, description: str):
+                  missing_values_level: str, description: str) -> None:
     statistic_type = "Standard Deviation"
     std = df.std()
     display_result(statistic_type, std)
 
 
 def calculate_mode(df: pd.DataFrame, save_tables: bool,
-                   missing_values_level: str, description: str):
+                   missing_values_level: str, description: str) -> None:
     statistic_type = "Mode"
     mode = df.mode()
     display_result(statistic_type, mode)
 
 
 def calculate_first_quantile(df: pd.DataFrame, save_tables: bool,
-                             missing_values_level: str, description: str):
+                             missing_values_level: str, description: str) -> None:
     statistic_type = "First quantile"
     quantile = df.quantile([0.25])
     display_result(statistic_type, quantile)
 
 
 def calculate_median(df: pd.DataFrame, save_tables: bool,
-                     missing_values_level: str, description: str):
+                     missing_values_level: str, description: str) -> None:
     statistic_type = "Median (Second quantile)"
     median = df.median()
     display_result(statistic_type, median)
 
 
 def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
-                             missing_values_level: str, description: str):
+                             missing_values_level: str, description: str) -> None:
     statistic_type = "Third quantile"
     quantile = df.quantile([0.75])
     display_result(statistic_type, quantile)
