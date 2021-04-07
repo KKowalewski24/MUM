@@ -10,9 +10,9 @@ def generate_table(header: List[str], content: List[str], filename: str) -> None
     table_description = "\n\caption{TODO}\n\label{" + filename.replace("%", "") + "}\n"
     end: str = "\end{tabular}" + table_description + "\end{table}\n"
     result = begin
-    # TODO
-    # for index in range(len(header)):
-    #     result += header[index] + " & " + str(content[index]) + " \\\ \hline\n"
+
+    for index in range(len(header)):
+        result += str(header[index]) + " & " + str(content[index]) + " \\\ \hline\n"
 
     result += end
 
