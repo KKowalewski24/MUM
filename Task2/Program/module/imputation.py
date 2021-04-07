@@ -12,7 +12,9 @@ def interpolate(df: pd.DataFrame) -> pd.DataFrame:
 
 def hot_deck(df: pd.DataFrame) -> pd.DataFrame:
     inputer = KNNImputer(n_neighbors=1)
-    return pd.DataFrame(inputer.fit_transform(df))
+    inserted_df = pd.DataFrame(inputer.fit_transform(df))
+    inserted_df.columns = df.columns
+    return inserted_df
 
 
 def regression(df: pd.DataFrame) -> pd.DataFrame:
