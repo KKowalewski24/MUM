@@ -20,7 +20,7 @@ def main() -> None:
         calculate_statistics(mean(ds), save_to_files, label, "Mean imputation")
         calculate_statistics(interpolate(ds), save_to_files, label, "Interpolation")
         calculate_statistics(hot_deck(ds), save_to_files, label, "Hot deck")
-        calculate_statistics(regression(ds), save_to_files, label, "Regression")
+        # calculate_statistics(regression(ds), save_to_files, label, "Regression")
 
 
 def prepare_args() -> Namespace:
