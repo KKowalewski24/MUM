@@ -6,36 +6,42 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool) -> None:
         print(df.isna())
         raise MissingValuesException
 
-    calculate_mean(df)
-    calculate_std(df)
-    calculate_mode(df)
-    calculate_first_quantile(df)
-    calculate_median(df)
-    calculate_third_quantile(df)
+    calculate_mean(df, save_tables)
+    calculate_std(df, save_tables)
+    calculate_mode(df, save_tables)
+    calculate_first_quantile(df, save_tables)
+    calculate_median(df, save_tables)
+    calculate_third_quantile(df, save_tables)
 
 
-def calculate_mean(df):
-    print("\nMean\n", df.mean())
+def calculate_mean(df: pd.DataFrame, save_tables: bool):
+    mean = df.mean()
+    print("\nMean\n", mean)
 
 
-def calculate_std(df):
-    print("\nStandard Deviation\n", df.std())
+def calculate_std(df: pd.DataFrame, save_tables: bool):
+    std = df.std()
+    print("\nStandard Deviation\n", std)
 
 
-def calculate_mode(df):
-    print("\nMode\n", df.mode())
+def calculate_mode(df: pd.DataFrame, save_tables: bool):
+    mode = df.mode()
+    print("\nMode\n", mode)
 
 
-def calculate_first_quantile(df):
-    print("\nFirst quantile\n", df.quantile([0.25]))
+def calculate_first_quantile(df: pd.DataFrame, save_tables: bool):
+    quantile = df.quantile([0.25])
+    print("\nFirst quantile\n", quantile)
 
 
-def calculate_median(df):
-    print("\nMedian (Second quantile)\n", df.median())
+def calculate_median(df: pd.DataFrame, save_tables: bool):
+    median = df.median()
+    print("\nMedian (Second quantile)\n", median)
 
 
-def calculate_third_quantile(df):
-    print("\nThird quantile\n", df.quantile([0.75]))
+def calculate_third_quantile(df: pd.DataFrame, save_tables: bool):
+    quantile = df.quantile([0.75])
+    print("\nThird quantile\n", quantile)
 
 
 class MissingValuesException(Exception):
