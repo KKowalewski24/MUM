@@ -1,11 +1,14 @@
 import pandas as pd
 
 
-def calculate_statistics(df: pd.DataFrame, save_tables: bool) -> None:
+def calculate_statistics(df: pd.DataFrame, save_tables: bool,
+                         missing_values_level: str, description: str) -> None:
     if df.isna().sum().sum() != 0:
         print(df.isna())
         raise MissingValuesException
 
+    display_separator()
+    print(description)
     calculate_mean(df, save_tables)
     calculate_std(df, save_tables)
     calculate_mode(df, save_tables)
@@ -42,6 +45,10 @@ def calculate_median(df: pd.DataFrame, save_tables: bool):
 def calculate_third_quantile(df: pd.DataFrame, save_tables: bool):
     quantile = df.quantile([0.75])
     print("\nThird quantile\n", quantile)
+
+
+def display_separator() -> None:
+    print("------------------------------------------------------------------------")
 
 
 class MissingValuesException(Exception):
