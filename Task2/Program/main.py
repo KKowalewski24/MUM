@@ -27,7 +27,7 @@ def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
 
     arg_parser.add_argument(
-        "--save", default=False, action="store_true",
+        "-s", "--save", default=False, action="store_true",
         help="Convert printed data to LateX tables and save them to files"
     )
 
