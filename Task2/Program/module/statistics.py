@@ -23,7 +23,7 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
     calculate_median(df, save_tables, missing_values_level, description)
     calculate_third_quantile(df, save_tables, missing_values_level, description)
 
-    calculate_regression(df, 0, 4)
+    calculate_regression(df, 4, 0)
 
 
 def calculate_mean(df: pd.DataFrame, save_tables: bool,
@@ -99,17 +99,17 @@ def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
         )
 
 
-def calculate_regression(df: pd.DataFrame, first_column_number: int,
-                         second_column_number: int) -> None:
+def calculate_regression(df: pd.DataFrame, x_axis_column_number: int,
+                         y_axis_column_numbers: int) -> None:
     # TODO REMEMBER THAT FOR THIS FUNCTION CALL IT DOES NOT WORK - FIX IS NEEDED
     # TODO calculate_statistics(ds.dropna(), save_to_files, label, "List wise deletion")
-    first_column = df.iloc[:, first_column_number].values.reshape(-1, 1)
-    second_column = df.iloc[:, second_column_number].values.reshape(-1, 1)
+    x_axis = df.iloc[:, x_axis_column_number].values.reshape(-1, 1)
+    y_axis = df.iloc[:, y_axis_column_numbers].values.reshape(-1, 1)
     linear_regression = LinearRegression()
-    linear_regression.fit(first_column, second_column)
-    second_column_prediction = linear_regression.predict(first_column)
-    plt.scatter(first_column, second_column)
-    plt.plot(first_column, second_column_prediction, color='red')
+    linear_regression.fit(x_axis, y_axis)
+    y_axis_prediction = linear_regression.predict(x_axis)
+    plt.scatter(x_axis, y_axis)
+    plt.plot(x_axis, y_axis_prediction, color='red')
     plt.show()
 
 
