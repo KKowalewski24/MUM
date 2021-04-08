@@ -23,7 +23,7 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
     calculate_median(df, save_tables, missing_values_level, description)
     calculate_third_quantile(df, save_tables, missing_values_level, description)
 
-    calculate_regression(df, 4, 0)
+    calculate_regression(df, 0, 4)
 
 
 def calculate_mean(df: pd.DataFrame, save_tables: bool,
@@ -99,12 +99,10 @@ def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
         )
 
 
-def calculate_regression(df: pd.DataFrame, x_axis_column_number: int,
-                         y_axis_column_numbers: int) -> None:
-    # TODO REMEMBER THAT FOR THIS FUNCTION CALL IT DOES NOT WORK - FIX IS NEEDED
-    # TODO calculate_statistics(ds.dropna(), save_to_files, label, "List wise deletion")
+def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
+                         x_axis_column_number: int) -> None:
+    y_axis = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
     x_axis = df.iloc[:, x_axis_column_number].values.reshape(-1, 1)
-    y_axis = df.iloc[:, y_axis_column_numbers].values.reshape(-1, 1)
     linear_regression = LinearRegression()
     linear_regression.fit(x_axis, y_axis)
     y_axis_prediction = linear_regression.predict(x_axis)
