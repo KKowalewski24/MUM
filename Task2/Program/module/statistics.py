@@ -24,7 +24,15 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
     calculate_median(df, save_tables, missing_values_level, description)
     calculate_third_quantile(df, save_tables, missing_values_level, description)
 
+    calculate_regression(df, 0, 3, save_tables, missing_values_level, description)
     calculate_regression(df, 0, 4, save_tables, missing_values_level, description)
+    calculate_regression(df, 0, 5, save_tables, missing_values_level, description)
+    calculate_regression(df, 0, 7, save_tables, missing_values_level, description)
+
+    calculate_regression(df, 1, 3, save_tables, missing_values_level, description)
+    calculate_regression(df, 1, 4, save_tables, missing_values_level, description)
+    calculate_regression(df, 1, 5, save_tables, missing_values_level, description)
+    calculate_regression(df, 1, 7, save_tables, missing_values_level, description)
 
 
 def calculate_mean(df: pd.DataFrame, save_tables: bool,
@@ -125,6 +133,8 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
             df.columns[y_axis_column_number],
             df.columns[x_axis_column_number]
         ))
+        plt.close()
+
     plt.show()
 
 
