@@ -1,7 +1,6 @@
-from typing import List, Union
+from typing import Union
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 from pandas import DataFrame, Series
 from sklearn.linear_model import LinearRegression
@@ -27,7 +26,7 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
     filename = ""
     if save_tables:
         filename = "regression_" + missing_values_level + "_" + description
-    calculate_regression(df, 0, [3, 4], filename)
+    calculate_regression(df, 0, 4, filename)
 
 
 def calculate_mean(df: pd.DataFrame, save_tables: bool,
@@ -104,29 +103,26 @@ def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
 
 
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
-                         x_axis_column_numbers: Union[int, List[int]],
-                         filename: str = "") -> None:
+                         x_axis_column_number: int, filename: str = "") -> None:
     y_axis = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
-    x_axis = df.iloc[:, x_axis_column_numbers].values.reshape(-1, 1)
+    x_axis = df.iloc[:, x_axis_column_number].values.reshape(-1, 1)
     # TODO CHECK THIS WITH JANEK!!! MODE SOMETIMES RETURN EMPTY
     #  ARRAY THIS IS WHY WE HAVE TO CHECK
     if x_axis.shape[0] == 0:
         return
 
     linear_regression = LinearRegression()
-    linear_regression.fit(x_axis, get_concatenated_y_axis_array(y_axis, len(x_axis)))
+    linear_regression.fit(x_axis, y_axis)
     y_axis_prediction = linear_regression.predict(x_axis)
-    plt.scatter(x_axis, get_concatenated_y_axis_array(y_axis, len(x_axis)))
+    plt.scatter(x_axis, y_axis)
+    plt.ylabel(df.columns[y_axis_column_number])
+    plt.xlabel(df.columns[x_axis_column_number])
     plt.plot(x_axis, y_axis_prediction, color='red')
     print("Coefficient: ", linear_regression.coef_)
 
     if filename != "":
         plt.savefig(filename)
     plt.show()
-
-
-def get_concatenated_y_axis_array(y_axis: np.ndarray, x_axis_len: int) -> np.ndarray:
-    return np.concatenate([y_axis for _ in range(int(x_axis_len / len(y_axis)))])
 
 
 def display_separator() -> None:
