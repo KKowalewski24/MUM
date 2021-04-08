@@ -101,7 +101,7 @@ def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
 
 
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
-                         x_axis_column_numbers: List[int]) -> None:
+                         x_axis_column_numbers: Union[int, List[int]]) -> None:
     y_axis = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
     x_axis = df.iloc[:, x_axis_column_numbers].values.reshape(-1, 1)
     # TODO CHECK THIS WITH JANEK!!! MODE SOMETIMES RETURN EMPTY
@@ -115,6 +115,7 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
     plt.scatter(x_axis, get_concatenated_y_axis_array(y_axis, len(x_axis)))
     plt.plot(x_axis, y_axis_prediction, color='red')
     plt.show()
+    print("Coefficient: ", linear_regression.coef_)
 
 
 def get_concatenated_y_axis_array(y_axis: np.ndarray, x_axis_len: int) -> np.ndarray:
