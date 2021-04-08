@@ -1,6 +1,7 @@
-from typing import Union
+from typing import List, Union
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from pandas import DataFrame, Series
 from sklearn.linear_model import LinearRegression
@@ -23,7 +24,7 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
     calculate_median(df, save_tables, missing_values_level, description)
     calculate_third_quantile(df, save_tables, missing_values_level, description)
 
-    calculate_regression(df, 0, 4)
+    calculate_regression(df, 0, [3, 4])
 
 
 def calculate_mean(df: pd.DataFrame, save_tables: bool,
@@ -100,20 +101,24 @@ def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
 
 
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
-                         x_axis_column_number: int) -> None:
+                         x_axis_column_numbers: List[int]) -> None:
     y_axis = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
-    x_axis = df.iloc[:, x_axis_column_number].values.reshape(-1, 1)
+    x_axis = df.iloc[:, x_axis_column_numbers].values.reshape(-1, 1)
     # TODO CHECK THIS WITH JANEK!!! MODE SOMETIMES RETURN EMPTY
     #  ARRAY THIS IS WHY WE HAVE TO CHECK
     if x_axis.shape[0] == 0:
         return
 
     linear_regression = LinearRegression()
-    linear_regression.fit(x_axis, y_axis)
+    linear_regression.fit(x_axis, get_concatenated_y_axis_array(y_axis, len(x_axis)))
     y_axis_prediction = linear_regression.predict(x_axis)
-    plt.scatter(x_axis, y_axis)
+    plt.scatter(x_axis, get_concatenated_y_axis_array(y_axis, len(x_axis)))
     plt.plot(x_axis, y_axis_prediction, color='red')
     plt.show()
+
+
+def get_concatenated_y_axis_array(y_axis: np.ndarray, x_axis_len: int) -> np.ndarray:
+    return np.concatenate([y_axis for _ in range(int(x_axis_len / len(y_axis)))])
 
 
 def display_separator() -> None:
