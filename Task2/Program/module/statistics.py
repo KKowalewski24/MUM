@@ -103,6 +103,11 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
                          x_axis_column_number: int) -> None:
     y_axis = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
     x_axis = df.iloc[:, x_axis_column_number].values.reshape(-1, 1)
+    # TODO CHECK THIS WITH JANEK!!! MODE SOMETIMES RETURN EMPTY
+    #  ARRAY THIS IS WHY WE HAVE TO CHECK
+    if x_axis.shape[0] == 0:
+        return
+
     linear_regression = LinearRegression()
     linear_regression.fit(x_axis, y_axis)
     y_axis_prediction = linear_regression.predict(x_axis)
