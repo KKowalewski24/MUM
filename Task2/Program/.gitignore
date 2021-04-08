@@ -144,3 +144,4 @@ cython_debug/
 .mypy_cache
 *.swp
 *.txt
+*.png

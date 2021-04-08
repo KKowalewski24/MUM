@@ -24,7 +24,10 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
     calculate_median(df, save_tables, missing_values_level, description)
     calculate_third_quantile(df, save_tables, missing_values_level, description)
 
-    calculate_regression(df, 0, [3, 4])
+    filename = ""
+    if save_tables:
+        filename = "regression_" + missing_values_level + "_" + description
+    calculate_regression(df, 0, [3, 4], filename)
 
 
 def calculate_mean(df: pd.DataFrame, save_tables: bool,
@@ -101,7 +104,8 @@ def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
 
 
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
-                         x_axis_column_numbers: Union[int, List[int]]) -> None:
+                         x_axis_column_numbers: Union[int, List[int]],
+                         filename: str = "") -> None:
     y_axis = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
     x_axis = df.iloc[:, x_axis_column_numbers].values.reshape(-1, 1)
     # TODO CHECK THIS WITH JANEK!!! MODE SOMETIMES RETURN EMPTY
@@ -114,8 +118,11 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
     y_axis_prediction = linear_regression.predict(x_axis)
     plt.scatter(x_axis, get_concatenated_y_axis_array(y_axis, len(x_axis)))
     plt.plot(x_axis, y_axis_prediction, color='red')
-    plt.show()
     print("Coefficient: ", linear_regression.coef_)
+
+    if filename != "":
+        plt.savefig(filename)
+    plt.show()
 
 
 def get_concatenated_y_axis_array(y_axis: np.ndarray, x_axis_len: int) -> np.ndarray:
