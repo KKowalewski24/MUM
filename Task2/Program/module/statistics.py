@@ -117,7 +117,7 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
     plt.ylabel(df.columns[y_axis_column_number])
     plt.xlabel(df.columns[x_axis_column_number])
     plt.plot(x_axis, y_axis_prediction, color='red')
-    print("Coefficient: ", linear_regression.coef_)
+    print("Coefficient: ", linear_regression.coef_[0][0])
 
     if save_tables:
         plt.savefig(create_chart_filename(
