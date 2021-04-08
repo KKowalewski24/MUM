@@ -16,6 +16,7 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
 
     display_separator()
     print(description)
+
     calculate_mean(df, save_tables, missing_values_level, description)
     calculate_std(df, save_tables, missing_values_level, description)
     calculate_mode(df, save_tables, missing_values_level, description)
@@ -23,10 +24,7 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
     calculate_median(df, save_tables, missing_values_level, description)
     calculate_third_quantile(df, save_tables, missing_values_level, description)
 
-    filename = ""
-    if save_tables:
-        filename = "regression_" + missing_values_level + "_" + description
-    calculate_regression(df, 0, 4, filename)
+    calculate_regression(df, 0, 4, save_tables, missing_values_level, description)
 
 
 def calculate_mean(df: pd.DataFrame, save_tables: bool,
@@ -37,7 +35,7 @@ def calculate_mean(df: pd.DataFrame, save_tables: bool,
     if save_tables:
         generate_table(
             mean.index, mean.values,
-            create_filename(missing_values_level, description, statistic_type)
+            create_table_filename(missing_values_level, description, statistic_type)
         )
 
 
@@ -49,7 +47,7 @@ def calculate_std(df: pd.DataFrame, save_tables: bool,
     if save_tables:
         generate_table(
             std.index, std.values,
-            create_filename(missing_values_level, description, statistic_type)
+            create_table_filename(missing_values_level, description, statistic_type)
         )
 
 
@@ -62,7 +60,7 @@ def calculate_mode(df: pd.DataFrame, save_tables: bool,
     if save_tables and len(mode.values) > 0:
         generate_table(
             mode.columns.tolist(), mode.values[0].tolist(),
-            create_filename(missing_values_level, description, statistic_type)
+            create_table_filename(missing_values_level, description, statistic_type)
         )
 
 
@@ -74,7 +72,7 @@ def calculate_first_quantile(df: pd.DataFrame, save_tables: bool,
     if save_tables:
         generate_table(
             quantile.columns.tolist(), quantile.values[0].tolist(),
-            create_filename(missing_values_level, description, statistic_type)
+            create_table_filename(missing_values_level, description, statistic_type)
         )
 
 
@@ -86,7 +84,7 @@ def calculate_median(df: pd.DataFrame, save_tables: bool,
     if save_tables:
         generate_table(
             median.index.tolist(), median.values.tolist(),
-            create_filename(missing_values_level, description, statistic_type)
+            create_table_filename(missing_values_level, description, statistic_type)
         )
 
 
@@ -98,12 +96,13 @@ def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
     if save_tables:
         generate_table(
             quantile.columns.tolist(), quantile.values[0].tolist(),
-            create_filename(missing_values_level, description, statistic_type)
+            create_table_filename(missing_values_level, description, statistic_type)
         )
 
 
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
-                         x_axis_column_number: int, filename: str = "") -> None:
+                         x_axis_column_number: int, save_tables: bool,
+                         missing_values_level: str, description: str) -> None:
     y_axis = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
     x_axis = df.iloc[:, x_axis_column_number].values.reshape(-1, 1)
     # TODO CHECK THIS WITH JANEK!!! MODE SOMETIMES RETURN EMPTY
@@ -120,8 +119,12 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
     plt.plot(x_axis, y_axis_prediction, color='red')
     print("Coefficient: ", linear_regression.coef_)
 
-    if filename != "":
-        plt.savefig(filename)
+    if save_tables:
+        plt.savefig(create_chart_filename(
+            missing_values_level, description,
+            df.columns[y_axis_column_number],
+            df.columns[x_axis_column_number]
+        ))
     plt.show()
 
 
@@ -133,11 +136,19 @@ def display_result(description: str, result: Union[DataFrame, Series]) -> None:
     print("\n" + description + "\n", result)
 
 
-def create_filename(missing_values_level: str, description: str,
-                    statistic_type: str) -> str:
+def create_table_filename(missing_values_level: str, description: str,
+                          statistic_type: str) -> str:
     return "result_" + missing_values_level + "_" \
            + replace_space_with_dash(description) + "_" \
            + replace_space_with_dash(statistic_type)
+
+
+def create_chart_filename(missing_values_level: str, description: str,
+                          first_column_name: str, second_column_name: str) -> str:
+    return "regression_" + missing_values_level + "_" \
+           + replace_space_with_dash(description) + "_" \
+           + replace_space_with_dash(first_column_name) + "_" \
+           + replace_space_with_dash(second_column_name)
 
 
 def replace_space_with_dash(value: str) -> str:
