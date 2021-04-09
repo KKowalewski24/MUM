@@ -24,10 +24,9 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
     ]
     df_to_regression_model = df.dropna(subset = headers)
     df_to_regression_model = df_to_regression_model.loc[:, headers]
-    age_x = df_to_regression_model[headers[1:]] #moze dodatkowy nawias
+    age_x = df_to_regression_model[headers[1:]]
     age_y = df_to_regression_model['age']
 
-    # age_x_train, age_x_test, age_y_train, age_y_test = train_test_split(age_x, age_y, test_size=0.2, random_state=101)
     age_lm = LinearRegression().fit(age_x, age_y)
 
     temp = interpolate(df)
@@ -36,21 +35,23 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
     is_NaN = temp.isnull()
     row_has_NaN = is_NaN.any(axis=1)
     temp = temp[row_has_NaN]
+    print("temp ")
+    print(temp[temp.isnull().any(axis=1)])
 
     # missing = df['age'].isnull()
     # nex = pd.DataFrame(df[headers][missing])
 
 
-    print("temp ")
+    # print("temp ")
     del temp['age']
-    print(temp)
+    # print(temp)
 
     # age_lm.predict(nex)
 
     pred = age_lm.predict(temp)
     temp.insert(0, 'Age', pred)
-    print('zrobione')
-    print(temp)
+    # print('zrobione')
+    # print(temp)
     return df
 
 
