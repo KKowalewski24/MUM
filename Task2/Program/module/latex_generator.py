@@ -8,7 +8,7 @@ def generate_table(header: List[str], content: List[str], filename: str) -> None
     if len(header) != len(content):
         raise Exception("Lists must have equal length!!!")
 
-    begin: str = "\\begin{table}[]\n\centering\n\\begin{tabular}{|c|c|c|c|c|}\n\hline\n"
+    begin: str = "\\begin{table}[!htbp]\n\centering\n\\begin{tabular}{|c|c|c|c|c|}\n\hline\n"
     table_description = "\n\caption{TODO}\n\label{" + filename.replace("%", "") + "}\n"
     end: str = "\end{tabular}" + table_description + "\end{table}\n"
     result = begin

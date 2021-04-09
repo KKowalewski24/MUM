@@ -105,20 +105,20 @@ def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
                          x_axis_column_number: int, save_tables: bool,
                          missing_values_level: str, description: str) -> None:
-    y_axis = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
-    x_axis = df.iloc[:, x_axis_column_number].values.reshape(-1, 1)
+    y = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
+    x = df.iloc[:, x_axis_column_number].values.reshape(-1, 1)
     # TODO CHECK THIS WITH JANEK!!! MODE SOMETIMES RETURN EMPTY
     #  ARRAY THIS IS WHY WE HAVE TO CHECK
-    if x_axis.shape[0] == 0:
+    if x.shape[0] == 0:
         return
 
     linear_regression = LinearRegression()
-    linear_regression.fit(x_axis, y_axis)
-    y_axis_prediction = linear_regression.predict(x_axis)
-    plt.scatter(x_axis, y_axis)
+    linear_regression.fit(x, y)
+    y_pred = linear_regression.predict(x)
+    plt.scatter(x, y)
     plt.ylabel(replace_dash_with_space(df.columns[y_axis_column_number]))
     plt.xlabel(replace_dash_with_space(df.columns[x_axis_column_number]))
-    plt.plot(x_axis, y_axis_prediction, color='red')
+    plt.plot(x, y_pred, color='red')
     print("Coefficient: ", linear_regression.coef_[0][0])
 
     if save_tables:
