@@ -27,6 +27,8 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
     i = 0
     # [ 'age','resting-blood-pressure','serum-cholestoral, 'maximum-heart-rate','oldpeak']
     for header in fuzzy_headers:
+        with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+            print(df)
         df_to_regression_model = df.dropna(subset = headers)
         df_to_regression_model = df_to_regression_model.loc[:, headers]
         headers.remove(header)
@@ -38,11 +40,16 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
         temp = interpolate(df)
         temp[header] = df[header]
 
-        temp[temp.isnull().any(axis=1)] #zostawia tylko wiersze z jakims nullem
+        # temp[temp.isnull().any(axis=1)] #zostawia tylko wiersze z jakims nullem
+        is_NaN = temp.isnull()
+        row_has_NaN = is_NaN.any(axis=1)
+        temp = temp[row_has_NaN]
+
+
         del temp[header]
         predicted = lm.predict(temp)
-        print("predicted")
-        print(predicted)
+
+
         df[header] = df[header].fillna(
             pd.Series(
                 predicted[
