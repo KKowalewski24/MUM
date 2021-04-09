@@ -122,16 +122,16 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
     linear_regression.fit(x_axis, y_axis)
     y_axis_prediction = linear_regression.predict(x_axis)
     plt.scatter(x_axis, y_axis)
-    plt.ylabel(df.columns[y_axis_column_number])
-    plt.xlabel(df.columns[x_axis_column_number])
+    plt.ylabel(replace_underscore_with_space(df.columns[y_axis_column_number]))
+    plt.xlabel(replace_underscore_with_space(df.columns[x_axis_column_number]))
     plt.plot(x_axis, y_axis_prediction, color='red')
     print("Coefficient: ", linear_regression.coef_[0][0])
 
     if save_tables:
         plt.savefig(create_chart_filename(
             missing_values_level, description,
-            df.columns[y_axis_column_number],
-            df.columns[x_axis_column_number]
+            replace_underscore_with_space(df.columns[y_axis_column_number]),
+            replace_underscore_with_space(df.columns[x_axis_column_number])
         ))
         plt.close()
 
@@ -163,6 +163,10 @@ def create_chart_filename(missing_values_level: str, description: str,
 
 def replace_space_with_dash(value: str) -> str:
     return value.replace(" ", "-")
+
+
+def replace_underscore_with_space(value: str) -> str:
+    return value.replace("_", " ")
 
 
 class MissingValuesException(Exception):
