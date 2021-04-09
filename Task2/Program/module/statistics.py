@@ -5,7 +5,7 @@ import pandas as pd
 from pandas import DataFrame, Series
 from sklearn.linear_model import LinearRegression
 
-from module.table_generator import generate_table
+from module.latex_generator import generate_image_figure, generate_table
 
 
 def calculate_statistics(df: pd.DataFrame, save_tables: bool,
@@ -122,11 +122,13 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
     print("Coefficient: ", linear_regression.coef_[0][0])
 
     if save_tables:
-        plt.savefig(create_chart_filename(
+        filename = create_chart_filename(
             missing_values_level, description,
-            replace_underscore_with_space(df.columns[y_axis_column_number]),
-            replace_underscore_with_space(df.columns[x_axis_column_number])
-        ))
+            df.columns[y_axis_column_number],
+            df.columns[x_axis_column_number]
+        )
+        generate_image_figure(filename)
+        plt.savefig(filename)
         plt.close()
 
     plt.show()
