@@ -27,7 +27,7 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     for i in range(len(df.values)):
         result += df.index[i] + " & "
         for j in range(len(df.values[i])):
-            result += str(round(df.values[i].tolist()[j], 4))
+            result += str(round(df.values[i][j], 4))
             if j < len(df.values[i]) - 1:
                 result += " & "
         result += " " + back_slashes + " " + hline
