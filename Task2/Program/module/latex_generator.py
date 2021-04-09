@@ -13,6 +13,7 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     hline: str = "\hline\n"
     end_tabular: str = "\end{tabular}\n"
     end: str = "\end{table}\n"
+    float_barrier: str = "\FloatBarrier\n"
 
     column_names = ""
     for i in range(len(df.columns)):
@@ -31,7 +32,7 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
                 result += " & "
         result += " " + back_slashes + " " + hline
 
-    result += end_tabular + end
+    result += end_tabular + end + float_barrier
     save_to_file(result, RESULTS_DIR_NAME + "/table-" + filename)
 
 
