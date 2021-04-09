@@ -22,9 +22,11 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
     headers = [
         'age','sex','chest-pain-type','resting-blood-pressure','serum-cholestoral','fasting-blood-sugar','resting-electrocardiographic-results','maximum-heart-rate','exercise-induced-angina','oldpeak','the-slope-of-the-peak-exercise','number-of-major-vessels','thal','target'
     ]
+    fuzzy_headers = [ 'age','resting-blood-pressure','serum-cholestoral', 'maximum-heart-rate','oldpeak']
+    not_fuzzy_headers = ['sex','chest-pain-type','fasting-blood-sugar','resting-electrocardiographic-results','exercise-induced-angina','the-slope-of-the-peak-exercise','number-of-major-vessels','thal','target']
     i = 0
     # [ 'age','resting-blood-pressure','serum-cholestoral, 'maximum-heart-rate','oldpeak']
-    for header in [ 'age','resting-blood-pressure','serum-cholestoral', 'maximum-heart-rate','oldpeak']:
+    for header in fuzzy_headers:
         df_to_regression_model = df.dropna(subset = headers)
         df_to_regression_model = df_to_regression_model.loc[:, headers]
         headers.remove(header)
@@ -37,10 +39,10 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
         temp[header] = df[header]
 
         temp[temp.isnull().any(axis=1)] #zostawia tylko wiersze z jakims nullem
-        print(temp)
         del temp[header]
         predicted = lm.predict(temp)
-
+        print("predicted")
+        print(predicted)
         df[header] = df[header].fillna(
             pd.Series(
                 predicted[
