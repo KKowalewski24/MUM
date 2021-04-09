@@ -32,19 +32,16 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
         result += " " + back_slashes + " " + hline
 
     result += end_tabular + end
-    save_to_file(result, RESULTS_DIR_NAME + "/table-" +filename)
+    save_to_file(result, RESULTS_DIR_NAME + "/table-" + filename)
 
 
 def generate_image_figure(image_filename: str) -> None:
     replaced_filename = image_filename.replace("%", "")
-    begin = "\\begin{figure}[!htbp]\n\centering\n\includegraphics\n[width=\\textwidth,keepaspectratio]\n"
-    middle = "{img/" + replaced_filename + ".png}\n\caption\n[" + replaced_filename + "]\n{" + replaced_filename + "}\n\label{margarine_divorces}"
-    end = "\end{figure}\n\FloatBarrier\n"
+    result = "\\begin{figure}[!htbp]\n\centering\n\includegraphics\n[width=\\textwidth,keepaspectratio]\n"
+    result += "{img/" + replaced_filename + ".png}\n\caption\n[" + replaced_filename + "]\n{" + replaced_filename + "}\n\label{" + replaced_filename + "}\n"
+    result += "\end{figure}\n\FloatBarrier\n"
 
-    current_time = datetime.now().strftime("%H%M%S")
-    path = RESULTS_DIR_NAME + "/figure-" + image_filename + current_time + ".txt"
-    with open(path, "w") as file:
-        file.write(begin + middle + end)
+    save_to_file(result, RESULTS_DIR_NAME + "/figure-" + image_filename)
 
 
 def save_to_file(data: str, filename: str) -> None:

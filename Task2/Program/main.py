@@ -8,11 +8,6 @@ from module.latex_generator import RESULTS_DIR_NAME
 from module.reader import read
 from module.statistics import calculate_statistics
 
-"""
-Removing generated files:
-    git clean -fX
-"""
-
 
 def main() -> None:
     args = prepare_args()
