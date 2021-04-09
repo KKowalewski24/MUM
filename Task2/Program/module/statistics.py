@@ -17,89 +17,31 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
     display_separator()
     print(description)
 
-    calculate_mean(df, save_tables, missing_values_level, description)
-    calculate_std(df, save_tables, missing_values_level, description)
-    calculate_mode(df, save_tables, missing_values_level, description)
-    calculate_first_quantile(df, save_tables, missing_values_level, description)
-    calculate_median(df, save_tables, missing_values_level, description)
-    calculate_third_quantile(df, save_tables, missing_values_level, description)
+    if df.empty:
+        print("Empty data frame, no way to calculate something!")
+        return
 
-    for i in range(2, 13):
-        calculate_regression(df, 0, i, save_tables, missing_values_level, description)
-        calculate_regression(df, 1, i, save_tables, missing_values_level, description)
+    basic_statistics = pd.DataFrame({
+        'Mean': df.mean(),
+        'Std': df.std(),
+        'Mode': df.mode().iloc[0],
+        'Q1': df.quantile(0.25),
+        'Median': df.median(),
+        'Q2': df.quantile(0.75)
+    })
 
+    print(basic_statistics)
 
-def calculate_mean(df: pd.DataFrame, save_tables: bool,
-                   missing_values_level: str, description: str) -> None:
-    statistic_type = "Mean"
-    mean = df.mean()
-    display_result(statistic_type, mean)
     if save_tables:
         generate_table(
-            mean.index, mean.values,
-            create_table_filename(missing_values_level, description, statistic_type)
-        )
+            basic_statistics,
+            create_table_filename(missing_values_level, description))
 
-
-def calculate_std(df: pd.DataFrame, save_tables: bool,
-                  missing_values_level: str, description: str) -> None:
-    statistic_type = "Standard Deviation"
-    std = df.std()
-    display_result(statistic_type, std)
-    if save_tables:
-        generate_table(
-            std.index, std.values,
-            create_table_filename(missing_values_level, description, statistic_type)
-        )
-
-
-def calculate_mode(df: pd.DataFrame, save_tables: bool,
-                   missing_values_level: str, description: str) -> None:
-    statistic_type = "Mode"
-    mode = df.mode()
-    display_result(statistic_type, mode)
-    # TODO CHECK THIS WITH JANEK!!!
-    if save_tables and len(mode.values) > 0:
-        generate_table(
-            mode.columns.tolist(), mode.values[0].tolist(),
-            create_table_filename(missing_values_level, description, statistic_type)
-        )
-
-
-def calculate_first_quantile(df: pd.DataFrame, save_tables: bool,
-                             missing_values_level: str, description: str) -> None:
-    statistic_type = "First quantile"
-    quantile = df.quantile([0.25])
-    display_result(statistic_type, quantile)
-    if save_tables:
-        generate_table(
-            quantile.columns.tolist(), quantile.values[0].tolist(),
-            create_table_filename(missing_values_level, description, statistic_type)
-        )
-
-
-def calculate_median(df: pd.DataFrame, save_tables: bool,
-                     missing_values_level: str, description: str) -> None:
-    statistic_type = "Median (Second quantile)"
-    median = df.median()
-    display_result(statistic_type, median)
-    if save_tables:
-        generate_table(
-            median.index.tolist(), median.values.tolist(),
-            create_table_filename(missing_values_level, description, statistic_type)
-        )
-
-
-def calculate_third_quantile(df: pd.DataFrame, save_tables: bool,
-                             missing_values_level: str, description: str) -> None:
-    statistic_type = "Third quantile"
-    quantile = df.quantile([0.75])
-    display_result(statistic_type, quantile)
-    if save_tables:
-        generate_table(
-            quantile.columns.tolist(), quantile.values[0].tolist(),
-            create_table_filename(missing_values_level, description, statistic_type)
-        )
+    # for i in range(2, 13):
+    #     calculate_regression(df, 0, i, save_tables, missing_values_level,
+    #                          description)
+    #     calculate_regression(df, 1, i, save_tables, missing_values_level,
+    #                          description)
 
 
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
@@ -107,10 +49,6 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
                          missing_values_level: str, description: str) -> None:
     y = df.iloc[:, y_axis_column_number].values.reshape(-1, 1)
     x = df.iloc[:, x_axis_column_number].values.reshape(-1, 1)
-    # TODO CHECK THIS WITH JANEK!!! MODE SOMETIMES RETURN EMPTY
-    #  ARRAY THIS IS WHY WE HAVE TO CHECK
-    if x.shape[0] == 0:
-        return
 
     linear_regression = LinearRegression()
     linear_regression.fit(x, y)
@@ -122,11 +60,9 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
     print("Coefficient: ", linear_regression.coef_[0][0])
 
     if save_tables:
-        filename = create_chart_filename(
-            missing_values_level, description,
-            df.columns[y_axis_column_number],
-            df.columns[x_axis_column_number]
-        )
+        filename = create_chart_filename(missing_values_level, description,
+                                         df.columns[y_axis_column_number],
+                                         df.columns[x_axis_column_number])
         generate_image_figure(filename)
         plt.savefig(RESULTS_DIR_NAME + "/" + filename)
         plt.close()
@@ -135,22 +71,23 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
 
 
 def display_separator() -> None:
-    print("------------------------------------------------------------------------")
+    print(
+        "------------------------------------------------------------------------"
+    )
 
 
 def display_result(description: str, result: Union[DataFrame, Series]) -> None:
     print("\n" + description + "\n", result)
 
 
-def create_table_filename(missing_values_level: str, description: str,
-                          statistic_type: str) -> str:
+def create_table_filename(missing_values_level: str, description: str) -> str:
     return "result_" + missing_values_level + "_" \
-           + replace_space_with_dash(description) + "_" \
-           + replace_space_with_dash(statistic_type)
+           + replace_space_with_dash(description)
 
 
 def create_chart_filename(missing_values_level: str, description: str,
-                          first_column_name: str, second_column_name: str) -> str:
+                          first_column_name: str,
+                          second_column_name: str) -> str:
     return "regression-" + missing_values_level + "-" \
            + replace_space_with_dash(description) + "-" \
            + replace_space_with_dash(first_column_name) + "-" \

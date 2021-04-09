@@ -1,10 +1,12 @@
+import pandas as pd
 from datetime import datetime
 from typing import List
 
 RESULTS_DIR_NAME = "results"
 
 
-def generate_table(header: List[str], content: List[str], filename: str) -> None:
+def generate_table(df: pd.DataFrame, filename: str) -> None:
+    # TODO
     if len(header) != len(content):
         raise Exception("Lists must have equal length!!!")
 
