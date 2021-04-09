@@ -22,14 +22,13 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
     headers = [
         'age','sex','chest-pain-type','resting-blood-pressure','serum-cholestoral','fasting-blood-sugar','resting-electrocardiographic-results','maximum-heart-rate','exercise-induced-angina','oldpeak','the-slope-of-the-peak-exercise','number-of-major-vessels','thal','target'
     ]
-
     i = 0
-    for header in ['age']:
-        headers_copy = headers
-        df_to_regression_model = df.dropna(subset = headers_copy)
-        df_to_regression_model = df_to_regression_model.loc[:, headers_copy]
-        del(headers_copy[i])
-        x = df_to_regression_model[headers_copy]
+    # [ 'age','resting-blood-pressure','serum-cholestoral, 'maximum-heart-rate','oldpeak']
+    for header in [ 'age','resting-blood-pressure','serum-cholestoral', 'maximum-heart-rate','oldpeak']:
+        df_to_regression_model = df.dropna(subset = headers)
+        df_to_regression_model = df_to_regression_model.loc[:, headers]
+        headers.remove(header)
+        x = df_to_regression_model[headers]
         y = df_to_regression_model[header]
 
         lm = LinearRegression().fit(x, y)
@@ -38,8 +37,10 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
         temp[header] = df[header]
 
         temp[temp.isnull().any(axis=1)] #zostawia tylko wiersze z jakims nullem
+        print(temp)
         del temp[header]
         predicted = lm.predict(temp)
+
         df[header] = df[header].fillna(
             pd.Series(
                 predicted[
@@ -49,11 +50,13 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
                         ][:len(predicted)]
                 )
             ) #to skomplikowane przyrownanie zastepuje w df jedna kolumne z danymi wlasnie "przewidzianymi" danymi
-        i = i + 1 
+        headers.insert(i, header)
+        i = i + 1
+        
 
 
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-        print(df)
+    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+    #     print(df)
 
 
     return df
