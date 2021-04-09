@@ -116,8 +116,8 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
     linear_regression.fit(x_axis, y_axis)
     y_axis_prediction = linear_regression.predict(x_axis)
     plt.scatter(x_axis, y_axis)
-    plt.ylabel(replace_underscore_with_space(df.columns[y_axis_column_number]))
-    plt.xlabel(replace_underscore_with_space(df.columns[x_axis_column_number]))
+    plt.ylabel(replace_dash_with_space(df.columns[y_axis_column_number]))
+    plt.xlabel(replace_dash_with_space(df.columns[x_axis_column_number]))
     plt.plot(x_axis, y_axis_prediction, color='red')
     print("Coefficient: ", linear_regression.coef_[0][0])
 
@@ -151,9 +151,9 @@ def create_table_filename(missing_values_level: str, description: str,
 
 def create_chart_filename(missing_values_level: str, description: str,
                           first_column_name: str, second_column_name: str) -> str:
-    return "regression_" + missing_values_level + "_" \
-           + replace_space_with_dash(description) + "_" \
-           + replace_space_with_dash(first_column_name) + "_" \
+    return "regression-" + missing_values_level + "-" \
+           + replace_space_with_dash(description) + "-" \
+           + replace_space_with_dash(first_column_name) + "-" \
            + replace_space_with_dash(second_column_name)
 
 
@@ -161,8 +161,8 @@ def replace_space_with_dash(value: str) -> str:
     return value.replace(" ", "-")
 
 
-def replace_underscore_with_space(value: str) -> str:
-    return value.replace("_", " ")
+def replace_dash_with_space(value: str) -> str:
+    return value.replace("-", " ")
 
 
 class MissingValuesException(Exception):
