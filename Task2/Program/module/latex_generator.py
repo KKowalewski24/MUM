@@ -13,8 +13,16 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     hline: str = "\hline\n"
     end_tabular: str = "\end{tabular}\n"
     end: str = "\end{table}\n"
+
+    column_names = ""
+    for i in range(len(df.columns)):
+        column_names += df.columns[i]
+        if i <= len(df.columns[i]) + 1:
+            column_names += " & "
+
     result = begin + centering + begin_tabular + hline
-    # result += " & " + back_slashes + " " + hline
+    result += " & " + column_names + " " + back_slashes + " " + hline
+
     for i in range(len(df.values)):
         result += df.index[i] + " & "
         for j in range(len(df.values[i])):
@@ -24,8 +32,7 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
         result += " " + back_slashes + " " + hline
 
     result += end_tabular + end
-
-    print(result)
+    save_to_file(result, RESULTS_DIR_NAME + "/table-" +filename)
 
 
 def generate_image_figure(image_filename: str) -> None:
@@ -35,11 +42,11 @@ def generate_image_figure(image_filename: str) -> None:
     end = "\end{figure}\n\FloatBarrier\n"
 
     current_time = datetime.now().strftime("%H%M%S")
-    path = RESULTS_DIR_NAME + "/figure_" + image_filename + current_time + ".txt"
+    path = RESULTS_DIR_NAME + "/figure-" + image_filename + current_time + ".txt"
     with open(path, "w") as file:
         file.write(begin + middle + end)
 
 
-def save_to_file(self, data: str, filename: str) -> None:
-    with open(filename + "-" + datetime.now().strftime("%H%M%S"), "w") as save_file:
-        save_file.write(data)
+def save_to_file(data: str, filename: str) -> None:
+    with open(filename + "-" + datetime.now().strftime("%H%M%S") + ".txt", "w") as txt:
+        txt.write(data)
