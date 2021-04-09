@@ -22,32 +22,38 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
     headers = [
         'age','sex','chest-pain-type','resting-blood-pressure','serum-cholestoral','fasting-blood-sugar','resting-electrocardiographic-results','maximum-heart-rate','exercise-induced-angina','oldpeak','the-slope-of-the-peak-exercise','number-of-major-vessels','thal','target'
     ]
-    df_to_regression_model = df.dropna(subset = headers)
-    df_to_regression_model = df_to_regression_model.loc[:, headers]
-    del(headers[0])
-    age_x = df_to_regression_model[headers]
-    age_y = df_to_regression_model['age']
 
-    age_lm = LinearRegression().fit(age_x, age_y)
+    i = 0
+    for header in ['age']:
+        headers_copy = headers
+        df_to_regression_model = df.dropna(subset = headers_copy)
+        df_to_regression_model = df_to_regression_model.loc[:, headers_copy]
+        del(headers_copy[i])
+        x = df_to_regression_model[headers_copy]
+        y = df_to_regression_model[header]
 
-    temp = interpolate(df)
-    temp['age'] = df['age']
+        lm = LinearRegression().fit(x, y)
 
-    temp[temp.isnull().any(axis=1)] #zostawia tylko wiersze z jakims nullem
-    del temp['age']
-    predicted_age = age_lm.predict(temp)
-    df['age'] = df['age'].fillna(
-        pd.Series(
-            predicted_age[
-                :df['age'].isna().sum()
-                ], index=df.index[
-                    df['age'].isna()
-                    ][:len(predicted_age)]
-            )
-        )
+        temp = interpolate(df)
+        temp[header] = df[header]
 
-    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-    #     print(df)
+        temp[temp.isnull().any(axis=1)] #zostawia tylko wiersze z jakims nullem
+        del temp[header]
+        predicted = lm.predict(temp)
+        df[header] = df[header].fillna(
+            pd.Series(
+                predicted[
+                    :df[header].isna().sum()
+                    ], index=df.index[
+                        df[header].isna()
+                        ][:len(predicted)]
+                )
+            ) #to skomplikowane przyrownanie zastepuje w df jedna kolumne z danymi wlasnie "przewidzianymi" danymi
+        i = i + 1 
+
+
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+        print(df)
 
 
     return df
