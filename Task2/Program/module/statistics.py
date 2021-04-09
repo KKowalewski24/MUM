@@ -37,6 +37,8 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
             basic_statistics,
             create_table_filename(missing_values_level, description))
 
+    # todo regression of 2 column pairs: age-restingbloodpressure, age-maxheartrate
+
     # for i in range(2, 13):
     #     calculate_regression(df, 0, i, save_tables, missing_values_level,
     #                          description)
