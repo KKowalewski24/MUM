@@ -5,7 +5,7 @@ import pandas as pd
 from pandas import DataFrame, Series
 from sklearn.linear_model import LinearRegression
 
-from module.latex_generator import generate_image_figure, generate_table, RESULTS_DIR_NAME
+from module.latex_generator import RESULTS_DIR_NAME, generate_image_figure, generate_table
 
 
 def calculate_statistics(df: pd.DataFrame, save_tables: bool,
@@ -35,15 +35,11 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
     if save_tables:
         generate_table(
             basic_statistics,
-            create_table_filename(missing_values_level, description))
+            create_table_filename(missing_values_level, description)
+        )
 
-    # todo regression of 2 column pairs: age-restingbloodpressure, age-maxheartrate
-
-    # for i in range(2, 13):
-    #     calculate_regression(df, 0, i, save_tables, missing_values_level,
-    #                          description)
-    #     calculate_regression(df, 1, i, save_tables, missing_values_level,
-    #                          description)
+    calculate_regression(df, 0, 3, save_tables, missing_values_level, description)
+    calculate_regression(df, 0, 7, save_tables, missing_values_level, description)
 
 
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
