@@ -24,7 +24,8 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
     ]
     df_to_regression_model = df.dropna(subset = headers)
     df_to_regression_model = df_to_regression_model.loc[:, headers]
-    age_x = df_to_regression_model[headers[1:]]
+    del(headers[0])
+    age_x = df_to_regression_model[headers]
     age_y = df_to_regression_model['age']
 
     age_lm = LinearRegression().fit(age_x, age_y)
@@ -32,26 +33,23 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
     temp = interpolate(df)
     temp['age'] = df['age']
 
-    is_NaN = temp.isnull()
-    row_has_NaN = is_NaN.any(axis=1)
-    temp = temp[row_has_NaN]
-    print("temp ")
-    print(temp[temp.isnull().any(axis=1)])
-
-    # missing = df['age'].isnull()
-    # nex = pd.DataFrame(df[headers][missing])
-
-
-    # print("temp ")
+    temp[temp.isnull().any(axis=1)] #zostawia tylko wiersze z jakims nullem
     del temp['age']
-    # print(temp)
+    predicted_age = age_lm.predict(temp)
+    df['age'] = df['age'].fillna(
+        pd.Series(
+            predicted_age[
+                :df['age'].isna().sum()
+                ], index=df.index[
+                    df['age'].isna()
+                    ][:len(predicted_age)]
+            )
+        )
 
-    # age_lm.predict(nex)
+    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+    #     print(df)
 
-    pred = age_lm.predict(temp)
-    temp.insert(0, 'Age', pred)
-    # print('zrobione')
-    # print(temp)
+
     return df
 
 
