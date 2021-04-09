@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import List
 
+RESULTS_DIR_NAME = "results"
+
 
 def generate_table(header: List[str], content: List[str], filename: str) -> None:
     if len(header) != len(content):
@@ -17,7 +19,7 @@ def generate_table(header: List[str], content: List[str], filename: str) -> None
     result += end
 
     current_time = datetime.now().strftime("%H%M%S")
-    with open(filename + current_time + ".txt", "w") as file:
+    with open(RESULTS_DIR_NAME + "/" + filename + current_time + ".txt", "w") as file:
         file.write(result)
 
 
@@ -28,5 +30,6 @@ def generate_image_figure(image_filename: str) -> None:
     end = "\end{figure}\n\FloatBarrier\n"
 
     current_time = datetime.now().strftime("%H%M%S")
-    with open("figure_" + image_filename + current_time + ".txt", "w") as file:
+    path = RESULTS_DIR_NAME + "/figure_" + image_filename + current_time + ".txt"
+    with open(path, "w") as file:
         file.write(begin + middle + end)

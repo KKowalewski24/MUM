@@ -1,8 +1,10 @@
+import os
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
 
-from module.imputation import hot_deck, interpolate, mean, regression
+from module.imputation import hot_deck, interpolate, mean
+from module.latex_generator import RESULTS_DIR_NAME
 from module.reader import read
 from module.statistics import calculate_statistics
 
@@ -15,6 +17,7 @@ Removing generated files:
 def main() -> None:
     args = prepare_args()
     save_to_files: bool = args.save
+    create_dir_for_results(save_to_files)
 
     for ds, label in zip(read([5, 15, 30, 45]), ['5%', '15%', '30%', '45%']):
         print("\n" + label, "missing values")
@@ -23,6 +26,14 @@ def main() -> None:
         calculate_statistics(interpolate(ds), save_to_files, label, "Interpolation")
         calculate_statistics(hot_deck(ds), save_to_files, label, "Hot deck")
         # calculate_statistics(regression(ds), save_to_files, label, "Regression")
+
+
+def create_dir_for_results(save_to_files: bool) -> None:
+    if not save_to_files:
+        return
+
+    if not os.path.exists(RESULTS_DIR_NAME):
+        os.makedirs(RESULTS_DIR_NAME)
 
 
 def prepare_args() -> Namespace:

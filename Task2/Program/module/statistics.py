@@ -5,7 +5,7 @@ import pandas as pd
 from pandas import DataFrame, Series
 from sklearn.linear_model import LinearRegression
 
-from module.latex_generator import generate_image_figure, generate_table
+from module.latex_generator import generate_image_figure, generate_table, RESULTS_DIR_NAME
 
 
 def calculate_statistics(df: pd.DataFrame, save_tables: bool,
@@ -128,7 +128,7 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
             df.columns[x_axis_column_number]
         )
         generate_image_figure(filename)
-        plt.savefig(filename)
+        plt.savefig(RESULTS_DIR_NAME + "/" + filename)
         plt.close()
 
     plt.show()
