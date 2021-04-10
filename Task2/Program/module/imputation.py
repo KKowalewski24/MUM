@@ -20,18 +20,10 @@ def hot_deck(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def regression(df: pd.DataFrame) -> pd.DataFrame:
-    headers = [
-        'age', 'sex', 'chest-pain-type', 'resting-blood-pressure', 'serum-cholestoral',
-        'fasting-blood-sugar', 'resting-electrocardiographic-results', 'maximum-heart-rate',
-        'exercise-induced-angina', 'oldpeak', 'the-slope-of-the-peak-exercise',
-        'number-of-major-vessels', 'thal', 'target'
-    ]
-    fuzzy_headers = ['age', 'resting-blood-pressure', 'serum-cholestoral', 'maximum-heart-rate',
-                     'oldpeak']
-    not_fuzzy_headers = ['sex', 'chest-pain-type', 'fasting-blood-sugar',
-                         'resting-electrocardiographic-results', 'exercise-induced-angina',
-                         'the-slope-of-the-peak-exercise', 'number-of-major-vessels', 'thal',
-                         'target']
+    headers = df.columns.tolist()
+    fuzzy_headers = [headers[0], headers[3], headers[4], headers[7], headers[9]]
+    not_fuzzy_headers = [headers[1], headers[2], headers[5], headers[6], headers[8], headers[10],
+                         headers[11], headers[12], headers[13]]
     i = 0
     # [ 'age','resting-blood-pressure','serum-cholestoral, 'maximum-heart-rate','oldpeak']
     for header in headers:
