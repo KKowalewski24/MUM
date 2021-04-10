@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import List
+from typing import List, Union, Any
 
 import pandas as pd
 
@@ -69,7 +69,7 @@ class LatexGenerator:
         header: str = ""
         for i in range(len(df.columns)):
             header += str(df.columns[i])
-            if i < len(df.columns[i]) - 1:
+            if i < len(df.columns) - 1:
                 header += self.table.ampersand
 
         header += " " + self.table.back_slashes + " " + self.table.hline
@@ -95,6 +95,7 @@ class LatexGenerator:
 
         result: str = self.table.begin + self.table.centering \
                       + self.table.get_begin_tabular(len(header_names)) + self.table.hline
+
         header: str = ""
         for i in range(len(header_names)):
             header += header_names[i]
@@ -122,8 +123,8 @@ class LatexGenerator:
 
         header: str = ""
         for i in range(len(df.columns)):
-            header += df.columns[i]
-            if i <= len(df.columns[i]) + 1:
+            header += str(df.columns[i])
+            if i <= len(df.columns) - 2:
                 header += self.table.ampersand
 
         result += self.table.ampersand + header + " " \
@@ -143,33 +144,31 @@ class LatexGenerator:
         self._save_to_file(result, filename)
 
 
-    def generate_horizontal_table(self, header_names: List[str],
-                                  horizontal_column_names: List[str],
-                                  body_values: List[List[float]], filename: str) -> None:
-        for i in range(len(body_values)):
-            if len(header_names) != len(body_values[i]):
-                raise Exception("header_names and body_values must have equal length")
-
+    def generate_horizontal_table(self, header_names: Union[List[str], List[int]],
+                                  horizontal_column_names: Union[List[str], List[int]],
+                                  body_values: Union[List[List[str]], List[List[float]]],
+                                  filename: str) -> None:
         if len(horizontal_column_names) != len(body_values):
             raise Exception(
                 "horizontal_column_names and body_values must have equal length"
             )
 
         result: str = self.table.begin + self.table.centering \
-                      + self.table.get_begin_tabular(len(header_names) + 1) + self.table.hline
+                      + self.table.get_begin_tabular(len(body_values[0]) + 1) + self.table.hline
 
-        header: str = ""
-        for i in range(len(header_names)):
-            header += header_names[i]
-            if i < len(header_names[i]) + 1:
-                header += self.table.ampersand
+        if self._compare_array_with_matrix_rows(header_names, body_values):
+            header: str = ""
+            for i in range(len(header_names)):
+                header += str(header_names[i])
+                if i < len(header_names) - 1:
+                    header += self.table.ampersand
 
-        result += self.table.ampersand + header + " " \
-                  + self.table.back_slashes + " " + self.table.hline
+            result += self.table.ampersand + header + " " \
+                      + self.table.back_slashes + " " + self.table.hline
 
         body: str = ""
         for i in range(len(body_values)):
-            body += horizontal_column_names[i] + self.table.ampersand
+            body += str(horizontal_column_names[i]) + self.table.ampersand
             for j in range(len(body_values[i])):
                 body += str(body_values[i][j])
                 if j < len(body_values[i]) - 1:
@@ -187,6 +186,14 @@ class LatexGenerator:
         result += self.image.get_caption(self._remove_png_extension(filename))
         result += self.image.get_label(self._remove_png_extension(filename))
         self._save_to_file(result, filename)
+
+
+    def _compare_array_with_matrix_rows(self, array: List[Any], matrix: List[List[Any]]) -> bool:
+        for item in matrix:
+            if len(array) != len(item):
+                return False
+
+        return True
 
 
     def _save_to_file(self, data: str, filename: str) -> None:
