@@ -18,7 +18,7 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     column_names = ""
     for i in range(len(df.columns)):
         column_names += df.columns[i]
-        if i <= len(df.columns[i]) + 1:
+        if i <= len(df.columns) - 2:
             column_names += " & "
 
     result = begin + centering + begin_tabular + hline
