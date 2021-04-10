@@ -1,37 +1,50 @@
-import pandas as pd
 from datetime import datetime
-from typing import List
+
+import pandas as pd
 
 RESULTS_DIR_NAME = "results"
 
 
 def generate_table(df: pd.DataFrame, filename: str) -> None:
-    # TODO
-    if len(header) != len(content):
-        raise Exception("Lists must have equal length!!!")
+    begin: str = "\\begin{table}[!htbp]\n"
+    centering: str = "\centering\n"
+    begin_tabular: str = "\\begin{tabular}{|c|c|c|c|c|c|c|}\n"
+    back_slashes: str = "\\\\"
+    hline: str = "\hline\n"
+    end_tabular: str = "\end{tabular}\n"
+    end: str = "\end{table}\n"
+    float_barrier: str = "\FloatBarrier\n"
 
-    begin: str = "\\begin{table}[!htbp]\n\centering\n\\begin{tabular}{|c|c|c|c|c|}\n\hline\n"
-    table_description = "\n\caption{TODO}\n\label{" + filename.replace("%", "") + "}\n"
-    end: str = "\end{tabular}" + table_description + "\end{table}\n"
-    result = begin
+    column_names = ""
+    for i in range(len(df.columns)):
+        column_names += df.columns[i]
+        if i <= len(df.columns[i]) + 1:
+            column_names += " & "
 
-    for index in range(len(header)):
-        result += str(header[index]) + " & " + str(content[index]) + " \\\ \hline\n"
+    result = begin + centering + begin_tabular + hline
+    result += " & " + column_names + " " + back_slashes + " " + hline
 
-    result += end
+    for i in range(len(df.values)):
+        result += df.index[i] + " & "
+        for j in range(len(df.values[i])):
+            result += str(round(df.values[i][j], 4))
+            if j < len(df.values[i]) - 1:
+                result += " & "
+        result += " " + back_slashes + " " + hline
 
-    current_time = datetime.now().strftime("%H%M%S")
-    with open(RESULTS_DIR_NAME + "/" + filename + current_time + ".txt", "w") as file:
-        file.write(result)
+    result += end_tabular + end + float_barrier
+    save_to_file(result, RESULTS_DIR_NAME + "/table-" + filename)
 
 
 def generate_image_figure(image_filename: str) -> None:
     replaced_filename = image_filename.replace("%", "")
-    begin = "\\begin{figure}[!htbp]\n\centering\n\includegraphics\n[width=\\textwidth,keepaspectratio]\n"
-    middle = "{img/" + replaced_filename + ".png}\n\caption\n[" + replaced_filename + "]\n{" + replaced_filename + "}\n\label{margarine_divorces}"
-    end = "\end{figure}\n\FloatBarrier\n"
+    result = "\\begin{figure}[!htbp]\n\centering\n\includegraphics\n[width=\\textwidth,keepaspectratio]\n"
+    result += "{img/" + replaced_filename + ".png}\n\caption\n[" + replaced_filename + "]\n{" + replaced_filename + "}\n\label{" + replaced_filename + "}\n"
+    result += "\end{figure}\n\FloatBarrier\n"
 
-    current_time = datetime.now().strftime("%H%M%S")
-    path = RESULTS_DIR_NAME + "/figure_" + image_filename + current_time + ".txt"
-    with open(path, "w") as file:
-        file.write(begin + middle + end)
+    save_to_file(result, RESULTS_DIR_NAME + "/figure-" + image_filename)
+
+
+def save_to_file(data: str, filename: str) -> None:
+    with open(filename + "-" + datetime.now().strftime("%H%M%S") + ".txt", "w") as txt:
+        txt.write(data)
