@@ -18,7 +18,7 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     column_names = ""
     for i in range(len(df.columns)):
         column_names += df.columns[i]
-        if i <= len(df.columns[i]) + 1:
+        if i <= len(df.columns) - 2:
             column_names += " & "
 
     result = begin + centering + begin_tabular + hline
@@ -36,10 +36,12 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     save_to_file(result, RESULTS_DIR_NAME + "/table-" + filename)
 
 
-def generate_image_figure(image_filename: str) -> None:
+def generate_image_figure(image_filename: str, regression_coef: float) -> None:
     replaced_filename = image_filename.replace("%", "")
     result = "\\begin{figure}[!htbp]\n\centering\n\includegraphics\n[width=\\textwidth,keepaspectratio]\n"
-    result += "{img/" + replaced_filename + ".png}\n\caption\n[" + replaced_filename + "]\n{" + replaced_filename + "}\n\label{" + replaced_filename + "}\n"
+    result += ("{img/" + replaced_filename + ".png}\n\caption\n[" + replaced_filename + "]\n{"
+               + "Współczynnik korelacji: " + str(regression_coef)
+               + "}\n\label{" + replaced_filename + "}\n")
     result += "\end{figure}\n\FloatBarrier\n"
 
     save_to_file(result, RESULTS_DIR_NAME + "/figure-" + image_filename)

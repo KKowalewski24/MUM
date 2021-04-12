@@ -55,13 +55,14 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
     plt.ylabel(replace_dash_with_space(df.columns[y_axis_column_number]))
     plt.xlabel(replace_dash_with_space(df.columns[x_axis_column_number]))
     plt.plot(x, y_pred, color='red')
-    print("Coefficient: ", linear_regression.coef_[0][0])
+    regression_coef = linear_regression.coef_[0][0]
+    print("Coefficient: ", regression_coef)
 
     if save_tables:
         filename = create_chart_filename(missing_values_level, description,
                                          df.columns[y_axis_column_number],
                                          df.columns[x_axis_column_number])
-        generate_image_figure(filename)
+        generate_image_figure(filename, regression_coef)
         plt.savefig(RESULTS_DIR_NAME + "/" + filename)
         plt.close()
 
