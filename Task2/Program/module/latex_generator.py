@@ -15,6 +15,15 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     end: str = "\end{table}\n"
     float_barrier: str = "\FloatBarrier\n"
 
+
+    def get_caption(text: str) -> str:
+        return "\caption\n[" + text + "]{" + text + "}\n"
+
+
+    def get_label(label: str) -> str:
+        return "\label{" + label + "}\n"
+
+
     column_names = ""
     for i in range(len(df.columns)):
         column_names += df.columns[i]
@@ -32,7 +41,7 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
                 result += " & "
         result += " " + back_slashes + " " + hline
 
-    result += end_tabular + end + float_barrier
+    result += get_caption(filename) + get_label(filename) + end_tabular + end + float_barrier
     save_to_file(result, RESULTS_DIR_NAME + "/table-" + filename)
 
 

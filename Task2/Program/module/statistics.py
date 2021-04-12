@@ -35,8 +35,8 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
             create_table_filename(missing_values_level, description)
         )
 
-    calculate_regression(df, 0, 3, save_tables, missing_values_level, description)
-    calculate_regression(df, 0, 7, save_tables, missing_values_level, description)
+    calculate_regression(df, 3, 0, save_tables, missing_values_level, description)
+    calculate_regression(df, 7, 0, save_tables, missing_values_level, description)
 
 
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
@@ -73,7 +73,7 @@ def display_result(description: str, result: Union[DataFrame, Series]) -> None:
 
 
 def create_table_filename(missing_values_level: str, description: str) -> str:
-    return "result_" + missing_values_level + "_" \
+    return "result_" + missing_values_level.replace("%", "") + "_" \
            + replace_space_with_dash(description)
 
 
