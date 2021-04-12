@@ -204,7 +204,7 @@ class LatexGenerator:
                 os.makedirs(self.dir_name)
 
         path += filename + "-" + datetime.now().strftime("%H%M%S") + ".txt"
-        with open(path, "w") as file:
+        with open(path, "w", encoding="UTF-8") as file:
             file.write(data)
 
 
