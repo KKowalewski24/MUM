@@ -35,8 +35,8 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
             create_table_filename(missing_values_level, description)
         )
 
-    calculate_regression(df, 0, 3, save_tables, missing_values_level, description)
-    calculate_regression(df, 0, 7, save_tables, missing_values_level, description)
+    calculate_regression(df, 3, 0, save_tables, missing_values_level, description)
+    calculate_regression(df, 7, 0, save_tables, missing_values_level, description)
 
 
 def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
@@ -73,14 +73,14 @@ def display_result(description: str, result: Union[DataFrame, Series]) -> None:
 
 
 def create_table_filename(missing_values_level: str, description: str) -> str:
-    return "result_" + missing_values_level + "_" \
+    return "result_" + missing_values_level.replace("%", "") + "_" \
            + replace_space_with_dash(description)
 
 
 def create_chart_filename(missing_values_level: str, description: str,
                           first_column_name: str,
                           second_column_name: str) -> str:
-    return "regression-" + missing_values_level + "-" \
+    return "regression-" + missing_values_level.replace("%", "") + "-" \
            + replace_space_with_dash(description) + "-" \
            + replace_space_with_dash(first_column_name) + "-" \
            + replace_space_with_dash(second_column_name)
