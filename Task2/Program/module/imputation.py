@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.impute import KNNImputer
 # from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LinearRegression, LogisticRegression
@@ -21,30 +22,32 @@ def hot_deck(df: pd.DataFrame) -> pd.DataFrame:
 
 def regression(df: pd.DataFrame) -> pd.DataFrame:
     headers = df.columns.tolist()
-    fuzzy_headers = [headers[0], headers[3], headers[4], headers[7], headers[9]]
-    not_fuzzy_headers = [headers[1], headers[2], headers[5], headers[6], headers[8], headers[10],
+    discreet_headers = [headers[0], headers[3], headers[4], headers[7], headers[9]]
+    not_discreet_headers = [headers[1], headers[2], headers[5], headers[6], headers[8], headers[10],
                          headers[11], headers[12], headers[13]]
     i = 0
-    # [ 'age','resting-blood-pressure','serum-cholestoral, 'maximum-heart-rate','oldpeak']
     for header in headers:
-        df_to_regression_model = df.dropna(subset=headers)
-        df_to_regression_model = df_to_regression_model.loc[:, headers]
+        df_to_regression_model = df.dropna()
         headers.remove(header)
-        x = df_to_regression_model[headers]
-        y = df_to_regression_model[header]
+        x = df_to_regression_model[headers].to_numpy()
+        y = df_to_regression_model[header].to_numpy()
 
-        if header in fuzzy_headers:
+        if len(y) < 2 :
+            print("Not enough data to create linear regression model.")
+            return pd.DataFrame()
+
+        if header in discreet_headers:
             lm = LinearRegression().fit(x, y)
-        elif header in not_fuzzy_headers:
+        elif header in not_discreet_headers:
+            if len(np.unique(y)) < 2: 
+                print("Not enough data to create logistic regression model.")
+                return pd.DataFrame()
             lm = LogisticRegression(max_iter=1000000000000).fit(x, y)
 
         temp = interpolate(df)
         temp[header] = df[header]
 
         temp[temp.isnull().any(axis=1)]  # zostawia tylko wiersze z jakims nullem
-        # is_NaN = temp.isnull()
-        # row_has_NaN = is_NaN.any(axis=1)
-        # temp = temp[row_has_NaN]
 
         del temp[header]
         predicted = lm.predict(temp)
@@ -61,15 +64,4 @@ def regression(df: pd.DataFrame) -> pd.DataFrame:
         headers.insert(i, header)
         i = i + 1
 
-    with pd.option_context('display.max_rows', None, 'display.max_columns',
-                           None):  # more options can be specified also
-        print(df)
-
     return df
-
-##regresja liniowa, logistyczna do płci/target, (też logistic linear, ale z multiclass taki argument) dla takich z kilkoma wartościami
-##scilearn => 
-
-##1wywalam braki, z okroojonego zbioru model regresji zrobić dla każdej kolumny
-##potem imputacja dla każdej kolumny według modelu regresji jak brakuje danych w inne kolumnie to tymczasowo
-## uzupełniasz danymi z innej metody imputacji
