@@ -13,14 +13,15 @@ def main() -> None:
     args = prepare_args()
     save_to_files: bool = args.save
     create_dir_for_results(save_to_files)
+    categorical_columns = [1, 2, 5, 6, 8, 10, 11, 12, 13]
 
     for ds, label in zip(read([5, 15, 30, 45]), ['5%', '15%', '30%', '45%']):
         print("\n" + label, "missing values")
         calculate_statistics(ds.dropna(), save_to_files, label, "List wise deletion")
-        calculate_statistics(mean(ds), save_to_files, label, "Mean imputation")
-        calculate_statistics(interpolate(ds), save_to_files, label, "Interpolation")
+        calculate_statistics(mean(ds, categorical_columns), save_to_files, label, "Mean imputation")
+        calculate_statistics(interpolate(ds, categorical_columns), save_to_files, label, "Interpolation")
         calculate_statistics(hot_deck(ds), save_to_files, label, "Hot deck")
-        calculate_statistics(regression(ds), save_to_files, label, "Regression")
+        calculate_statistics(regression(ds, categorical_columns), save_to_files, label, "Regression")
 
 
 def create_dir_for_results(save_to_files: bool) -> None:
