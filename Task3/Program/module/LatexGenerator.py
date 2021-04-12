@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import List, Union, Any
+from typing import Any, List, Union
 
 import pandas as pd
 
@@ -27,6 +27,15 @@ class Table(LatexItem):
         return "\\begin{tabular}{" + columns + "}\n"
 
 
+    def get_caption(self, text: str) -> str:
+        replaced_text = replace_char_for_caption(text)
+        return "\caption\n[" + replaced_text + "]{" + replaced_text + "}\n"
+
+
+    def get_label(self, label: str) -> str:
+        return "\label{" + label + "}\n"
+
+
 class Image(LatexItem):
     begin: str = "\\begin{figure}[!htbp]\n"
     include: str = "\includegraphics\n"
@@ -47,11 +56,12 @@ class Image(LatexItem):
 
 
     def get_caption(self, text: str) -> str:
-        return "\caption\n[" + text + "]{" + text + "}"
+        replaced_text = replace_char_for_caption(text)
+        return "\caption\n[" + replaced_text + "]{" + replaced_text + "}\n"
 
 
     def get_label(self, label: str) -> str:
-        return "\label{" + label + "}"
+        return "\label{" + label + "}\n"
 
 
 class LatexGenerator:
@@ -82,8 +92,8 @@ class LatexGenerator:
                     body += self.table.ampersand
             body += " " + self.table.back_slashes + " " + self.table.hline
 
-        result += header + body + self.table.end_tabular \
-                  + self.table.end + self.table.float_barrier
+        result += header + body + self.table.end_tabular + self.table.get_caption(filename) \
+                  + self.table.get_label(filename) + self.table.end + self.table.float_barrier
         self._save_to_file(result, filename)
 
 
@@ -112,8 +122,8 @@ class LatexGenerator:
                     body += self.table.ampersand
             body += " " + self.table.back_slashes + " " + self.table.hline
 
-        result += header + body + self.table.end_tabular \
-                  + self.table.end + self.table.float_barrier
+        result += header + body + self.table.end_tabular + self.table.get_caption(filename) \
+                  + self.table.get_label(filename) + self.table.end + self.table.float_barrier
         self._save_to_file(result, filename)
 
 
@@ -140,7 +150,8 @@ class LatexGenerator:
 
             body += " " + self.table.back_slashes + " " + self.table.hline
 
-        result += body + self.table.end_tabular + self.table.end + self.table.float_barrier
+        result += body + self.table.end_tabular + self.table.get_caption(filename) \
+                  + self.table.get_label(filename) + self.table.end + self.table.float_barrier
         self._save_to_file(result, filename)
 
 
@@ -175,7 +186,8 @@ class LatexGenerator:
                     body += self.table.ampersand
             body += " " + self.table.back_slashes + " " + self.table.hline
 
-        result += body + self.table.end_tabular + self.table.end + self.table.float_barrier
+        result += body + self.table.end_tabular + self.table.get_caption(filename) \
+                  + self.table.get_label(filename) + self.table.end + self.table.float_barrier
         self._save_to_file(result, filename)
 
 
@@ -210,3 +222,11 @@ class LatexGenerator:
 
     def _remove_png_extension(self, string: str) -> str:
         return string.replace(".png", "")
+
+
+def replace_char_for_caption(string: str) -> str:
+    chars: List[str] = ["-", "_"]
+    for char in chars:
+        string = string.replace(char, " ")
+
+    return string
