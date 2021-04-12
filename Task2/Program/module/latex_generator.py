@@ -36,17 +36,20 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     save_to_file(result, RESULTS_DIR_NAME + "/table-" + filename)
 
 
-def generate_image_figure(image_filename: str, regression_coef: float) -> None:
+def generate_image_figure(image_filename: str, regression_coef: float,
+                          regression_intercept: float) -> None:
     replaced_filename = image_filename.replace("%", "")
     result = "\\begin{figure}[!htbp]\n\centering\n\includegraphics\n[width=\\textwidth,keepaspectratio]\n"
-    result += ("{img/" + replaced_filename + ".png}\n\caption\n[" + replaced_filename + "]\n{"
-               + "Współczynnik korelacji: " + str(regression_coef)
-               + "}\n\label{" + replaced_filename + "}\n")
+    result += "{img/" + replaced_filename + ".png}\n\caption\n[" + replaced_filename + "]\n"
+    result += "{Współczynnik korelacji: " + str(regression_coef)
+    result += ", Punkt przecięcia: " + str(regression_intercept) + "}\n"
+    result += "\label{" + replaced_filename + "}\n"
     result += "\end{figure}\n\FloatBarrier\n"
 
     save_to_file(result, RESULTS_DIR_NAME + "/figure-" + image_filename)
 
 
 def save_to_file(data: str, filename: str) -> None:
-    with open(filename + "-" + datetime.now().strftime("%H%M%S") + ".txt", "w") as txt:
+    with open(filename + "-" + datetime.now().strftime("%H%M%S") + ".txt", "w",
+              encoding="utf-8") as txt:
         txt.write(data)
