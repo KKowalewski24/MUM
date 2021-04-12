@@ -80,7 +80,7 @@ def create_table_filename(missing_values_level: str, description: str) -> str:
 def create_chart_filename(missing_values_level: str, description: str,
                           first_column_name: str,
                           second_column_name: str) -> str:
-    return "regression-" + missing_values_level + "-" \
+    return "regression-" + missing_values_level.replace("%", "") + "-" \
            + replace_space_with_dash(description) + "-" \
            + replace_space_with_dash(first_column_name) + "-" \
            + replace_space_with_dash(second_column_name)
