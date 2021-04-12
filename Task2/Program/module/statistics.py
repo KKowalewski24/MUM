@@ -14,9 +14,6 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
         print(df.isna())
         raise MissingValuesException
 
-    display_separator()
-    print(description)
-
     if df.empty:
         print("Empty data frame, no way to calculate something!")
         return
@@ -69,12 +66,6 @@ def calculate_regression(df: pd.DataFrame, y_axis_column_number: int,
         plt.close()
 
     plt.show()
-
-
-def display_separator() -> None:
-    print(
-        "------------------------------------------------------------------------"
-    )
 
 
 def display_result(description: str, result: Union[DataFrame, Series]) -> None:

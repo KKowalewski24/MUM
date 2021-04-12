@@ -17,11 +17,23 @@ def main() -> None:
 
     for ds, label in zip(read([5, 15, 30, 45]), ['5%', '15%', '30%', '45%']):
         print("\n" + label, "missing values")
+        display_separator()
+        print("List wise deletion")
         calculate_statistics(ds.dropna(), save_to_files, label, "List wise deletion")
+        display_separator()
+        print("Mean imputation")
         calculate_statistics(mean(ds, categorical_columns), save_to_files, label, "Mean imputation")
-        calculate_statistics(interpolate(ds, categorical_columns), save_to_files, label, "Interpolation")
+        display_separator()
+        print("Interpolation")
+        calculate_statistics(
+            interpolate(ds, categorical_columns), save_to_files, label, "Interpolation")
+        display_separator()
+        print("Hot deck")
         calculate_statistics(hot_deck(ds), save_to_files, label, "Hot deck")
-        calculate_statistics(regression(ds, categorical_columns), save_to_files, label, "Regression")
+        display_separator()
+        print("Regression")
+        calculate_statistics(
+            regression(ds, categorical_columns), save_to_files, label, "Regression")
 
 
 def create_dir_for_results(save_to_files: bool) -> None:
@@ -30,6 +42,10 @@ def create_dir_for_results(save_to_files: bool) -> None:
 
     if not os.path.exists(RESULTS_DIR_NAME):
         os.makedirs(RESULTS_DIR_NAME)
+
+
+def display_separator() -> None:
+    print("------------------------------------------------------------------------")
 
 
 def prepare_args() -> Namespace:
