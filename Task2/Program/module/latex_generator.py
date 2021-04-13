@@ -12,12 +12,9 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     back_slashes: str = "\\\\"
     hline: str = "\hline\n"
     end_tabular: str = "\end{tabular}\n"
+    caption: str = "\caption{}\n"
     end: str = "\end{table}\n"
     float_barrier: str = "\FloatBarrier\n"
-
-
-    def get_caption(text: str) -> str:
-        return "\caption\n[" + text + "]{" + text + "}\n"
 
 
     def get_label(label: str) -> str:
@@ -41,7 +38,7 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
                 result += " & "
         result += " " + back_slashes + " " + hline
 
-    result += get_caption(filename) + get_label(filename) + end_tabular + end + float_barrier
+    result += caption + get_label(filename) + end_tabular + end + float_barrier
     save_to_file(result, RESULTS_DIR_NAME + "/table-" + filename)
 
 

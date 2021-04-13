@@ -24,7 +24,7 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
         'Mode': df.mode().iloc[0],
         'Q1': df.quantile(0.25),
         'Median': df.median(),
-        'Q2': df.quantile(0.75)
+        'Q3': df.quantile(0.75)
     })
 
     print(basic_statistics)
