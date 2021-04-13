@@ -47,7 +47,7 @@ def generate_image_figure(image_filename: str, regression_coef: float,
     replaced_filename = image_filename.replace("%", "")
     result = "\\begin{figure}[!htbp]\n\centering\n\includegraphics\n[width=\\textwidth,keepaspectratio]\n"
     result += "{img/" + replaced_filename + ".png}\n\caption\n[" + replaced_filename + "]\n"
-    result += "{Współczynnik korelacji: " + str(regression_coef)
+    result += "{Współczynnik kierunkowy: " + str(regression_coef)
     result += ", Punkt przecięcia: " + str(regression_intercept) + "}\n"
     result += "\label{" + replaced_filename + "}\n"
     result += "\end{figure}\n\FloatBarrier\n"
