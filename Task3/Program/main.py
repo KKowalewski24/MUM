@@ -1,5 +1,10 @@
 import subprocess
 import sys
+from typing import Dict
+
+import pandas as pd
+
+from module.reader import read_csv_data_sets
 
 """
 """
@@ -9,10 +14,17 @@ import sys
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
+    # TODO
+    data_sets: Dict[int, pd.DataFrame] = read_csv_data_sets([""])
+
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
+def display_classifier_name(name: str) -> None:
+    print("------------------------------------------------------------------------")
+    print(name)
+
 
 # UTIL ----------------------------------------------------------------------- #
 def check_types_check_style() -> None:
