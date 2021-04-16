@@ -4,18 +4,35 @@ from typing import Dict
 
 import pandas as pd
 
+from module.bayes import bayes_classification
+from module.decision_tree import decision_tree_classification
+from module.k_nearest_neighbors import knn_classification
 from module.reader import read_csv_data_sets
+from module.support_vector_machine import svm_classification
 
 """
 """
-
 
 # VAR ------------------------------------------------------------------------ #
+# TODO
+DATA_SET_FILENAMES = ["", "", ""]
+
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
-    # TODO
-    data_sets: Dict[int, pd.DataFrame] = read_csv_data_sets([""])
+    data_sets: Dict[int, pd.DataFrame] = read_csv_data_sets(DATA_SET_FILENAMES)
+
+    display_classifier_name("k-nearest neighbors")
+    knn_classification(data_sets)
+
+    display_classifier_name("naive Bayes classifier")
+    bayes_classification(data_sets)
+
+    display_classifier_name("support vector machine")
+    decision_tree_classification(data_sets)
+
+    display_classifier_name("decision trees and random forests")
+    svm_classification(data_sets)
 
     display_finish()
 
