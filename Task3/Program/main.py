@@ -1,6 +1,7 @@
 import glob
 import subprocess
 import sys
+from argparse import ArgumentParser, Namespace
 from typing import Dict
 
 import pandas as pd
@@ -20,19 +21,21 @@ DATA_SETS_DIR = "data/*.csv"
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
+    args = prepare_args()
+    save_latex: bool = args.save
     data_sets: Dict[int, pd.DataFrame] = read_csv_data_sets(glob.glob(DATA_SETS_DIR))
 
     display_classifier_name("k-nearest neighbors classifier")
-    knn_classification(data_sets)
+    knn_classification(data_sets, save_latex)
 
     display_classifier_name("naive Bayes classifier")
-    bayes_classification(data_sets)
+    bayes_classification(data_sets, save_latex)
 
     display_classifier_name("support vector machine classifier")
-    decision_tree_classification(data_sets)
+    decision_tree_classification(data_sets, save_latex)
 
     display_classifier_name("decision trees and random forests classifier")
-    svm_classification(data_sets)
+    svm_classification(data_sets, save_latex)
 
     display_finish()
 
@@ -42,6 +45,17 @@ def display_classifier_name(name: str) -> None:
     print("------------------------------------------------------------------------")
     print(name)
     print()
+
+
+def prepare_args() -> Namespace:
+    arg_parser = ArgumentParser()
+
+    arg_parser.add_argument(
+        "-s", "--save", default=False, action="store_true",
+        help="Create LaTeX source code based on generated data"
+    )
+
+    return arg_parser.parse_args()
 
 
 # UTIL ----------------------------------------------------------------------- #

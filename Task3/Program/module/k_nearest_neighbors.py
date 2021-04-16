@@ -7,6 +7,6 @@ from module.LatexGenerator import LatexGenerator
 latex_generator: LatexGenerator = LatexGenerator("knn")
 
 
-def knn_classification(data_sets: Dict[int, pd.DataFrame]) -> None:
+def knn_classification(data_sets: Dict[int, pd.DataFrame], save_latex: bool) -> None:
     # TODO
     pass

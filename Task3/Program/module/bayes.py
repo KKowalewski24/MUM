@@ -7,6 +7,6 @@ from module.LatexGenerator import LatexGenerator
 latex_generator: LatexGenerator = LatexGenerator("bayes")
 
 
-def bayes_classification(data_sets: Dict[int, pd.DataFrame]) -> None:
+def bayes_classification(data_sets: Dict[int, pd.DataFrame], save_latex: bool) -> None:
     # TODO
     pass
