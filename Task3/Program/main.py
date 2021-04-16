@@ -1,3 +1,4 @@
+import glob
 import subprocess
 import sys
 from typing import Dict
@@ -14,24 +15,23 @@ from module.support_vector_machine import svm_classification
 """
 
 # VAR ------------------------------------------------------------------------ #
-# TODO
-DATA_SET_FILENAMES = ["", "", ""]
+DATA_SETS_DIR = "data/*.csv"
 
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
-    data_sets: Dict[int, pd.DataFrame] = read_csv_data_sets(DATA_SET_FILENAMES)
+    data_sets: Dict[int, pd.DataFrame] = read_csv_data_sets(glob.glob(DATA_SETS_DIR))
 
-    display_classifier_name("k-nearest neighbors")
+    display_classifier_name("k-nearest neighbors classifier")
     knn_classification(data_sets)
 
     display_classifier_name("naive Bayes classifier")
     bayes_classification(data_sets)
 
-    display_classifier_name("support vector machine")
+    display_classifier_name("support vector machine classifier")
     decision_tree_classification(data_sets)
 
-    display_classifier_name("decision trees and random forests")
+    display_classifier_name("decision trees and random forests classifier")
     svm_classification(data_sets)
 
     display_finish()
@@ -41,6 +41,7 @@ def main() -> None:
 def display_classifier_name(name: str) -> None:
     print("------------------------------------------------------------------------")
     print(name)
+    print()
 
 
 # UTIL ----------------------------------------------------------------------- #
