@@ -52,7 +52,7 @@ class Image(LatexItem):
 
 
     def get_latex_path(self, filename: str) -> str:
-        return "{" + self.get_path(filename) + ".png}"
+        return "{" + self.get_path(filename) + ".png}\n"
 
 
     def get_caption(self, text: str) -> str:
@@ -197,6 +197,7 @@ class LatexGenerator:
         result += self.image.get_latex_path(filename)
         result += self.image.get_caption(self._remove_png_extension(filename))
         result += self.image.get_label(self._remove_png_extension(filename))
+        result += self.image.end
         self._save_to_file(result, filename)
 
 
