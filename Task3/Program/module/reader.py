@@ -1,22 +1,13 @@
-from typing import Dict, List
+from typing import Tuple
 
+import numpy as np
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
-from model.DividedDataSet import DividedDataSet
 
-
-def read_csv_data_sets(filenames: List[str],
-                       test_set_sizes: List[float]) -> Dict[int, List[DividedDataSet]]:
-    data_sets: Dict[int, List[DividedDataSet]] = {}
-
-    for i in range(len(filenames)):
-        data_set = pd.read_csv(filenames[i])
-        divided_data_sets: List[DividedDataSet] = []
-
-        for test_set_size in test_set_sizes:
-            # TODO ADD SPLITTING DATA SETS
-            divided_data_sets.append(DividedDataSet(test_set_size, data_set, data_set))
-
-        data_sets[i] = divided_data_sets
-
-    return data_sets
+def read_data_set_from_csv_file(filename: str, y_column: str, test_set_size: float = 0.3) \
+        -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    df = pd.read_csv(filename)
+    X = df.drop(y_column, axis=1).to_numpy()
+    y = df[y_column].to_numpy()
+    return train_test_split(X, y, test_size=test_set_size)
