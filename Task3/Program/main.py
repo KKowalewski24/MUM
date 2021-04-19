@@ -2,7 +2,7 @@ import glob
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Dict
+from typing import Dict, Tuple
 
 import pandas as pd
 
@@ -13,17 +13,23 @@ from module.reader import read_csv_data_sets
 from module.support_vector_machine import svm_classification
 
 """
+Sample usage:
+    python main.py
+    python main.py -s
 """
 
 # VAR ------------------------------------------------------------------------ #
 DATA_SETS_DIR = "data/*.csv"
+TRAINING_SET_PERCENTAGE = 60
 
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
     save_latex: bool = args.save
-    data_sets: Dict[int, pd.DataFrame] = read_csv_data_sets(glob.glob(DATA_SETS_DIR))
+    data_sets: Dict[int, Tuple[pd.DataFrame, pd.DataFrame]] = read_csv_data_sets(
+        glob.glob(DATA_SETS_DIR), TRAINING_SET_PERCENTAGE
+    )
 
     display_classifier_name("k-nearest neighbors classifier")
     knn_classification(data_sets, save_latex)
