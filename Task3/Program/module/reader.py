@@ -1,16 +1,22 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
+
+from model.DividedDataSet import DividedDataSet
 
 
-# Returns dict of set order number and tuple that contains training set and test set
 def read_csv_data_sets(filenames: List[str],
-                       training_set_size: int) -> Dict[int, Tuple[pd.DataFrame, pd.DataFrame]]:
-    data_sets: Dict[int, Tuple[pd.DataFrame, pd.DataFrame]] = {}
+                       test_set_sizes: List[float]) -> Dict[int, List[DividedDataSet]]:
+    data_sets: Dict[int, List[DividedDataSet]] = {}
+
     for i in range(len(filenames)):
         data_set = pd.read_csv(filenames[i])
-        train_test_split()
-        data_sets[i] = (data_set, data_set)
+        divided_data_sets: List[DividedDataSet] = []
+
+        for test_set_size in test_set_sizes:
+            # TODO ADD SPLITTING DATA SETS
+            divided_data_sets.append(DividedDataSet(test_set_size, data_set, data_set))
+
+        data_sets[i] = divided_data_sets
 
     return data_sets

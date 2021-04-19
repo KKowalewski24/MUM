@@ -2,10 +2,9 @@ import glob
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Dict, Tuple
+from typing import Dict, List
 
-import pandas as pd
-
+from model.DividedDataSet import DividedDataSet
 from module.bayes import bayes_classification
 from module.decision_tree import decision_tree_classification
 from module.k_nearest_neighbors import knn_classification
@@ -19,16 +18,16 @@ Sample usage:
 """
 
 # VAR ------------------------------------------------------------------------ #
-DATA_SETS_DIR = "data/*.csv"
-TRAINING_SET_PERCENTAGE = 60
+DATA_SETS_DIR: str = "data/*.csv"
+TEST_SET_SIZES: List[float] = [0.2, 0.3, 0.4]
 
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
     save_latex: bool = args.save
-    data_sets: Dict[int, Tuple[pd.DataFrame, pd.DataFrame]] = read_csv_data_sets(
-        glob.glob(DATA_SETS_DIR), TRAINING_SET_PERCENTAGE
+    data_sets: Dict[int, List[DividedDataSet]] = read_csv_data_sets(
+        glob.glob(DATA_SETS_DIR), TEST_SET_SIZES
     )
 
     display_classifier_name("k-nearest neighbors classifier")

@@ -1,13 +1,12 @@
-from typing import Dict, Tuple
+from typing import Dict, List
 
-import pandas as pd
-
+from model.DividedDataSet import DividedDataSet
 from module.LatexGenerator import LatexGenerator
 
 latex_generator: LatexGenerator = LatexGenerator("decision_tree")
 
 
-def decision_tree_classification(data_sets: Dict[int, Tuple[pd.DataFrame, pd.DataFrame]],
+def decision_tree_classification(data_sets: Dict[int, List[DividedDataSet]],
                                  save_latex: bool) -> None:
     # TODO
     pass
