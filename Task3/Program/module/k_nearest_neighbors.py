@@ -30,11 +30,10 @@ def knn_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.nd
     plt.xlabel("K parameter value")
 
     if save_latex:
-        chart_filename = "knn_chart"
         latex_generator.generate_horizontal_table(
             ["Accuracy"], list(K_RANGE), accuracy_list, "knn_table"
         )
-        latex_generator.generate_chart_image(chart_filename)
+        latex_generator.generate_chart_image("knn_chart")
         plt.savefig(LATEX_RESULTS_DIR + "/knn_chart" + "-" + datetime.now().strftime("%H%M%S"))
         plt.close()
 
