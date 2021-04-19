@@ -48,7 +48,7 @@ class Image(LatexItem):
 
 
     def get_path(self, filename: str) -> str:
-        return self.directory_name + "/" + filename
+        return "img/" + filename
 
 
     def get_latex_path(self, filename: str) -> str:
