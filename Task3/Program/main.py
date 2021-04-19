@@ -1,14 +1,14 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import List, Tuple
+from typing import Tuple
 
 import numpy as np
 
 from module.bayes import bayes_classification
 from module.decision_tree import decision_tree_classification
 from module.k_nearest_neighbors import knn_classification
-from module.reader import read_data_set_from_csv_file
+from module.reader import read_gestures_ds, read_heart_ds, read_weather_AUS
 from module.support_vector_machine import svm_classification
 
 """
@@ -17,46 +17,37 @@ Sample usage:
     python main.py -s
 """
 
-# VAR ------------------------------------------------------------------------ #
-
-DATA_SET_HEART_FILENAME = "data/heart.csv"
-DATA_SET_HEART_Y_COLUMN = "target"
-DATA_SET_WEATHER_FILENAME = "data/weatherAUS.csv"
-DATA_SET_WEATHER_Y_COLUMN = "RainTomorrow"
-DATA_SET_COVID_FILENAME = "data/covid-19-symptoms-checker.csv"
-DATA_SET_COVID_Y_COLUMN = ""
-
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
     save_latex: bool = args.save
-    data_sets: List[Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]] = [
-        read_data_set_from_csv_file(
-            DATA_SET_HEART_FILENAME, DATA_SET_HEART_Y_COLUMN
-        ),
-        read_data_set_from_csv_file(
-            DATA_SET_WEATHER_FILENAME, DATA_SET_WEATHER_Y_COLUMN
-        )
-    ]
-
-    display_classifier_name("k-nearest neighbors classifier")
-    knn_classification(data_sets, save_latex)
-
-    display_classifier_name("naive Bayes classifier")
-    bayes_classification(data_sets, save_latex)
-
-    display_classifier_name("support vector machine classifier")
-    decision_tree_classification(data_sets, save_latex)
-
-    display_classifier_name("decision trees and random forests classifier")
-    svm_classification(data_sets, save_latex)
-
+    display_header("Heart data set")
+    process_classifiers(read_heart_ds(), save_latex)
+    display_header("Gestures data set")
+    process_classifiers(read_gestures_ds(), save_latex)
+    display_header("Weather data set")
+    process_classifiers(read_weather_AUS(), save_latex)
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
-def display_classifier_name(name: str) -> None:
+def process_classifiers(data_sets: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
+                        save_latex: bool) -> None:
+    display_header("k-nearest neighbors classifier")
+    knn_classification(data_sets, save_latex)
+
+    display_header("naive Bayes classifier")
+    bayes_classification(data_sets, save_latex)
+
+    display_header("support vector machine classifier")
+    decision_tree_classification(data_sets, save_latex)
+
+    display_header("decision trees and random forests classifier")
+    svm_classification(data_sets, save_latex)
+
+
+def display_header(name: str) -> None:
     print("------------------------------------------------------------------------")
     print(name)
     print()

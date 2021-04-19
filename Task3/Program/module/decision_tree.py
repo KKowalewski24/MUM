@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import Tuple
 
 import numpy as np
 
@@ -8,7 +8,7 @@ latex_generator: LatexGenerator = LatexGenerator("decision_tree")
 
 
 def decision_tree_classification(
-        data_sets: List[Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]],
+        data_sets: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
         save_latex: bool) -> None:
     # TODO
     pass
