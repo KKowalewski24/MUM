@@ -1,14 +1,15 @@
 from typing import List, Tuple
 
+import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import metrics
 from sklearn.neighbors import KNeighborsClassifier
 
 from module.LatexGenerator import LatexGenerator
 
-latex_generator: LatexGenerator = LatexGenerator("knn")
-
+LATEX_RESULTS_DIR = "knn"
 K_RANGE = range(1, 3)
+latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
 
 def knn_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
@@ -23,7 +24,17 @@ def knn_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.nd
         accuracy_list.append([accuracy])
         print("K parameter value: " + str(k_value) + ",\t" + "accuracy: " + str(accuracy))
 
+    plt.plot(K_RANGE, accuracy_list)
+    plt.ylabel("Accuracy")
+    plt.xlabel("K parameter value")
+
     if save_latex:
+        chart_filename = "knn_chart"
         latex_generator.generate_horizontal_table(
             ["Accuracy"], list(K_RANGE), accuracy_list, "knn_table"
         )
+        latex_generator.generate_chart_image(chart_filename)
+        plt.savefig(LATEX_RESULTS_DIR + "/knn_chart")
+        plt.close()
+
+    plt.show()
