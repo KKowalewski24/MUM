@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 TEST_SET_SIZE = 0.3
+RANDOM_STATE_VALUE = 21
 
 
 # Returns X_train->data_set[0], X_test->data_set[1], y_train->data_set[2], y_test->data_set[3]
@@ -13,7 +14,7 @@ def read_heart_ds() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     df = pd.read_csv('data/heart.csv')
     X = df.drop('target', axis=1).to_numpy()
     y = df['target'].to_numpy()
-    return train_test_split(X, y, test_size=TEST_SET_SIZE)
+    return train_test_split(X, y, test_size=TEST_SET_SIZE, random_state=RANDOM_STATE_VALUE)
 
 
 # Returns X_train->data_set[0], X_test->data_set[1], y_train->data_set[2], y_test->data_set[3]
@@ -21,7 +22,7 @@ def read_gestures_ds() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     df = pd.read_csv('data/gestures.csv')
     X = df.iloc[:, 0:63].to_numpy()
     y = df.iloc[:, 64].to_numpy()
-    return train_test_split(X, y, test_size=TEST_SET_SIZE)
+    return train_test_split(X, y, test_size=TEST_SET_SIZE, random_state=RANDOM_STATE_VALUE)
 
 
 # Returns X_train->data_set[0], X_test->data_set[1], y_train->data_set[2], y_test->data_set[3]
@@ -44,4 +45,4 @@ def read_weather_AUS() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     # split train test
     X = df.drop('RainTomorrow', axis=1).to_numpy()
     y = df['RainTomorrow'].to_numpy()
-    return train_test_split(X, y, test_size=TEST_SET_SIZE)
+    return train_test_split(X, y, test_size=TEST_SET_SIZE, random_state=RANDOM_STATE_VALUE)
