@@ -23,19 +23,20 @@ def main() -> None:
     args = prepare_args()
     save_latex: bool = args.save
     display_header("Heart data set")
-    process_classifiers(read_heart_ds(), save_latex)
+    process_classifiers(read_heart_ds(), "heart", save_latex)
     display_header("Gestures data set")
-    process_classifiers(read_gestures_ds(), save_latex)
+    process_classifiers(read_gestures_ds(), "gestures", save_latex)
     display_header("Weather data set")
-    process_classifiers(read_weather_AUS(), save_latex)
+    process_classifiers(read_weather_AUS(), "weather", save_latex)
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
 def process_classifiers(data_sets: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-                        save_latex: bool) -> None:
+                        data_set_name: str, save_latex: bool) -> None:
     display_header("k-nearest neighbors classifier")
-    knn_classification(data_sets, save_latex)
+    knn_classification(data_sets, True, data_set_name, save_latex)
+    knn_classification(data_sets, False, data_set_name, save_latex)
 
     display_header("naive Bayes classifier")
     bayes_classification(data_sets, save_latex)
