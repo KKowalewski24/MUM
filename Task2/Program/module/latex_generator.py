@@ -8,7 +8,10 @@ RESULTS_DIR_NAME = "results"
 def generate_table(df: pd.DataFrame, filename: str) -> None:
     begin: str = "\\begin{table}[!htbp]\n"
     centering: str = "\centering\n"
-    begin_tabular: str = "\\begin{tabular}{|c|c|c|c|c|c|c|}\n"
+    if 'hypothesis' not in filename:
+        begin_tabular: str = "\\begin{tabular}{|c|c|c|c|c|c|c|}\n"
+    else:
+        begin_tabular: str = "\\begin{tabular}{|c|c|c|}\n"
     back_slashes: str = "\\\\"
     hline: str = "\hline\n"
     end_tabular: str = "\end{tabular}\n"
@@ -31,9 +34,12 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
     result += " & " + column_names + " " + back_slashes + " " + hline
 
     for i in range(len(df.values)):
-        result += df.index[i] + " & "
+        result += str(df.index[i]) + " & "
         for j in range(len(df.values[i])):
-            result += str(round(df.values[i][j], 4))
+            x = df.values[i][j]
+            if type(x) is int:
+                x = round(x, 4)
+            result += str(x)
             if j < len(df.values[i]) - 1:
                 result += " & "
         result += " " + back_slashes + " " + hline
