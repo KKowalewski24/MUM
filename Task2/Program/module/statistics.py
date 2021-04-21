@@ -2,6 +2,7 @@ from typing import Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from scipy.stats import ttest_1samp
 from pandas import DataFrame, Series
 from sklearn.linear_model import LinearRegression
 
@@ -27,12 +28,25 @@ def calculate_statistics(df: pd.DataFrame, save_tables: bool,
         'Q3': df.quantile(0.75)
     })
 
+    p_values = [ttest_1samp(df['age'], 54)[1], ttest_1samp(df['resting-blood-pressure'], 131)[1], ttest_1samp(df['maximum-heart-rate'], 148)[1]]
+    rejected = ['NIE' if p_value > 0.05 else 'TAK' for p_value in p_values]
+    hypothesis_p_values = pd.DataFrame({
+        'Hipoteza zerowa': ['średni wiek = 54', 'średnie ciśnienie = 131', 'średnie maks. tętno = 148'],
+        'p-value': p_values,
+        'Czy odrzucona': rejected
+    })
+
     print(basic_statistics)
+    print(hypothesis_p_values)
 
     if save_tables:
         generate_table(
             basic_statistics,
             create_table_filename(missing_values_level, description)
+        )
+        generate_table(
+            hypothesis_p_values,
+            create_table_filename(missing_values_level, description + '_hypothesis')
         )
 
     calculate_regression(df, 3, 0, save_tables, missing_values_level, description)
