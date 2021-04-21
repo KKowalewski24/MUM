@@ -44,7 +44,7 @@ def generate_table(df: pd.DataFrame, filename: str) -> None:
                 result += " & "
         result += " " + back_slashes + " " + hline
 
-    result += caption + get_label(filename) + end_tabular + end + float_barrier
+    result += end_tabular + caption + get_label(filename) + end + float_barrier
     save_to_file(result, RESULTS_DIR_NAME + "/table-" + filename)
 
 
