@@ -49,14 +49,8 @@
 
     \section{Wprowadzenie}
     \label{intro} {
-        Jednym z elementów przygotowania danych do późniejszej analizy jest rozwiązanie
-        problemu brakujących, a niezbędnych do analizy atrybutów. Jest to realizowane
-        poprzez imputację danych. W tym zadaniu badany był wpływ imputacji,
-        przeprowadzonej przy pomocy różnych metod, na statystyki dotyczące zbioru
-        danych. Jako testowy zbiór danych wykorzystaliśmy zbiór
-        \textit{heart-disease-uci} \cite{dataset}. Tabela \ref{opis-zbioru-danych}
-        zawiera opis zawartości tego zbioru.
-        
+        Jednym z elementów przygotowania danych do późniejszej analizy jest rozwiązanie problemu brakujących, a niezbędnych do analizy atrybutów. Jest to realizowane poprzez imputację danych. W tym zadaniu badany był wpływ imputacji, przeprowadzonej przy pomocy różnych metod, na statystyki dotyczące zbioru danych. Jako testowy zbiór danych wykorzystaliśmy zbiór \textit{heart-disease-uci} \cite{dataset}. Tabela \ref{opis-zbioru-danych} zawiera opis zawartości tego zbioru.
+
         \begin{sidewaystable}[!htbp]
             \centering
             \begin{tabular}{|c|c|}
@@ -81,19 +75,12 @@
             \label{opis-zbioru-danych}
         \end{sidewaystable}
         \FloatBarrier
-        Imputację stosujemy dla kilku wariantów zbioru, w których braki danych zostały
-        usunięte poprzez losowe usunięcie kolejno 5\%, 15\%, 30\% i 45\% danych. Dla
-        analizy wpływu imputacji zostały obliczone statystyki takie jak: średnia
-        arytmetyczna, odchylenie standardowe, moda, mediana oraz kwartyle. Ich wartości
-        zostały wyznaczone dla zbioru, zawierającego wszystkie dane, a także dla
-        zbiorów, których brakujące dane zostały uzyskane wypełnione danymi uzyskanymi
-        przy użyciu następujących metod imputacji: "mean imputation", interpolacji,
-        hot-deck, krzywej regresji.
-        
+        Imputację stosujemy dla kilku wariantów zbioru, w których braki danych zostały usunięte poprzez losowe usunięcie kolejno 5\%, 15\%, 30\% i 45\% danych. Dla analizy wpływu imputacji zostały obliczone statystyki takie jak: średnia arytmetyczna, odchylenie standardowe, moda, mediana oraz kwartyle. Ich wartości zostały wyznaczone dla zbioru, zawierającego wszystkie dane, a także dla zbiorów, których brakujące dane zostały uzyskane wypełnione danymi uzyskanymi przy użyciu następujących metod imputacji: "mean imputation", interpolacji, hot-deck, krzywej regresji.
+
         Po zapoznaniu się z charakterystyką zbioru danych postawiliśmy trzy hipotezy:
         \begin{itemize}
-            \item średnia wieku osoby chorej na serce jest równa 54 (lata)
-            \item średnie ciśnienie spoczynkowe osoby chorej wynosi 131
+            \item średnia wieku jest równa 54 (lata)
+            \item średnie ciśnienie spoczynkowe wynosi 131
             \item średnie maksymalne zanotowane tętno wynosi 148
         \end{itemize}
     }
@@ -129,6 +116,20 @@
                     \end{tabular}
                     \caption{}
                     \label{result_5_List-wise-deletion}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.3049897483018357 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.963360923024748 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.6763864253832468 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_5_List-wise-deletion_hypothesis}
                 \end{table}
                 \FloatBarrier
 
@@ -187,6 +188,20 @@
                 \end{table}
                 \FloatBarrier
 
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.5091881385489405 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.5459852144817314 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.1818341452440461 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_5_Mean-imputation_hypothesis}
+                \end{table}
+                \FloatBarrier
+
                 \begin{figure}[!htbp]
                     \centering
                     \includegraphics
@@ -237,6 +252,20 @@
                     \end{tabular}
                     \caption{}
                     \label{result_5_Interpolation}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.5097440632716277 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.4159683175083019 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.24892684142497803 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_5_Interpolation_hypothesis}
                 \end{table}
                 \FloatBarrier
 
@@ -293,6 +322,20 @@
                 \end{table}
                 \FloatBarrier
 
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.45558495623868944 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.3138606170123723 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.13858841230106697 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_5_Hot-deck_hypothesis}
+                \end{table}
+                \FloatBarrier
+
                 \begin{figure}[!htbp]
                     \centering
                     \includegraphics
@@ -343,6 +386,20 @@
                     \end{tabular}
                     \caption{}
                     \label{result_5_Regression}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.6477539597209234 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.557983960420138 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.10338158302027703 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_5_Regression_hypothesis}
                 \end{table}
                 \FloatBarrier
 
@@ -404,6 +461,20 @@
                 \end{table}
                 \FloatBarrier
 
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.5758923420914439 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.6636346017817145 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.4912159918732032 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_15_List-wise-deletion_hypothesis}
+                \end{table}
+                \FloatBarrier
+
                 \begin{figure}[!htbp]
                     \centering
                     \includegraphics
@@ -454,6 +525,20 @@
                     \end{tabular}
                     \caption{}
                     \label{result_15_Mean-imputation}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.5039531014987663 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.423985234921894 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.2910613156216903 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_15_Mean-imputation_hypothesis}
                 \end{table}
                 \FloatBarrier
 
@@ -510,6 +595,20 @@
                 \end{table}
                 \FloatBarrier
 
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.6388674100110576 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.4248907070872643 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.10479743162799593 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_15_Interpolation_hypothesis}
+                \end{table}
+                \FloatBarrier
+
                 \begin{figure}[!htbp]
                     \centering
                     \includegraphics
@@ -563,6 +662,20 @@
                 \end{table}
                 \FloatBarrier
 
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.41848322898046453 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.8835090375585607 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.5316486621188707 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_15_Hot-deck_hypothesis}
+                \end{table}
+                \FloatBarrier
+
                 \begin{figure}[!htbp]
                     \centering
                     \includegraphics
@@ -613,6 +726,20 @@
                     \end{tabular}
                     \caption{}
                     \label{result_15_Regression}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.24943061025871396 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.2361373265304045 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.029877083453191327 & TAK \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_15_Regression_hypothesis}
                 \end{table}
                 \FloatBarrier
 
@@ -675,6 +802,20 @@
                 \end{table}
                 \FloatBarrier
 
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.2120399129118706 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.18690819463998115 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.06452836439629993 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_30_List-wise-deletion_hypothesis}
+                \end{table}
+                \FloatBarrier
+
                 \begin{figure}[!htbp]
                     \centering
                     \includegraphics
@@ -724,6 +865,20 @@
                     \end{tabular}
                     \caption{}
                     \label{result_30_Mean-imputation}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.6888594909422449 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.7663752449553655 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 9.842761800790541e-05 & TAK \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_30_Mean-imputation_hypothesis}
                 \end{table}
                 \FloatBarrier
 
@@ -780,6 +935,20 @@
                 \end{table}
                 \FloatBarrier
 
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.9001935946062305 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.6257250650084393 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.010071841332217361 & TAK \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_30_Interpolation_hypothesis}
+                \end{table}
+                \FloatBarrier
+
                 \begin{figure}[!htbp]
                     \centering
                     \includegraphics
@@ -830,6 +999,20 @@
                     \end{tabular}
                     \caption{}
                     \label{result_30_Hot-deck}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.4495207632973153 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.15340157407709581 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 7.232837216044287e-05 & TAK \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_30_Hot-deck_hypothesis}
                 \end{table}
                 \FloatBarrier
 
@@ -884,6 +1067,20 @@
                     \end{tabular}
                     \caption{}
                     \label{result_30_Regression}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 6.3905563714956135e-12 & TAK \\ \hline
+                        średnie ciśnienie = 131 & 1.6491310403544226e-05 & TAK \\ \hline
+                        średnie maks. tętno = 148 & 0.5443339141728784 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_30_Regression_hypothesis}
                 \end{table}
                 \FloatBarrier
 
@@ -950,6 +1147,20 @@
                 \end{table}
                 \FloatBarrier
 
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.13302419077561642 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.4372034940870172 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.1596557978270009 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_45_Mean-imputation_hypothesis}
+                \end{table}
+                \FloatBarrier
+
                 \begin{figure}[!htbp]
                     \centering
                     \includegraphics
@@ -1001,6 +1212,20 @@
                     \end{tabular}
                     \caption{}
                     \label{result_45_Interpolation}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.08826399387483398 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.8440971297058658 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.058423992380111034 & NIE \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_45_Interpolation_hypothesis}
                 \end{table}
                 \FloatBarrier
 
@@ -1057,6 +1282,20 @@
                 \end{table}
                 \FloatBarrier
 
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Hipoteza zerowa & p-value & Czy odrzucona \\ \hline
+                        średni wiek = 54 & 0.06580113126505682 & NIE \\ \hline
+                        średnie ciśnienie = 131 & 0.18164008567963436 & NIE \\ \hline
+                        średnie maks. tętno = 148 & 0.0002006267271134095 & TAK \\ \hline
+                    \end{tabular}
+                    \caption{}
+                    \label{result_45_Hot-deck_hypothesis}
+                \end{table}
+                \FloatBarrier
+
                 \begin{figure}[!htbp]
                     \centering
                     \includegraphics
@@ -1095,121 +1334,67 @@
 
         \subsubsection{Mean imputation}
         \label{summary:mean-input} {
-            Metoda \textit{Mean inputation} polega na uzupełnianiu brakujących wartości średnią 
+            Metoda \textit{Mean inputation} polega na uzupełnianiu brakujących wartości średnią
             danej kolumny.
-        
+
             Porównując wyniki uzyskane z użyciem metody \textit{Mean inputation} a
             \textit{List wise deletion} dla braków na poziomie 5\% można zauważyć delikatny
             wzrost wartości a co za tym idzie wartości \textit{Q1}, \textit{Mediany} oraz \textit{Q3} uległy też zmianie.
-            Bardzo ciekawą obserwacją jest to, że wartość mody(dominanty) \textit{serum-cholestoral} jest
-            teraz równa średniej arytmetycznej. Krzywe regresji są do siebie mocno zbliżone,
-            ze względu na fakt, że zbiory są bardzo podobne do siebie.
-            
-            W przypadku braków na poziomie 15\% zauważa się coraz większy wzrost wartości 
-            w porównaniu do braków na poziomie 5\%. Jedyną kolumną odbiegającą od tej 
-            tendencji jest \textit{maximum-heart-rate} gdzie wartość wszystkich miar 
-            statystycznych zmalała. Krzywe regresji diametralnie się od siebie różnią, 
-            jest to spowodowane tym, że w \textit{List wise deletion} jest znacząco 
-            mniej rekordów, dla tych kolumn, które są wizualizowane na
-            wykresach - liczba punktów na wykresie.
-            
-            W przypadku braków na poziomie 30\% sytuacja coraz bardziej się pogłębia 
-            i wygenerowane dane w bardzo słaby sposób wypełniają istniejące braki. W tym 
+            Bardzo ciekawą obserwacją jest to, że wartość mody(dominanty)  \textit{serum-cholestoral} jest
+            teraz równa średniej arytmetycznej. Krzywe regresji są do siebie mocno zbliżone, ze względu na fakt, że zbiory są bardzo podobne do siebie.
+
+            W przypadku braków na poziomie 15\% zauważa się coraz większy wzrost wartości
+            w porównaniu do braków na poziomie 5\%. Jedyną kolumną odbiegającą od tej
+            tendencji jest \textit{maximum-heart-rate} gdzie wartość wszystkich miar
+            statystycznych zmalała. Krzywe regresji diametralnie się od siebie różnią,
+            jest to spowodowane tym, że w \textit{List wise deletion} jest znacząco
+            mniej rekordów, dla tych kolumn, które są wizualizowane na wykresach - liczba punktów na wykresie.
+
+            W przypadku braków na poziomie 30\% sytuacja coraz bardziej się pogłębia
+            i wygenerowane dane w bardzo słaby sposób wypełniają istniejące braki. W tym
             przypadku porównywanie krzywych regresji w ocenie autora nie jest sensowne ze
             względu na liczbę punktów na wykresach dla metody \textit{List wise deletion}.
-            
-            Dla przypadków braków na poziomie 15\% i 30\% można zauważyć, że dla wielu 
-            kolumn wartości średniej i mody są takie same. Można wnioskować, że
-            większość wartości w danej kolumnie jest identyczna.
-            
-            W przypadku braków na poziomie 45\% nie ma możliwości porównania do 
-            gdyż \textit{List wise deletion} danych było tak mało, że nie było możliwości 
+
+            Dla przypadków braków na poziomie 15\% i 30\% można zauważyć, że dla wielu
+            kolumn wartości średniej i mody są takie same. Można wnioskować, że większość wartości w danej kolumnie jest identyczna.
+
+            W przypadku braków na poziomie 45\% nie ma możliwości porównania do
+            gdyż \textit{List wise deletion} danych było tak mało, że nie było możliwości
             wyliczenia statystyk.
         }
 
         \subsubsection{Interpolation}
         \label{summary:interpolation} {
-            Metoda interpolacji polega na uzupełnieniu brakujących danych średnią,
-            wyliczaną z dwóch niepustych rekordów, które sąsiadują z usuniętą wartością.
+            Metoda interpolacji polega na uzupełnieniu brakujących danych średnią, wyliczaną z dwóch niepustych rekordów, które sąsiadują z usuniętą wartością.
 
-            Pomimo faktu dużej ilości braku, interpolacja bazuje na wartościach
-            obliczanych lokalnie, stąd brak istotnych odchyleń w otrzymanych wynikach.
-            Wraz ze zwiększaniem procent imputowanych danych, maleje odchylenie
-            standardowe, co jest efektem obliczania brakujących wartości za pomocą
-            interpolacji liniowej. Analizując krzywe regresji można zauważyć, iż jest
-            to metoda, która poradziła sobie poprawnie w uzupełnianiu danych.
+            Pomimo faktu dużej ilości braku, interpolacja bazuje na wartościach obliczanych lokalnie, stąd brak istotnych odchyleń w otrzymanych wynikach. Wraz ze zwiększaniem procent imputowanych danych, maleje odchylenie standardowe, co jest efektem obliczania brakujących wartości za pomocą interpolacji liniowej. Analizując krzywe regresji można zauważyć, iż jest to metoda, która poradziła sobie poprawnie w uzupełnianiu danych.
 
-            Porównując skrajne przykłady zbiorów wybrakowanych w 5\% i w 45\% można
-            zauważyć, że nawet w przypadku dużego stopnia wybrakowania metoda
-            interpolacji osiąga zbliżone wyniki.
+            Porównując skrajne przykłady zbiorów wybrakowanych w 5\% i w 45\% można zauważyć, że nawet w przypadku dużego stopnia wybrakowania metoda interpolacji osiąga zbliżone wyniki.
         }
 
         \subsubsection{Hot deck}
         \label{summary:dot-deck} {
-            Metoda hot deck polega na uzupełnieniu brakujących danych wartościami,
-            pochodzącymi z najbardziej podobnego rekordu. Oczywiście pojęcie "podobny"
-            jest zupełnie względne, w tym przypadku odnosi się ono do odległości euklidesowej.
+            Metoda hot deck polega na uzupełnieniu brakujących danych wartościami, pochodzącymi z najbardziej
+            podobnego rekordu. Oczywiście pojęcie "podobny" jest zupełnie względne, w tym przypadku odnosi się ono
+            do odległości euklidesowej.
 
-            W przypadku zbioru danych wybrakowanym na poziomie 5\% trudno dostrzec
-            jakieś specjalne różnice między statystykami wyliczonymi po imputacji
-            metodą hot deck, a przed jakąkolwiek imputacją. Kwartyle pozostały
-            zbliżone, średnia i odchylenie standardowe również nie uległy zauważalnym
-            zmianom. Chyba najbardziej widoczna różnica dotyczy wartości mody. Ta
-            bowiem nie powinna zmieniać się zbyt łatwo, jako że oznacza najczęściej
-            występującą wartość. Okazuje się jednak, że prawie w każdej kolumnie uległa
-            zmianie, w niektórych w dość radykalny sposób (jak np. dla
-            serum-cholestoral). Zjawisko to można w miarę łatwo wyjaśnić, kiedy spojrzy
-            się na różnicę w wykresach krzywej regresji. Zdecydowanie widać tutaj, że w
-            zbiorze po imputacji, spora część wartości się powtarza. Tak więc rekordy
-            uznane za najbardziej podobne stanowią jakąś niewielką grupę i są często
-            wykorzystywane jako "dawcy" brakującej wartości. Jako że brakująca wartość
-            często jest brana z tego samego rekordu zaczyna ona często występować i w
-            rezultacie zaczyna pełnić rolę mody. Fakt, że niektóre rekordy najczęściej
-            są dawcami, może być spowodowany tym, że dane nie zostały znormalizowane i
-            atrybuty o dużych wartościach mają zdecydowanie większy wpływ na podobieństwo.
+            W przypadku zbioru danych wybrakowanym na poziomie 5\% trudno dostrzec jakieś specjalne różnice między statystykami wyliczonymi po imputacji metodą hot deck, a przed jakąkolwiek imputacją. Kwartyle pozostały zbliżone, średnia i odchylenie standardowe również nie uległy zauważalnym zmianom. Chyba najbardziej widoczna różnica dotyczy wartości mody. Ta bowiem nie powinna zmieniać się zbyt łatwo, jako że oznacza najczęściej występującą wartość. Okazuje się jednak, że prawie w każdej kolumnie uległa zmianie, w niektórych w dość radykalny sposób (jak np. dla serum-cholestoral). Zjawisko to można w miarę łatwo wyjaśnić, kiedy spojrzy się na różnicę w wykresach krzywej regresji. Zdecydowanie widać tutaj, że w zbiorze po imputacji, spora część wartości się powtarza. Tak więc rekordy uznane za najbardziej podobne stanowią jakąś niewielką grupę i są często wykorzystywane jako "dawcy" brakującej wartości. Jako że brakująca wartość często jest brana z tego samego rekordu zaczyna ona często występować i w rezultacie zaczyna pełnić rolę mody. Fakt, że niektóre rekordy najczęściej są dawcami, może być spowodowany tym, że dane nie zostały znormalizowane i atrybuty o dużych wartościach mają zdecydowanie większy wpływ na podobieństwo.
 
-            Zjawisko to potwierdza się i nasila w przypadku bardziej wybrakowanych
-            zbiorów. Dodatkowo zaczyna zwiększać się różnica także w innych
-            statystykach. W zbiorze wybrakowanym na poziomie 15\% zaczyna być widoczny
-            sens imputowania danych. Statystyki dla zbioru przed imputacją różnią się
-            znacznie od tych przed imputacją dla zbioru wybrakowanego w 5\%. Jednakże
-            Po imputacji metodą hot deck, statystyki znowu są zbliżone do tych w
-            zbiorze mało wybrakowanym. Krzywe regresji od poziomu wybrakowania 15\%
-            stały się zupełnie bez wartości, dla danych bez imputacji. Na tym poziomie
-            po imputacji współczynniki są wciąż zbliżone do oryginalnych. Choć różnica
-            staje się coraz większa dla poziomu 30\%, krzywe po imputacji wciąż
-            zachowują ten sam kierunek a statystyki ten sam rząd. W przypadku
-            wybrakowania na najwyższym poziomie, na wykresach wyraźnie widać, że mamy
-            tutaj tylko kilku "dawców" i wartości, które przyjmują poszczególne
-            atrybuty są zdecydowanie skwantyzowane. Nie przeszkadza to jednak w
-            zachowaniu wciąż podobnych do zbioru niewybrakowanego wartości statystyk.
-            Ostatecznie należy więc powiedzieć, że metoda hot-deck jest dość skuteczna
-            nawet przy dużym poziomie wybrakowania zbioru, w przeciwieństwie bowiem do
-            metody mean-imputation, nie jest podatna na silne zmiany rozkładu wartości
-            atrybutów, w wybrakowanym zbiorze.
+            Zjawisko to potwierdza się i nasila w przypadku bardziej wybrakowanych zbiorów. Dodatkowo zaczyna zwiększać się różnica także w innych statystykach. W zbiorze wybrakowanym na poziomie 15\% zaczyna być widoczny sens imputowania danych. Statystyki dla zbioru przed imputacją różnią się znacznie od tych przed imputacją dla zbioru wybrakowanego w 5\%. Jednakże Po imputacji metodą hot deck, statystyki znowu są zbliżone do tych w zbiorze mało wybrakowanym. Krzywe regresji od poziomu wybrakowania 15\% stały się zupełnie bez wartości, dla danych bez imputacji. Na tym poziomie po imputacji współczynniki są wciąż zbliżone do oryginalnych. Choć różnica staje się coraz większa dla poziomu 30\%, krzywe po imputacji wciąż zachowują ten sam kierunek a statystyki ten sam rząd. W przypadku wybrakowania na najwyższym poziomie, na wykresach wyraźnie widać, że mamy tutaj tylko kilku "dawców" i wartości, które przyjmują poszczególne atrybuty są zdecydowanie skwantyzowane. Nie przeszkadza to jednak w zachowaniu wciąż podobnych do zbioru niewybrakowanego wartości statystyk. Ostatecznie należy więc powiedzieć, że metoda hot-deck jest dość skuteczna nawet przy dużym poziomie wybrakowania zbioru, w przeciwieństwie bowiem do metody mean-imputation, nie jest podatna na silne zmiany rozkładu wartości atrybutów, w wybrakowanym zbiorze.
 
         }
 
         \subsubsection{Regression}
         \label{summary:regression} {
-            Metoda wykorzystująca krzywą regresji, polega na stworzeniu modelu
-            regresji, wykorzystując do tego dostępne dane bez braków. Na podstawie tego
-            modelu ustalone zostają wartości brakujących atrybutów. W zależności od
-            rodzaju danych zostały wykorzystane różne rodzaje regresji. Do ustalenia
-            wartości atrybutów, których wartość należała do zbioru określonych
-            wartości, jak np. płeć, wykorzystywana była regresja logistyczna, w
-            realizacji pozostałych przypadków wystarczała regresja liniowa. Do
-            poprawnego działania metoda wymaga znacznej liczby parametrów, przez co
-            niemożliwe okazało się wykorzystanie tej metody dla zbiorów, których liczba
-            brakujących danych wynosiła 45\%
+            Metoda wykorzystująca krzywą regresji, polega na stworzeniu modelu regresji, wykorzystując do tego dostępne dane bez braków. Na podstawie tego modelu ustalone zostają wartości brakujących atrybutów. W zależności od rodzaju danych zostały wykorzystane różne rodzaje regresji. Do ustalenia wartości atrybutów, których wartość należała do zbioru określonych wartości, jak np. płeć, wykorzystywana była regresja logistyczna, w realizacji pozostałych przypadków wystarczała regresja liniowa. Do poprawnego działania metoda wymaga znacznej liczby parametrów, przez co niemożliwe okazało się wykorzystanie tej metody dla zbiorów, których liczba brakujących danych wynosiła 45\%
 
-            Wykorzystując zgromadzone statystyki można stwierdzić, że zastosowanie
-            krzywej regresji, jako metody imputacji, w największym stopniu wpłynie na
-            zmianę wartości mody (dominanty), im większy procent braku danych tym
-            różnica jest bardziej widoczna. Warto jednak zauważyć, że wartość mediany,
-            nie jest tak podatna na zmiany, przy wykorzystaniu tej metody.
+            Wykorzystując zgromadzone statystyki można stwierdzić, że zastosowanie krzywej regresji, jako metody imputacji, w największym stopniu wpłynie na zmianę wartości mody (dominanty), im większy procent braku danych tym różnica jest bardziej widoczna. Warto jednak zauważyć, że wartość mediany, nie jest tak podatna na zmiany, przy wykorzystaniu tej metody.
         }
 
+        \subsubsection{Weryfikacja hipotez}
+        \label{summary:hypothesis} {
+            Dla każdego przeprowadzanego eksperymentu podjęliśmy próbę weryfikacji postawionych hipotez. Za pomocą testu \textit{t Studenta} obliczyliśmy wartość prawdopodobieństwa testowego (\textit{p-value}). Jako graniczną wartość istotności statystycznej \textit{p-value} ustalono 5\%. Zauważyliśmy, że znaczna większość hipotez nie została odrzucona. Jednym z czynników wpływających na to zjawisko był dobór wartości do hipotez po wygenerowaniu wyników, co wpłynęło na wybór wartości zbliżonych do otrzymanych średnich. Można zauważyć, że wraz ze zwiększeniem procent usuniętych elementów, odrzucenie hipotez zerowych zdarza się coraz częściej i dotyczy najczęściej hipotezy związanej ze średnim maksymalnym tętnem. Wśród zaimplementowanych metod odrzucenie hipotez najczęściej występowało w przypadku zastosowaniu metody regresji. 
+        }
     }
 
     \section{Wnioski}
@@ -1220,15 +1405,9 @@
             w danych w dużych zbiorach, które nie posiadają dużej liczby wartości
             ekstremalnych. Ze względu na charakterystykę średniej wartości mogą bardzo
             zaburzyć imputacje.
-            \item Przy dużym procencie brakujących danych, należy rozważyć odrzucenie
-            próby analizy danych, zawartych w tym zbiorze, z powodu trudności,
-            jaką jest uzupełnienie danych. Przy dużym braku danych, każda z metod
-            imputacji w sposób znaczący wpłynie na statystyki zbioru, przy
-            założeniu, że uda się ją zastosować.
-            \item Metoda hot deck sprawdza się stosunkowo dobrze przy dużym poziomie
-            wybrakowania zbioru, implementacyjnie jest jednak znacznie bardzie
-            skomplikowana niż np mean-imputation
-
+            \item Przy dużym procencie brakujących danych, należy rozważyć odrzucenie próby analizy danych, zawartych w tym zbiorze, z powodu trudności, jaką jest uzupełnienie danych. Przy dużym braku danych, każda z metod imputacji w sposób znaczący wpłynie na statystyki zbioru, przy założeniu, że uda się ją zastosować.
+            \item Metoda hot deck sprawdza się stosunkowo dobrze przy dużym poziomie wybrakowania zbioru, implementacyjnie jest jednak znacznie bardzie skomplikowana niż np mean-imputation
+            \item Wraz ze zwiększeniem procent ubytku danych, rośnie częstotliwość odrzuconych przypadków hipotez zerowych
         \end{itemize}
     }
 
