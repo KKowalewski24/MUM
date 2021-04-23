@@ -1,9 +1,6 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
-TEST_SET_SIZE = 0.3
-RANDOM_STATE_VALUE = 21
-
 
 def read_heart_ds() -> pd.DataFrame:
     return pd.read_csv('data/heart.csv')
