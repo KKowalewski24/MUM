@@ -3,6 +3,7 @@ from sklearn import svm
 from sklearn import metrics
 import numpy as np
 import matplotlib.pyplot as plt
+from timeit import default_timer as timer
 
 from module.LatexGenerator import LatexGenerator
 
@@ -11,11 +12,13 @@ latex_generator: LatexGenerator = LatexGenerator("svm")
 
 KERNEL_FUNCTIONS = ("poly", "sigmoid", "rbf")
 C_RANGE = [round(x, 1) for x in np.arange(0.1, 2.1, 0.1)] 
+GAMMA_VALUES = [float("1e" + str(x)) for x in range(-10, 10)] 
 
 def svm_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
                        save_latex: bool) -> None:
     accuracy_list: List[List[float]] = []
-        
+
+    start = timer()
     for kernel_function in KERNEL_FUNCTIONS :
         print("Kernel function: " + kernel_function)
         for c in C_RANGE :
@@ -28,7 +31,10 @@ def svm_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.nd
             accuracy = round(metrics.accuracy_score(data_set[3], y_prediction), 4)
             accuracy_list.append([accuracy])
             print("C value: " + str(c) + "\t" + "accuracy: " + str(accuracy))
+        
     
+    end = timer()
+    print("Time of data collectiong (sec): ", end - start)
     plt.plot(C_RANGE, accuracy_list[0:20], "red")
     plt.plot(C_RANGE, accuracy_list[20:40], "blue")
     plt.plot(C_RANGE, accuracy_list[40:60], "green")
