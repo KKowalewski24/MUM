@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Tuple
 from sklearn import svm
 from sklearn import metrics
@@ -12,7 +13,7 @@ latex_generator: LatexGenerator = LatexGenerator("svm")
 
 KERNEL_FUNCTIONS = ("poly", "sigmoid", "rbf")
 C_RANGE = [round(x, 1) for x in np.arange(0.1, 2.1, 0.1)] 
-GAMMA_VALUES = [float("1e" + str(x)) for x in range(-10, 10)] 
+GAMMA_VALUES = [float("1e" + str(x)) for x in range(-20, 0)] 
 
 def svm_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
                     data_set_name: str, save_latex: bool) -> None:
