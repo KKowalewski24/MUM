@@ -24,10 +24,10 @@ def main() -> None:
     save_latex: bool = args.save
     display_header("Heart data set")
     process_classifiers(read_heart_ds(), "heart", save_latex)
-    display_header("Gestures data set")
-    process_classifiers(read_gestures_ds(), "gestures", save_latex)
-    display_header("Weather data set")
-    process_classifiers(read_weather_AUS(), "weather", save_latex)
+    # display_header("Gestures data set")
+    # process_classifiers(read_gestures_ds(), "gestures", save_latex)
+    # display_header("Weather data set")
+    # process_classifiers(read_weather_AUS(), "weather", save_latex)
     display_finish()
 
 
@@ -42,7 +42,7 @@ def process_classifiers(data_sets: Tuple[np.ndarray, np.ndarray, np.ndarray, np.
     # bayes_classification(data_sets, save_latex)
 
     display_header("support vector machine classifier")
-    svm_classification(data_sets, save_latex)
+    svm_classification(data_sets, data_set_name, save_latex)
 
     # display_header("decision trees and random forests classifier")
     # decision_tree_classification(data_sets, save_latex)

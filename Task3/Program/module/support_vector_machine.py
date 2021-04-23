@@ -12,10 +12,10 @@ latex_generator: LatexGenerator = LatexGenerator("svm")
 
 KERNEL_FUNCTIONS = ("poly", "sigmoid", "rbf")
 C_RANGE = [round(x, 1) for x in np.arange(0.1, 2.1, 0.1)] 
-GAMMA_VALUES = [float("1e" + str(x)) for x in range(-20, 4)] 
+GAMMA_VALUES = [float("1e" + str(x)) for x in range(-10, 10)] 
 
 def svm_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-                       save_latex: bool) -> None:
+                    data_set_name: str, save_latex: bool) -> None:
     accuracy_list_c: List[List[float]] = []
     accuracy_list_gamma: List[List[float]] = []
 
