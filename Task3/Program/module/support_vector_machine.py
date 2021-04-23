@@ -2,26 +2,40 @@ from typing import List, Tuple
 from sklearn import svm
 from sklearn import metrics
 import numpy as np
+import matplotlib.pyplot as plt
 
 from module.LatexGenerator import LatexGenerator
 
 LATEX_RESULTS_DIR = "svm"
 latex_generator: LatexGenerator = LatexGenerator("svm")
 
+KERNEL_FUNCTIONS = ("poly", "sigmoid", "rbf")
+C_RANGE = [round(x, 1) for x in np.arange(0.1, 2.1, 0.1)] 
 
 def svm_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
                        save_latex: bool) -> None:
     accuracy_list: List[List[float]] = []
-    svm_classifier = svm.SVC(
-        kernel="rbf"
-    )
-    svm_classifier.fit(data_set[0], data_set[2])
-    y_prediction = svm_classifier.predict(data_set[1])
-    accuracy = round(metrics.accuracy_score(data_set[3], y_prediction), 4)
-    accuracy_list.append([accuracy])
-    print("accuracy: " + str(accuracy))
+        
+    for kernel_function in KERNEL_FUNCTIONS :
+        print("Kernel function: " + kernel_function)
+        for c in C_RANGE :
+            svm_classifier = svm.SVC(
+                kernel=kernel_function,
+                C = c
+            )
+            svm_classifier.fit(data_set[0], data_set[2])
+            y_prediction = svm_classifier.predict(data_set[1])
+            accuracy = round(metrics.accuracy_score(data_set[3], y_prediction), 4)
+            accuracy_list.append([accuracy])
+            print("C value: " + str(c) + "\t" + "accuracy: " + str(accuracy))
+    
+    plt.plot(C_RANGE, accuracy_list[0:20], "red")
+    plt.plot(C_RANGE, accuracy_list[20:40], "blue")
+    plt.plot(C_RANGE, accuracy_list[40:60], "green")
 
-
+    plt.ylabel("Accuracy")
+    plt.xlabel("C value")
+    plt.show()
 
 
 
