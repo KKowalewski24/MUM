@@ -20,29 +20,41 @@ Sample usage:
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
+    test_data_percentage = np.arange(0.6, 0.95, 0.05)
+    default_test_data_size = 0.6
     args = prepare_args()
     save_latex: bool = args.save
-    display_header("Heart data set")
-    process_classifiers(read_heart_ds(), "heart", save_latex)
-    display_header("Gestures data set")
-    process_classifiers(read_gestures_ds(), "gestures", save_latex)
-    display_header("Weather data set")
-    process_classifiers(read_weather_AUS(), "weather", save_latex)
+    bayes_config: bool = args.bayes
+    if bayes_config:
+        for test_percentage in test_data_percentage:
+            display_header("Heart data set")
+            process_classifiers(read_heart_ds(test_percentage), "heart", save_latex, test_percentage)
+            display_header("Gestures data set")
+            process_classifiers(read_gestures_ds(test_percentage), "gestures", save_latex, test_percentage)
+            display_header("Weather data set")
+            process_classifiers(read_weather_AUS(test_percentage), "weather", save_latex, test_percentage)
+    else:
+        display_header("Heart data set")
+        process_classifiers(read_heart_ds(default_test_data_size), "heart", save_latex, default_test_data_size)
+        display_header("Gestures data set")
+        process_classifiers(read_gestures_ds(default_test_data_size), "gestures", save_latex, default_test_data_size)
+        display_header("Weather data set")
+        process_classifiers(read_weather_AUS(default_test_data_size), "weather", save_latex, default_test_data_size)
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
 def process_classifiers(data_sets: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-                        data_set_name: str, save_latex: bool) -> None:
-    display_header("k-nearest neighbors classifier")
-    knn_classification(data_sets, True, data_set_name, save_latex)
-    knn_classification(data_sets, False, data_set_name, save_latex)
+                        data_set_name: str, save_latex: bool, test_data_size: int) -> None:
+    # display_header("k-nearest neighbors classifier")
+    # knn_classification(data_sets, True, data_set_name, save_latex)
+    # knn_classification(data_sets, False, data_set_name, save_latex)
 
     display_header("naive Bayes classifier")
-    bayes_classification(data_sets, save_latex)
+    bayes_classification(data_sets, save_latex, test_data_size)
 
-    display_header("support vector machine classifier")
-    decision_tree_classification(data_sets, save_latex)
+    # display_header("support vector machine classifier")
+    # svm_classification(data_sets, data_set_name, save_latex)
 
     display_header("decision trees and random forests classifier")
     svm_classification(data_sets, save_latex)
@@ -60,6 +72,11 @@ def prepare_args() -> Namespace:
     arg_parser.add_argument(
         "-s", "--save", default=False, action="store_true",
         help="Create LaTeX source code based on generated data"
+    )
+
+    arg_parser.add_argument(
+        "-nb", "--bayes", default=False, action="store_true",
+        help="Run program with Bayes config"
     )
 
     return arg_parser.parse_args()
