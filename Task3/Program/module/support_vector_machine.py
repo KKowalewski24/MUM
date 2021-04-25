@@ -47,23 +47,30 @@ def svm_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.nd
     end = timer()
     sec_of_execution = end - start
     print("Time of data collectiong: %d sec == %d min == %d h" % (sec_of_execution, sec_of_execution/60, sec_of_execution/3600))
+    plt.subplot(211)
+    plt.subplots_adjust(left=0.1,
+                    bottom=0.2, 
+                    right=0.9, 
+                    top=0.9, 
+                    wspace=0.4, 
+                    hspace=0.5)
     plt.plot(C_RANGE, accuracy_list_c[0:20], "red", label=str(KERNEL_FUNCTIONS[0]))
     plt.plot(C_RANGE, accuracy_list_c[20:40], "blue", label=str(KERNEL_FUNCTIONS[1]))
     plt.plot(C_RANGE, accuracy_list_c[40:60], "green", label=str(KERNEL_FUNCTIONS[2]))
     plt.ylabel("Accuracy")
     plt.xlabel("C value")
-    plt.legend(loc="upper left")
-    plt.title("Accuracy depending on C value for diffrent kernel functions")
-
+    plt.legend(loc="best")
+    plt.subplot(212)
     plt.plot(GAMMA_VALUES, accuracy_list_gamma[0:20], "red", label=str(KERNEL_FUNCTIONS[0]))
     plt.plot(GAMMA_VALUES, accuracy_list_gamma[20:40], "blue", label=str(KERNEL_FUNCTIONS[1]))
     plt.plot(GAMMA_VALUES, accuracy_list_gamma[40:60], "green", label=str(KERNEL_FUNCTIONS[2]))
     plt.ylabel("Accuracy")
     plt.xlabel("Gamma values")
-    plt.legend(loc="upper left")
-    plt.title("Accuracy depending on Gamma value for diffrent kernel functions")
+    plt.legend(loc="best")
+    plt.xscale('log')
 
-    if save_latex:
+
+    if save_latex :
         index = 0
         for kernel_function in KERNEL_FUNCTIONS :
             print("index: ", index)
