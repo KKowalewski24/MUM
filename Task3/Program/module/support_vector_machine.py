@@ -73,7 +73,6 @@ def svm_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.nd
     if save_latex :
         index = 0
         for kernel_function in KERNEL_FUNCTIONS :
-            print("index: ", index)
             filename_description = "_" + data_set_name + "_" + str(kernel_function)
             latex_generator.generate_horizontal_table(
                 ["Accuracy"], list(C_RANGE), accuracy_list_c[index:index + 20],
