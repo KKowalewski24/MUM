@@ -20,19 +20,20 @@ Sample usage:
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
-    test_data_percentage = np.arange(0.6, 0.95, 0.05)
-    default_test_data_size = 0.6
+    test_data_percentage = np.arange(0.3, 0.95, 0.05)
+    default_test_data_size = 0.3
     args = prepare_args()
     save_latex: bool = args.save
     bayes_config: bool = args.bayes
     if bayes_config:
         for test_percentage in test_data_percentage:
+            display_header("naive Bayes classifier")
             display_header("Heart data set")
-            process_classifiers(read_heart_ds(test_percentage), "heart", save_latex, test_percentage)
+            bayes_classification(read_heart_ds(test_percentage), save_latex, test_percentage)
             display_header("Gestures data set")
-            process_classifiers(read_gestures_ds(test_percentage), "gestures", save_latex, test_percentage)
+            bayes_classification(read_gestures_ds(test_percentage), save_latex, test_percentage)
             display_header("Weather data set")
-            process_classifiers(read_weather_AUS(test_percentage), "weather", save_latex, test_percentage)
+            bayes_classification(read_weather_AUS(test_percentage), save_latex, test_percentage)
     else:
         display_header("Heart data set")
         process_classifiers(read_heart_ds(default_test_data_size), "heart", save_latex, default_test_data_size)
