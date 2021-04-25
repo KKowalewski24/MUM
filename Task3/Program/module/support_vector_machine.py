@@ -45,33 +45,39 @@ def svm_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.nd
             print("Gamma value: " + str(gamma) + "\t" + "accuracy: " + str(accuracy))
     
     end = timer()
-    print("Time of data collectiong (sec): ", end - start)
+    sec_of_execution = end - start
+    print("Time of data collectiong: %d sec == %d min == %d h" % (sec_of_execution, sec_of_execution/60, sec_of_execution/3600))
     plt.plot(C_RANGE, accuracy_list_c[0:20], "red", label=str(KERNEL_FUNCTIONS[0]))
     plt.plot(C_RANGE, accuracy_list_c[20:40], "blue", label=str(KERNEL_FUNCTIONS[1]))
     plt.plot(C_RANGE, accuracy_list_c[40:60], "green", label=str(KERNEL_FUNCTIONS[2]))
     plt.ylabel("Accuracy")
     plt.xlabel("C value")
+    plt.legend(loc="upper left")
+    plt.title("Accuracy depending on C value for diffrent kernel functions")
 
     plt.plot(GAMMA_VALUES, accuracy_list_gamma[0:20], "red", label=str(KERNEL_FUNCTIONS[0]))
     plt.plot(GAMMA_VALUES, accuracy_list_gamma[20:40], "blue", label=str(KERNEL_FUNCTIONS[1]))
     plt.plot(GAMMA_VALUES, accuracy_list_gamma[40:60], "green", label=str(KERNEL_FUNCTIONS[2]))
     plt.ylabel("Accuracy")
     plt.xlabel("Gamma values")
-
-    plt.show()
+    plt.legend(loc="upper left")
+    plt.title("Accuracy depending on Gamma value for diffrent kernel functions")
 
     if save_latex:
+        index = 0
         for kernel_function in KERNEL_FUNCTIONS :
+            print("index: ", index)
             filename_description = "_" + data_set_name + "_" + str(kernel_function)
             latex_generator.generate_horizontal_table(
-                ["Accuracy"], list(C_RANGE), accuracy_list_c,
-                "svn_table_c" + filename_description
+                ["Accuracy"], list(C_RANGE), accuracy_list_c[index:index + 20],
+                "svm_table_c" + filename_description
             )
             latex_generator.generate_horizontal_table(
-                ["Accuracy"], list(GAMMA_VALUES), accuracy_list_gamma,
+                ["Accuracy"], list(GAMMA_VALUES), accuracy_list_gamma[index:index + 20],
                 "svn_table_gamma" + filename_description
             )
+            index += 20
         image_filename = filename_description + "-" + datetime.now().strftime("%H%M%S")
-        latex_generator.generate_chart_image("svn_chart" + image_filename)
-        plt.savefig(LATEX_RESULTS_DIR + "/svn_chart" + image_filename)
+        latex_generator.generate_chart_image("svm_chart" + image_filename)
+        plt.savefig(LATEX_RESULTS_DIR + "/svm_chart" + image_filename)
         plt.close()
