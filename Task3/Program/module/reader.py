@@ -9,7 +9,8 @@ RANDOM_STATE_VALUE = 21
 
 
 # Returns X_train->data_set[0], X_test->data_set[1], y_train->data_set[2], y_test->data_set[3]
-def read_heart_ds(test_data_percentage: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def read_heart_ds(
+        test_data_percentage: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     df = pd.read_csv('data/heart.csv')
     X = df.drop('target', axis=1).to_numpy()
     y = df['target'].to_numpy()
@@ -17,7 +18,8 @@ def read_heart_ds(test_data_percentage: float) -> Tuple[np.ndarray, np.ndarray, 
 
 
 # Returns X_train->data_set[0], X_test->data_set[1], y_train->data_set[2], y_test->data_set[3]
-def read_gestures_ds(test_data_percentage: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def read_gestures_ds(
+        test_data_percentage: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     df = pd.read_csv('data/gestures.csv')
     X = df.iloc[:, 0:63].to_numpy()
     y = df.iloc[:, 64].to_numpy()
@@ -25,7 +27,8 @@ def read_gestures_ds(test_data_percentage: float) -> Tuple[np.ndarray, np.ndarra
 
 
 # Returns X_train->data_set[0], X_test->data_set[1], y_train->data_set[2], y_test->data_set[3]
-def read_weather_AUS(test_data_percentage: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def read_weather_AUS(
+        test_data_percentage: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     df = pd.read_csv('data/weatherAUS.csv').dropna()
 
     # encode date as day-of-year

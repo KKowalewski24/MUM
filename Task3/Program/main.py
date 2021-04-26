@@ -36,11 +36,14 @@ def main() -> None:
             bayes_classification(read_weather_AUS(test_percentage), save_latex, test_percentage)
     else:
         display_header("Heart data set")
-        process_classifiers(read_heart_ds(default_test_data_size), "heart", save_latex, default_test_data_size)
+        process_classifiers(read_heart_ds(default_test_data_size), "heart", save_latex,
+                            default_test_data_size)
         display_header("Gestures data set")
-        process_classifiers(read_gestures_ds(default_test_data_size), "gestures", save_latex, default_test_data_size)
+        process_classifiers(read_gestures_ds(default_test_data_size), "gestures", save_latex,
+                            default_test_data_size)
         display_header("Weather data set")
-        process_classifiers(read_weather_AUS(default_test_data_size), "weather", save_latex, default_test_data_size)
+        process_classifiers(read_weather_AUS(default_test_data_size), "weather", save_latex,
+                            default_test_data_size)
     display_finish()
 
 

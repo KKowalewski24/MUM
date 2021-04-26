@@ -1,18 +1,17 @@
 from typing import Tuple
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 
 from module.LatexGenerator import LatexGenerator
-
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
 
 latex_generator: LatexGenerator = LatexGenerator("decision_tree")
 
 
 def _plot_accuracy(subplot_idx, train_acc_history, test_acc_history,
-                   param_name, param_range):
+                   param_name, param_range) -> None:
     plt.subplots_adjust(hspace=0.5)
     plt.subplot(subplot_idx)
     plt.ylabel("accuracy")
@@ -29,10 +28,8 @@ def _plot_accuracy(subplot_idx, train_acc_history, test_acc_history,
     plt.legend()
 
 
-def decision_tree_classification(data_set: Tuple[np.ndarray, np.ndarray,
-                                                 np.ndarray, np.ndarray],
+def decision_tree_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
                                  save_latex: bool) -> None:
-
     X_train, X_test, y_train, y_test = data_set
 
     min_samples_leaf_range = [

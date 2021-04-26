@@ -1,9 +1,7 @@
 from typing import List, Tuple
-from sklearn import naive_bayes
-from sklearn import metrics
-import matplotlib.pyplot as plt
 
 import numpy as np
+from sklearn import metrics, naive_bayes
 
 from module.LatexGenerator import LatexGenerator
 
@@ -20,5 +18,5 @@ def bayes_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.
     y_prediction = bayes_classifier.predict(data_set[1])
     accuracy = round(metrics.accuracy_score(data_set[3], y_prediction), 4)
     accuracy_list.append([accuracy])
-    print("Test data percentage: " + str(round(test_percentage * 100, 2)) + "% ,\t" + "accuracy: " + str(accuracy))
-
+    print("Test data percentage: " + str(
+        round(test_percentage * 100, 2)) + "% ,\t" + "accuracy: " + str(accuracy))
