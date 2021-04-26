@@ -58,7 +58,7 @@ def process_classifiers(data_sets: Tuple[np.ndarray, np.ndarray, np.ndarray, np.
     svm_classification(data_sets, data_set_name, save_latex)
 
     display_header("decision trees and random forests classifier")
-    svm_classification(data_sets, save_latex)
+    decision_tree_classification(data_sets, save_latex)
 
 
 def display_header(name: str) -> None:
