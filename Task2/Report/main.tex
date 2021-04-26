@@ -49,7 +49,13 @@
 
     \section{Wprowadzenie}
     \label{intro} {
-        Jednym z elementów przygotowania danych do późniejszej analizy jest rozwiązanie problemu brakujących, a niezbędnych do analizy atrybutów. Jest to realizowane poprzez imputację danych. W tym zadaniu badany był wpływ imputacji, przeprowadzonej przy pomocy różnych metod, na statystyki dotyczące zbioru danych. Jako testowy zbiór danych wykorzystaliśmy zbiór \textit{heart-disease-uci} \cite{dataset}. Tabela \ref{opis-zbioru-danych} zawiera opis zawartości tego zbioru.
+        Jednym z elementów przygotowania danych do późniejszej analizy jest rozwiązanie
+        problemu brakujących, a niezbędnych do analizy atrybutów. Jest to realizowane
+        poprzez imputację danych. W tym zadaniu badany był wpływ imputacji,
+        przeprowadzonej przy pomocy różnych metod, na statystyki dotyczące zbioru
+        danych. Jako testowy zbiór danych wykorzystaliśmy zbiór
+        \textit{heart-disease-uci} \cite{dataset}. Tabela \ref{opis-zbioru-danych}
+        zawiera opis zawartości tego zbioru.
 
         \begin{sidewaystable}[!htbp]
             \centering
@@ -75,7 +81,14 @@
             \label{opis-zbioru-danych}
         \end{sidewaystable}
         \FloatBarrier
-        Imputację stosujemy dla kilku wariantów zbioru, w których braki danych zostały usunięte poprzez losowe usunięcie kolejno 5\%, 15\%, 30\% i 45\% danych. Dla analizy wpływu imputacji zostały obliczone statystyki takie jak: średnia arytmetyczna, odchylenie standardowe, moda, mediana oraz kwartyle. Ich wartości zostały wyznaczone dla zbioru, zawierającego wszystkie dane, a także dla zbiorów, których brakujące dane zostały uzyskane wypełnione danymi uzyskanymi przy użyciu następujących metod imputacji: "mean imputation", interpolacji, hot-deck, krzywej regresji.
+        Imputację stosujemy dla kilku wariantów zbioru, w których braki danych zostały
+        usunięte poprzez losowe usunięcie kolejno 5\%, 15\%, 30\% i 45\% danych. Dla
+        analizy wpływu imputacji zostały obliczone statystyki takie jak: średnia
+        arytmetyczna, odchylenie standardowe, moda, mediana oraz kwartyle. Ich wartości
+        zostały wyznaczone dla zbioru, zawierającego wszystkie dane, a także dla
+        zbiorów, których brakujące dane zostały uzyskane wypełnione danymi uzyskanymi
+        przy użyciu następujących metod imputacji: "mean imputation", interpolacji,
+        hot-deck, krzywej regresji.
 
         Po zapoznaniu się z charakterystyką zbioru danych postawiliśmy trzy hipotezy:
         \begin{itemize}
@@ -1365,11 +1378,19 @@
 
         \subsubsection{Interpolation}
         \label{summary:interpolation} {
-            Metoda interpolacji polega na uzupełnieniu brakujących danych średnią, wyliczaną z dwóch niepustych rekordów, które sąsiadują z usuniętą wartością.
+            Metoda interpolacji polega na uzupełnieniu brakujących danych średnią,
+            wyliczaną z dwóch niepustych rekordów, które sąsiadują z usuniętą wartością.
 
-            Pomimo faktu dużej ilości braku, interpolacja bazuje na wartościach obliczanych lokalnie, stąd brak istotnych odchyleń w otrzymanych wynikach. Wraz ze zwiększaniem procent imputowanych danych, maleje odchylenie standardowe, co jest efektem obliczania brakujących wartości za pomocą interpolacji liniowej. Analizując krzywe regresji można zauważyć, iż jest to metoda, która poradziła sobie poprawnie w uzupełnianiu danych.
+            Pomimo faktu dużej ilości braku, interpolacja bazuje na wartościach
+            obliczanych lokalnie, stąd brak istotnych odchyleń w otrzymanych wynikach.
+            Wraz ze zwiększaniem procent imputowanych danych, maleje odchylenie
+            standardowe, co jest efektem obliczania brakujących wartości za pomocą
+            interpolacji liniowej. Analizując krzywe regresji można zauważyć, iż jest
+            to metoda, która poradziła sobie poprawnie w uzupełnianiu danych.
 
-            Porównując skrajne przykłady zbiorów wybrakowanych w 5\% i w 45\% można zauważyć, że nawet w przypadku dużego stopnia wybrakowania metoda interpolacji osiąga zbliżone wyniki.
+            Porównując skrajne przykłady zbiorów wybrakowanych w 5\% i w 45\% można
+            zauważyć, że nawet w przypadku dużego stopnia wybrakowania metoda
+            interpolacji osiąga zbliżone wyniki.
         }
 
         \subsubsection{Hot deck}
@@ -1378,22 +1399,80 @@
             podobnego rekordu. Oczywiście pojęcie "podobny" jest zupełnie względne, w tym przypadku odnosi się ono
             do odległości euklidesowej.
 
-            W przypadku zbioru danych wybrakowanym na poziomie 5\% trudno dostrzec jakieś specjalne różnice między statystykami wyliczonymi po imputacji metodą hot deck, a przed jakąkolwiek imputacją. Kwartyle pozostały zbliżone, średnia i odchylenie standardowe również nie uległy zauważalnym zmianom. Chyba najbardziej widoczna różnica dotyczy wartości mody. Ta bowiem nie powinna zmieniać się zbyt łatwo, jako że oznacza najczęściej występującą wartość. Okazuje się jednak, że prawie w każdej kolumnie uległa zmianie, w niektórych w dość radykalny sposób (jak np. dla serum-cholestoral). Zjawisko to można w miarę łatwo wyjaśnić, kiedy spojrzy się na różnicę w wykresach krzywej regresji. Zdecydowanie widać tutaj, że w zbiorze po imputacji, spora część wartości się powtarza. Tak więc rekordy uznane za najbardziej podobne stanowią jakąś niewielką grupę i są często wykorzystywane jako "dawcy" brakującej wartości. Jako że brakująca wartość często jest brana z tego samego rekordu zaczyna ona często występować i w rezultacie zaczyna pełnić rolę mody. Fakt, że niektóre rekordy najczęściej są dawcami, może być spowodowany tym, że dane nie zostały znormalizowane i atrybuty o dużych wartościach mają zdecydowanie większy wpływ na podobieństwo.
+            W przypadku zbioru danych wybrakowanym na poziomie 5\% trudno dostrzec
+            jakieś specjalne różnice między statystykami wyliczonymi po imputacji
+            metodą hot deck, a przed jakąkolwiek imputacją. Kwartyle pozostały
+            zbliżone, średnia i odchylenie standardowe również nie uległy zauważalnym
+            zmianom. Chyba najbardziej widoczna różnica dotyczy wartości mody. Ta
+            bowiem nie powinna zmieniać się zbyt łatwo, jako że oznacza najczęściej
+            występującą wartość. Okazuje się jednak, że prawie w każdej kolumnie uległa
+            zmianie, w niektórych w dość radykalny sposób (jak np. dla
+            serum-cholestoral). Zjawisko to można w miarę łatwo wyjaśnić, kiedy spojrzy
+            się na różnicę w wykresach krzywej regresji. Zdecydowanie widać tutaj, że w
+            zbiorze po imputacji, spora część wartości się powtarza. Tak więc rekordy
+            uznane za najbardziej podobne stanowią jakąś niewielką grupę i są często
+            wykorzystywane jako "dawcy" brakującej wartości. Jako że brakująca wartość
+            często jest brana z tego samego rekordu zaczyna ona często występować i w
+            rezultacie zaczyna pełnić rolę mody. Fakt, że niektóre rekordy najczęściej
+            są dawcami, może być spowodowany tym, że dane nie zostały znormalizowane i
+            atrybuty o dużych wartościach mają zdecydowanie większy wpływ na podobieństwo.
 
-            Zjawisko to potwierdza się i nasila w przypadku bardziej wybrakowanych zbiorów. Dodatkowo zaczyna zwiększać się różnica także w innych statystykach. W zbiorze wybrakowanym na poziomie 15\% zaczyna być widoczny sens imputowania danych. Statystyki dla zbioru przed imputacją różnią się znacznie od tych przed imputacją dla zbioru wybrakowanego w 5\%. Jednakże Po imputacji metodą hot deck, statystyki znowu są zbliżone do tych w zbiorze mało wybrakowanym. Krzywe regresji od poziomu wybrakowania 15\% stały się zupełnie bez wartości, dla danych bez imputacji. Na tym poziomie po imputacji współczynniki są wciąż zbliżone do oryginalnych. Choć różnica staje się coraz większa dla poziomu 30\%, krzywe po imputacji wciąż zachowują ten sam kierunek a statystyki ten sam rząd. W przypadku wybrakowania na najwyższym poziomie, na wykresach wyraźnie widać, że mamy tutaj tylko kilku "dawców" i wartości, które przyjmują poszczególne atrybuty są zdecydowanie skwantyzowane. Nie przeszkadza to jednak w zachowaniu wciąż podobnych do zbioru niewybrakowanego wartości statystyk. Ostatecznie należy więc powiedzieć, że metoda hot-deck jest dość skuteczna nawet przy dużym poziomie wybrakowania zbioru, w przeciwieństwie bowiem do metody mean-imputation, nie jest podatna na silne zmiany rozkładu wartości atrybutów, w wybrakowanym zbiorze.
+            Zjawisko to potwierdza się i nasila w przypadku bardziej wybrakowanych
+            zbiorów. Dodatkowo zaczyna zwiększać się różnica także w innych
+            statystykach. W zbiorze wybrakowanym na poziomie 15\% zaczyna być widoczny
+            sens imputowania danych. Statystyki dla zbioru przed imputacją różnią się
+            znacznie od tych przed imputacją dla zbioru wybrakowanego w 5\%. Jednakże
+            Po imputacji metodą hot deck, statystyki znowu są zbliżone do tych w
+            zbiorze mało wybrakowanym. Krzywe regresji od poziomu wybrakowania 15\%
+            stały się zupełnie bez wartości, dla danych bez imputacji. Na tym poziomie
+            po imputacji współczynniki są wciąż zbliżone do oryginalnych. Choć różnica
+            staje się coraz większa dla poziomu 30\%, krzywe po imputacji wciąż
+            zachowują ten sam kierunek a statystyki ten sam rząd. W przypadku
+            wybrakowania na najwyższym poziomie, na wykresach wyraźnie widać, że mamy
+            tutaj tylko kilku "dawców" i wartości, które przyjmują poszczególne
+            atrybuty są zdecydowanie skwantyzowane. Nie przeszkadza to jednak w
+            zachowaniu wciąż podobnych do zbioru niewybrakowanego wartości statystyk.
+            Ostatecznie należy więc powiedzieć, że metoda hot-deck jest dość skuteczna
+            nawet przy dużym poziomie wybrakowania zbioru, w przeciwieństwie bowiem do
+            metody mean-imputation, nie jest podatna na silne zmiany rozkładu wartości
+            atrybutów, w wybrakowanym zbiorze.
 
         }
 
         \subsubsection{Regression}
         \label{summary:regression} {
-            Metoda wykorzystująca krzywą regresji, polega na stworzeniu modelu regresji, wykorzystując do tego dostępne dane bez braków. Na podstawie tego modelu ustalone zostają wartości brakujących atrybutów. W zależności od rodzaju danych zostały wykorzystane różne rodzaje regresji. Do ustalenia wartości atrybutów, których wartość należała do zbioru określonych wartości, jak np. płeć, wykorzystywana była regresja logistyczna, w realizacji pozostałych przypadków wystarczała regresja liniowa. Do poprawnego działania metoda wymaga znacznej liczby parametrów, przez co niemożliwe okazało się wykorzystanie tej metody dla zbiorów, których liczba brakujących danych wynosiła 45\%
+            Metoda wykorzystująca krzywą regresji, polega na stworzeniu modelu
+            regresji, wykorzystując do tego dostępne dane bez braków. Na podstawie tego
+            modelu ustalone zostają wartości brakujących atrybutów. W zależności od
+            rodzaju danych zostały wykorzystane różne rodzaje regresji. Do ustalenia
+            wartości atrybutów, których wartość należała do zbioru określonych
+            wartości, jak np. płeć, wykorzystywana była regresja logistyczna, w
+            realizacji pozostałych przypadków wystarczała regresja liniowa. Do
+            poprawnego działania metoda wymaga znacznej liczby parametrów, przez co
+            niemożliwe okazało się wykorzystanie tej metody dla zbiorów, których liczba
+            brakujących danych wynosiła 45\%
 
-            Wykorzystując zgromadzone statystyki można stwierdzić, że zastosowanie krzywej regresji, jako metody imputacji, w największym stopniu wpłynie na zmianę wartości mody (dominanty), im większy procent braku danych tym różnica jest bardziej widoczna. Warto jednak zauważyć, że wartość mediany, nie jest tak podatna na zmiany, przy wykorzystaniu tej metody.
+            Wykorzystując zgromadzone statystyki można stwierdzić, że zastosowanie
+            krzywej regresji, jako metody imputacji, w największym stopniu wpłynie na
+            zmianę wartości mody (dominanty), im większy procent braku danych tym
+            różnica jest bardziej widoczna. Warto jednak zauważyć, że wartość mediany,
+            nie jest tak podatna na zmiany, przy wykorzystaniu tej metody.
         }
 
         \subsubsection{Weryfikacja hipotez}
         \label{summary:hypothesis} {
-            Dla każdego przeprowadzanego eksperymentu podjęliśmy próbę weryfikacji postawionych hipotez. Za pomocą testu \textit{t Studenta} obliczyliśmy wartość prawdopodobieństwa testowego (\textit{p-value}). Jako graniczną wartość istotności statystycznej \textit{p-value} ustalono 5\%. Zauważyliśmy, że znaczna większość hipotez nie została odrzucona. Jednym z czynników wpływających na to zjawisko był dobór wartości do hipotez po wygenerowaniu wyników, co wpłynęło na wybór wartości zbliżonych do otrzymanych średnich. Można zauważyć, że wraz ze zwiększeniem procent usuniętych elementów, odrzucenie hipotez zerowych zdarza się coraz częściej i dotyczy najczęściej hipotezy związanej ze średnim maksymalnym tętnem. Wśród zaimplementowanych metod odrzucenie hipotez najczęściej występowało w przypadku zastosowaniu metody regresji. 
+            Dla każdego przeprowadzanego eksperymentu podjęliśmy próbę weryfikacji
+            postawionych hipotez. Za pomocą testu \textit{t Studenta} obliczyliśmy
+            wartość prawdopodobieństwa testowego (\textit{p-value}). Jako graniczną
+            wartość istotności statystycznej \textit{p-value} ustalono 5\%.
+            Zauważyliśmy, że znaczna większość hipotez nie została odrzucona. Jednym z
+            czynników wpływających na to zjawisko był dobór wartości do hipotez po
+            wygenerowaniu wyników, co wpłynęło na wybór wartości zbliżonych do
+            otrzymanych średnich. Można zauważyć, że wraz ze zwiększeniem procent
+            usuniętych elementów, odrzucenie hipotez zerowych zdarza się coraz częściej
+            i dotyczy najczęściej hipotezy związanej ze średnim maksymalnym tętnem.
+            Wśród zaimplementowanych metod odrzucenie hipotez najczęściej występowało w
+            przypadku zastosowaniu metody regresji.
         }
     }
 
@@ -1405,9 +1484,16 @@
             w danych w dużych zbiorach, które nie posiadają dużej liczby wartości
             ekstremalnych. Ze względu na charakterystykę średniej wartości mogą bardzo
             zaburzyć imputacje.
-            \item Przy dużym procencie brakujących danych, należy rozważyć odrzucenie próby analizy danych, zawartych w tym zbiorze, z powodu trudności, jaką jest uzupełnienie danych. Przy dużym braku danych, każda z metod imputacji w sposób znaczący wpłynie na statystyki zbioru, przy założeniu, że uda się ją zastosować.
-            \item Metoda hot deck sprawdza się stosunkowo dobrze przy dużym poziomie wybrakowania zbioru, implementacyjnie jest jednak znacznie bardzie skomplikowana niż np mean-imputation
-            \item Wraz ze zwiększeniem procent ubytku danych, rośnie częstotliwość odrzuconych przypadków hipotez zerowych
+            \item Przy dużym procencie brakujących danych, należy rozważyć odrzucenie
+            próby analizy danych, zawartych w tym zbiorze, z powodu trudności,
+            jaką jest uzupełnienie danych. Przy dużym braku danych, każda z metod
+            imputacji w sposób znaczący wpłynie na statystyki zbioru, przy
+            założeniu, że uda się ją zastosować.
+            \item Metoda hot deck sprawdza się stosunkowo dobrze przy dużym poziomie
+            wybrakowania zbioru, implementacyjnie jest jednak znacznie
+            bardzie skomplikowana niż np mean-imputation
+            \item Wraz ze zwiększeniem procent ubytku danych, rośnie częstotliwość
+            odrzuconych przypadków hipotez zerowych
         \end{itemize}
     }
 
