@@ -47,18 +47,18 @@ def main() -> None:
 # DEF ------------------------------------------------------------------------ #
 def process_classifiers(data_sets: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
                         data_set_name: str, save_latex: bool, test_data_size: int) -> None:
-    # display_header("k-nearest neighbors classifier")
-    # knn_classification(data_sets, True, data_set_name, save_latex)
-    # knn_classification(data_sets, False, data_set_name, save_latex)
+    display_header("k-nearest neighbors classifier")
+    knn_classification(data_sets, True, data_set_name, save_latex)
+    knn_classification(data_sets, False, data_set_name, save_latex)
 
     display_header("naive Bayes classifier")
     bayes_classification(data_sets, save_latex, test_data_size)
 
-    # display_header("support vector machine classifier")
-    # svm_classification(data_sets, data_set_name, save_latex)
+    display_header("support vector machine classifier")
+    svm_classification(data_sets, data_set_name, save_latex)
 
-    # display_header("decision trees and random forests classifier")
-    # svm_classification(data_sets, save_latex)
+    display_header("decision trees and random forests classifier")
+    svm_classification(data_sets, save_latex)
 
 
 def display_header(name: str) -> None:
