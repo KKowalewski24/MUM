@@ -1,7 +1,15 @@
 import subprocess
 import sys
+from argparse import ArgumentParser, Namespace
+
+import pandas as pd
+
+from module.reader import read_gestures_ds, read_heart_ds, read_weather_AUS_ds
 
 """
+Sample usage:
+    python main.py
+    python main.py -s
 """
 
 
@@ -9,10 +17,39 @@ import sys
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
+    args = prepare_args()
+    save_latex: bool = args.save
+
+    process_clustering(read_heart_ds(), "heart", save_latex)
+    process_clustering(read_gestures_ds(), "gestures", save_latex)
+    process_clustering(read_weather_AUS_ds(), "weather", save_latex)
+
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
+def process_clustering(data_set: pd.DataFrame, data_set_name: str,
+                       save_latex: bool) -> None:
+    display_header(data_set_name + " data set")
+    # TODO CALL FUNCTIONS
+
+
+def display_header(name: str) -> None:
+    print("------------------------------------------------------------------------")
+    print(name)
+    print()
+
+
+def prepare_args() -> Namespace:
+    arg_parser = ArgumentParser()
+
+    arg_parser.add_argument(
+        "-s", "--save", default=False, action="store_true",
+        help="Create LaTeX source code based on generated data"
+    )
+
+    return arg_parser.parse_args()
+
 
 # UTIL ----------------------------------------------------------------------- #
 def check_types_check_style() -> None:
