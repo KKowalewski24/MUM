@@ -543,6 +543,30 @@
         }
 
         \subsection{Naiwny klasyfikator Bayesa}
+        Na początku wśród dostępnych wariantów została wybrana metoda, która najlepiej
+        poradzi sobie z dostarczonymi zbiorami danych. Do eksperymentu został przyjęty
+        podział 70\% danych uczących i 30\% testowych.
+        
+        \label{bayes_results} {
+            \begin{table}[H]
+                \centering
+                \begin{tabular}{|c|c|c|c|}
+                \hline
+                \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}wariant\\ klasyfikatora\end{tabular}}} & \multicolumn{3}{c|}{\textbf{Zbiór danych}} \\ \cline{2-4} 
+                        & \textbf{heart diseases}      & \textbf{gestures}     & \textbf{weather}     \\ \hline
+                multinomial   & 0.7473           & -          & -          \\ \hline
+                bernoulli   & 0.8022           & 0.4632          & 0.7655          \\ \hline
+                gaussian   & 0.8132           & 0.8779          & 0.8004          \\ \hline
+                \end{tabular}
+                \caption{Porównanie dokładności dostępnych wariantów klasyfikatora Bayesa}
+                \label{tab:types}
+            \end{table}
+        }
+        Wybrane zbiory danych \textit{gestures} oraz \textit{weather} zawierają
+        wartości ujemne i nie mogą zostać użyte w przypadku wariantu wielomianowego. Na
+        podstawie wyników wybrany został wariant Gaussa, jako metoda, która najlepiej
+        poradziła sobie z danymi testowymi.
+        
         W przypadku eksperymentów wykorzystujących naiwny klasyfikator Bayesa jako
         parametr został przyjęty podział na dane uczące i testowe.
         
