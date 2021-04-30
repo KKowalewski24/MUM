@@ -4,7 +4,7 @@ from argparse import ArgumentParser, Namespace
 
 import pandas as pd
 
-from module.reader import read_gestures_ds, read_heart_ds, read_weather_AUS_ds
+from module.reader import read_iris_ds
 
 """
 Sample usage:
@@ -20,9 +20,7 @@ def main() -> None:
     args = prepare_args()
     save_latex: bool = args.save
 
-    process_clustering(read_heart_ds(), "heart", save_latex)
-    process_clustering(read_gestures_ds(), "gestures", save_latex)
-    process_clustering(read_weather_AUS_ds(), "weather", save_latex)
+    process_clustering(read_iris_ds(), "Iris", save_latex)
 
     display_finish()
 
