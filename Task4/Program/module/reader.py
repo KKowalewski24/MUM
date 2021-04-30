@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn import datasets
 
@@ -11,3 +12,19 @@ def read_iris_ds() -> pd.DataFrame:
 def read_moons_ds() -> pd.DataFrame:
     samples, classes = datasets.make_moons(n_samples=1000, noise=0.09, random_state=1)
     return pd.DataFrame(samples, columns=["X", "Y"])
+
+
+def present_data_sets() -> None:
+    irises: pd.DataFrame = read_iris_ds()
+    plt.scatter(irises.iloc[:, 0], irises.iloc[:, 1])
+    plt.title("Iris Sepal")
+    plt.show()
+
+    plt.scatter(irises.iloc[:, 2], irises.iloc[:, 3])
+    plt.title("Iris Petal")
+    plt.show()
+
+    moons: pd.DataFrame = read_moons_ds()
+    plt.scatter(moons.iloc[:, 0], moons.iloc[:, 1])
+    plt.title("Moons")
+    plt.show()

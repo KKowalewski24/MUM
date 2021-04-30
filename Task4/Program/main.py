@@ -4,7 +4,7 @@ from argparse import ArgumentParser, Namespace
 
 import pandas as pd
 
-from module.reader import read_iris_ds, read_moons_ds
+from module.reader import present_data_sets, read_iris_ds, read_moons_ds
 
 """
 Sample usage:
@@ -19,6 +19,8 @@ Sample usage:
 def main() -> None:
     args = prepare_args()
     save_latex: bool = args.save
+    if args.present:
+        present_data_sets()
 
     process_clustering(read_iris_ds(), "Iris", save_latex)
     process_clustering(read_moons_ds(), "Moons", save_latex)
@@ -45,6 +47,10 @@ def prepare_args() -> Namespace:
     arg_parser.add_argument(
         "-s", "--save", default=False, action="store_true",
         help="Create LaTeX source code based on generated data"
+    )
+    arg_parser.add_argument(
+        "-pd", "--present", default=False, action="store_true",
+        help="Present characteristic of data sets"
     )
 
     return arg_parser.parse_args()
