@@ -4,7 +4,7 @@ from argparse import ArgumentParser, Namespace
 
 import pandas as pd
 
-from module.reader import read_iris_ds
+from module.reader import read_iris_ds, read_moons_ds
 
 """
 Sample usage:
@@ -21,6 +21,7 @@ def main() -> None:
     save_latex: bool = args.save
 
     process_clustering(read_iris_ds(), "Iris", save_latex)
+    process_clustering(read_moons_ds(), "Moons", save_latex)
 
     display_finish()
 
