@@ -4,6 +4,10 @@ from argparse import ArgumentParser, Namespace
 
 import pandas as pd
 
+from module.agglomerative import agglomerative_clustering
+from module.db_scan import db_scan_clustering
+from module.expectation_maximization import expectation_maximization_clustering
+from module.k_means import k_means_clustering
 from module.reader import present_data_sets, read_iris_ds, read_mall_customers, read_moons_ds
 
 """
@@ -32,7 +36,14 @@ def main() -> None:
 def process_clustering(data_set: pd.DataFrame, data_set_name: str,
                        save_latex: bool) -> None:
     display_header(data_set_name + " data set")
-    # TODO CALL FUNCTIONS
+    display_header("K Means")
+    k_means_clustering(data_set, data_set_name, save_latex)
+    display_header("Agglomerative")
+    agglomerative_clustering(data_set, data_set_name, save_latex)
+    display_header("Expectation Maximization")
+    expectation_maximization_clustering(data_set, data_set_name, save_latex)
+    display_header("DBSCAN")
+    db_scan_clustering(data_set, data_set_name, save_latex)
 
 
 def display_header(name: str) -> None:
