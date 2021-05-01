@@ -18,7 +18,7 @@ def read_mall_customers() -> np.ndarray:
 # Returns only generated samples without class membership - in order
 # to do this return tuple of samples and classes
 def read_moons_ds() -> np.ndarray:
-    samples, classes = datasets.make_moons(n_samples=1000, noise=0.09, random_state=1)
+    samples, classes = datasets.make_moons(n_samples=700, noise=0.09, random_state=1)
     return samples
 
 
