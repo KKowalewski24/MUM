@@ -2,8 +2,13 @@ import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score
 
+from module.LatexGenerator import LatexGenerator
+
+LATEX_RESULTS_DIR = "db_scan"
 MIN_SAMPLES_RANGE = np.arange(2, 10, 1)
 EPSILON_RANGE = np.arange(0.1, 10, 0.1)
+
+latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
 
 def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
