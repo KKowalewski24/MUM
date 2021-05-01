@@ -1,6 +1,6 @@
-import pandas as pd
+import numpy as np
 
 
-def agglomerative_clustering(data_set: pd.DataFrame, data_set_name: str,
+def agglomerative_clustering(data_set: np.ndarray, data_set_name: str,
                              save_latex: bool = False) -> None:
     pass

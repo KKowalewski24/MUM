@@ -2,7 +2,7 @@ import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
 
-import pandas as pd
+import numpy as np
 
 from module.agglomerative import agglomerative_clustering
 from module.db_scan import db_scan_clustering
@@ -33,7 +33,7 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def process_clustering(data_set: pd.DataFrame, data_set_name: str,
+def process_clustering(data_set: np.ndarray, data_set_name: str,
                        save_latex: bool) -> None:
     display_header(data_set_name + " data set")
     display_header("K Means")

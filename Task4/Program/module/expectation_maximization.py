@@ -1,6 +1,6 @@
-import pandas as pd
+import numpy as np
 
 
-def expectation_maximization_clustering(data_set: pd.DataFrame, data_set_name: str,
+def expectation_maximization_clustering(data_set: np.ndarray, data_set_name: str,
                                         save_latex: bool = False) -> None:
     pass
