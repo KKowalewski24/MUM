@@ -10,6 +10,7 @@ from module.LatexGenerator import LatexGenerator
 LATEX_RESULTS_DIR = "db_scan"
 MIN_SAMPLES_RANGE = np.arange(2, 10, 1)
 EPSILON_RANGE = np.arange(0.1, 10, 0.1)
+CHARTS_NUMBER = 4
 
 latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
@@ -34,30 +35,29 @@ def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
                 silhouette_scores[i][1].append(score)
                 print("Silhouette:\t" + str(score))
 
+    draw_chart(data_set_name, is_euclidean_metric, silhouette_scores, 0)
+    draw_chart(data_set_name, is_euclidean_metric, silhouette_scores, 1)
+    plt.show()
+
+
+def draw_chart(data_set_name: str, is_euclidean_metric: bool,
+               score: List[Tuple[List[float], List[float]]], order_number: int) -> None:
     fig, axs = plt.subplots(2, 2)
     fig.suptitle(
-        data_set_name + (", Euclidean" if is_euclidean_metric else ", Manhattan") + " metric")
+        data_set_name + (", Euclidean" if is_euclidean_metric else ", Manhattan") + " metric"
+    )
 
     for ax in axs.flat:
         ax.set(xlabel="Epsilon", ylabel="Silhouette Score")
 
-    set_subplot(axs, 0, 0, silhouette_scores[0], MIN_SAMPLES_RANGE[0])
-    set_subplot(axs, 0, 1, silhouette_scores[1], MIN_SAMPLES_RANGE[1])
-    set_subplot(axs, 1, 0, silhouette_scores[2], MIN_SAMPLES_RANGE[2])
-    set_subplot(axs, 1, 1, silhouette_scores[3], MIN_SAMPLES_RANGE[3])
-    plt.show()
-
-    fig, axs = plt.subplots(2, 2)
-    fig.suptitle(
-        data_set_name + (", Euclidean" if is_euclidean_metric else ", Manhattan") + " metric")
-
-    for ax in axs.flat:
-        ax.set(xlabel="Epsilon", ylabel="Silhouette Score")
-    set_subplot(axs, 0, 0, silhouette_scores[4], MIN_SAMPLES_RANGE[4])
-    set_subplot(axs, 0, 1, silhouette_scores[5], MIN_SAMPLES_RANGE[5])
-    set_subplot(axs, 1, 0, silhouette_scores[6], MIN_SAMPLES_RANGE[6])
-    set_subplot(axs, 1, 1, silhouette_scores[7], MIN_SAMPLES_RANGE[7])
-    plt.show()
+    set_subplot(axs, 0, 0, score[0 + CHARTS_NUMBER * order_number],
+                MIN_SAMPLES_RANGE[0 + CHARTS_NUMBER * order_number])
+    set_subplot(axs, 0, 1, score[1 + CHARTS_NUMBER * order_number],
+                MIN_SAMPLES_RANGE[1 + CHARTS_NUMBER * order_number])
+    set_subplot(axs, 1, 0, score[2 + CHARTS_NUMBER * order_number],
+                MIN_SAMPLES_RANGE[2 + CHARTS_NUMBER * order_number])
+    set_subplot(axs, 1, 1, score[3 + CHARTS_NUMBER * order_number],
+                MIN_SAMPLES_RANGE[3 + CHARTS_NUMBER * order_number])
 
 
 def set_subplot(axs, row: int, column: int,
