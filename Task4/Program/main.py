@@ -27,8 +27,8 @@ def main() -> None:
         present_data_sets()
 
     process_clustering(read_iris_ds(), "Iris", save_latex)
-    process_clustering(read_moons_ds(), "Moons", save_latex)
     process_clustering(read_mall_customers(), "Customers", save_latex)
+    process_clustering(read_moons_ds(), "Moons", save_latex)
     display_finish()
 
 
@@ -43,7 +43,8 @@ def process_clustering(data_set: pd.DataFrame, data_set_name: str,
     display_header("Expectation Maximization")
     expectation_maximization_clustering(data_set, data_set_name, save_latex)
     display_header("DBSCAN")
-    db_scan_clustering(data_set, data_set_name, save_latex)
+    db_scan_clustering(data_set, data_set_name, True, save_latex)
+    db_scan_clustering(data_set, data_set_name, False, save_latex)
 
 
 def display_header(name: str) -> None:

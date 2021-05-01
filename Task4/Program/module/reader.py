@@ -7,15 +7,15 @@ def read_iris_ds() -> pd.DataFrame:
     return pd.read_csv("data/Iris.csv").iloc[:, 1:5]
 
 
+def read_mall_customers() -> pd.DataFrame:
+    return pd.read_csv("data/Mall_Customers.csv").iloc[:, 1:5]
+
+
 # Returns only generated samples without class membership - in order
 # to do this return tuple of samples and classes
 def read_moons_ds() -> pd.DataFrame:
     samples, classes = datasets.make_moons(n_samples=1000, noise=0.09, random_state=1)
     return pd.DataFrame(samples, columns=["X", "Y"])
-
-
-def read_mall_customers() -> pd.DataFrame:
-    return pd.read_csv("data/Mall_Customers.csv").iloc[:, 1:5]
 
 
 def present_data_sets() -> None:
@@ -26,11 +26,6 @@ def present_data_sets() -> None:
 
     plt.scatter(irises.iloc[:, 2], irises.iloc[:, 3])
     plt.title("Iris Petal")
-    plt.show()
-
-    moons: pd.DataFrame = read_moons_ds()
-    plt.scatter(moons.iloc[:, 0], moons.iloc[:, 1])
-    plt.title("Moons")
     plt.show()
 
     mall_customers: pd.DataFrame = read_mall_customers()
@@ -44,4 +39,9 @@ def present_data_sets() -> None:
 
     plt.scatter(mall_customers.iloc[:, 2], mall_customers.iloc[:, 3])
     plt.title("Customers Annual income")
+    plt.show()
+
+    moons: pd.DataFrame = read_moons_ds()
+    plt.scatter(moons.iloc[:, 0], moons.iloc[:, 1])
+    plt.title("Moons")
     plt.show()
