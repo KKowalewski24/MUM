@@ -43,6 +43,7 @@ def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
 def draw_chart(data_set_name: str, is_euclidean_metric: bool,
                score: List[Tuple[List[float], List[float]]], order_number: int) -> None:
     fig, axs = plt.subplots(2, 2)
+    plt.get_current_fig_manager().full_screen_toggle()
     fig.suptitle(
         data_set_name + (", Euclidean" if is_euclidean_metric else ", Manhattan") + " metric"
     )
@@ -50,14 +51,22 @@ def draw_chart(data_set_name: str, is_euclidean_metric: bool,
     for ax in axs.flat:
         ax.set(xlabel="Epsilon", ylabel="Silhouette Score")
 
-    set_subplot(axs, 0, 0, score[0 + CHARTS_NUMBER * order_number],
-                MIN_SAMPLES_RANGE[0 + CHARTS_NUMBER * order_number])
-    set_subplot(axs, 0, 1, score[1 + CHARTS_NUMBER * order_number],
-                MIN_SAMPLES_RANGE[1 + CHARTS_NUMBER * order_number])
-    set_subplot(axs, 1, 0, score[2 + CHARTS_NUMBER * order_number],
-                MIN_SAMPLES_RANGE[2 + CHARTS_NUMBER * order_number])
-    set_subplot(axs, 1, 1, score[3 + CHARTS_NUMBER * order_number],
-                MIN_SAMPLES_RANGE[3 + CHARTS_NUMBER * order_number])
+    set_subplot(
+        axs, 0, 0, score[0 + CHARTS_NUMBER * order_number],
+        MIN_SAMPLES_RANGE[0 + CHARTS_NUMBER * order_number]
+    )
+    set_subplot(
+        axs, 0, 1, score[1 + CHARTS_NUMBER * order_number],
+        MIN_SAMPLES_RANGE[1 + CHARTS_NUMBER * order_number]
+    )
+    set_subplot(
+        axs, 1, 0, score[2 + CHARTS_NUMBER * order_number],
+        MIN_SAMPLES_RANGE[2 + CHARTS_NUMBER * order_number]
+    )
+    set_subplot(
+        axs, 1, 1, score[3 + CHARTS_NUMBER * order_number],
+        MIN_SAMPLES_RANGE[3 + CHARTS_NUMBER * order_number]
+    )
 
 
 def set_subplot(axs, row: int, column: int,
