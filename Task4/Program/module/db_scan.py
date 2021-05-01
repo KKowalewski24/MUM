@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Tuple
 
 import matplotlib.pyplot as plt
@@ -35,15 +36,16 @@ def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
                 silhouette_scores[i][1].append(score)
                 print("Silhouette:\t" + str(score))
 
-    draw_chart(data_set_name, is_euclidean_metric, silhouette_scores, 0)
-    draw_chart(data_set_name, is_euclidean_metric, silhouette_scores, 1)
-    plt.show()
+    draw_chart(data_set_name, is_euclidean_metric, silhouette_scores, 0, save_latex)
+    draw_chart(data_set_name, is_euclidean_metric, silhouette_scores, 1, save_latex)
 
 
 def draw_chart(data_set_name: str, is_euclidean_metric: bool,
-               score: List[Tuple[List[float], List[float]]], order_number: int) -> None:
+               score: List[Tuple[List[float], List[float]]], order_number: int,
+               save_latex: bool) -> None:
     fig, axs = plt.subplots(2, 2)
-    plt.get_current_fig_manager().full_screen_toggle()
+    plt.subplots_adjust(hspace=0.5)
+    plt.subplots_adjust(wspace=0.5)
     fig.suptitle(
         data_set_name + (", Euclidean" if is_euclidean_metric else ", Manhattan") + " metric"
     )
@@ -67,6 +69,16 @@ def draw_chart(data_set_name: str, is_euclidean_metric: bool,
         axs, 1, 1, score[3 + CHARTS_NUMBER * order_number],
         MIN_SAMPLES_RANGE[3 + CHARTS_NUMBER * order_number]
     )
+
+    if save_latex:
+        base_filename = "_" + data_set_name + ("_eucl" if is_euclidean_metric else "_manh")
+        image_filename = base_filename + str(order_number) + "-" \
+                         + datetime.now().strftime("%H%M%S")
+        latex_generator.generate_chart_image("db_scan_chart" + image_filename)
+        plt.savefig(LATEX_RESULTS_DIR + "/db_scan_chart" + image_filename)
+        plt.close()
+
+    plt.show()
 
 
 def set_subplot(axs, row: int, column: int,
