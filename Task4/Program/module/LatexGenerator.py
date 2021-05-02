@@ -94,7 +94,7 @@ class LatexGenerator:
 
         result += header + body + self.table.end_tabular + self.table.get_caption(filename) \
                   + self.table.get_label(filename) + self.table.end + self.table.float_barrier
-        self._save_to_file(result, filename)
+        self.save_to_file(result, filename)
 
 
     def generate_vertical_table(self, header_names: List[str],
@@ -124,7 +124,7 @@ class LatexGenerator:
 
         result += header + body + self.table.end_tabular + self.table.get_caption(filename) \
                   + self.table.get_label(filename) + self.table.end + self.table.float_barrier
-        self._save_to_file(result, filename)
+        self.save_to_file(result, filename)
 
 
     def generate_horizontal_table_df(self, df: pd.DataFrame, filename: str) -> None:
@@ -152,7 +152,7 @@ class LatexGenerator:
 
         result += body + self.table.end_tabular + self.table.get_caption(filename) \
                   + self.table.get_label(filename) + self.table.end + self.table.float_barrier
-        self._save_to_file(result, filename)
+        self.save_to_file(result, filename)
 
 
     def generate_horizontal_table(self, header_names: Union[List[str], List[int]],
@@ -188,7 +188,7 @@ class LatexGenerator:
 
         result += body + self.table.end_tabular + self.table.get_caption(filename) \
                   + self.table.get_label(filename) + self.table.end + self.table.float_barrier
-        self._save_to_file(result, filename)
+        self.save_to_file(result, filename)
 
 
     def generate_chart_image(self, filename: str) -> None:
@@ -198,7 +198,7 @@ class LatexGenerator:
         result += self.image.get_caption(self._remove_png_extension(filename))
         result += self.image.get_label(self._remove_png_extension(filename))
         result += self.image.end
-        self._save_to_file(result, filename)
+        self.save_to_file(result, filename)
 
 
     def _compare_array_with_matrix_rows(self, array: List[Any], matrix: List[List[Any]]) -> bool:
@@ -209,7 +209,7 @@ class LatexGenerator:
         return True
 
 
-    def _save_to_file(self, data: str, filename: str) -> None:
+    def save_to_file(self, data: str, filename: str) -> None:
         path: str = ""
         if self.dir_name != "":
             path = self.dir_name + "/"

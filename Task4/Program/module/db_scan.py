@@ -11,7 +11,8 @@ from module.LatexGenerator import LatexGenerator
 LATEX_RESULTS_DIR = "db_scan"
 MIN_SAMPLES_RANGE = np.arange(2, 10, 1)
 EPSILON_RANGE = np.arange(0.1, 10, 0.1).round(2)
-CHARTS_NUMBER = 4
+SUBPLOTS_PER_CHART = 4
+MIN_SAMPLE_PER_TABLE = 4
 
 latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
@@ -43,9 +44,22 @@ def _draw_score(epsilons_and_scores: List[Tuple[List[float], List[float]]], data
                 is_euclidean_metric: bool, save_latex: bool) -> None:
     for i in range(len(epsilons_and_scores)):
         print("Min Sample:\t" + str(MIN_SAMPLES_RANGE[i]))
+        latex_str: str = "Epsilon" + latex_generator.table.ampersand + "Silhouette" \
+                         + latex_generator.table.ampersand + "\n"
+
         for j in range(len(epsilons_and_scores[i][1])):
-            print("\tEpsilon:\t" + str(epsilons_and_scores[i][0][j]), end=", ")
-            print("\tSilhouette:\t" + str(epsilons_and_scores[i][1][j]))
+            epsilon = str(epsilons_and_scores[i][0][j])
+            score = str(epsilons_and_scores[i][1][j])
+            print("\tEpsilon:\t" + epsilon, end=", ")
+            print("\tSilhouette:\t" + score)
+            latex_str += epsilon + latex_generator.table.ampersand + score \
+                         + latex_generator.table.ampersand + "\n"
+
+        latex_generator.save_to_file(
+            latex_str,
+            "db_scan_table_" + data_set_name + ("_eucl" if is_euclidean_metric else "_manh") \
+            + "_min_sample" + str(MIN_SAMPLES_RANGE[i])
+        )
 
 
 def _draw_chart(epsilons_and_scores: List[Tuple[List[float], List[float]]], data_set_name: str,
@@ -61,20 +75,20 @@ def _draw_chart(epsilons_and_scores: List[Tuple[List[float], List[float]]], data
         ax.set(xlabel="Epsilon", ylabel="Silhouette Score")
 
     _set_subplot(
-        axs, 0, 0, epsilons_and_scores[0 + CHARTS_NUMBER * order_number],
-        MIN_SAMPLES_RANGE[0 + CHARTS_NUMBER * order_number]
+        axs, 0, 0, epsilons_and_scores[0 + SUBPLOTS_PER_CHART * order_number],
+        MIN_SAMPLES_RANGE[0 + SUBPLOTS_PER_CHART * order_number]
     )
     _set_subplot(
-        axs, 0, 1, epsilons_and_scores[1 + CHARTS_NUMBER * order_number],
-        MIN_SAMPLES_RANGE[1 + CHARTS_NUMBER * order_number]
+        axs, 0, 1, epsilons_and_scores[1 + SUBPLOTS_PER_CHART * order_number],
+        MIN_SAMPLES_RANGE[1 + SUBPLOTS_PER_CHART * order_number]
     )
     _set_subplot(
-        axs, 1, 0, epsilons_and_scores[2 + CHARTS_NUMBER * order_number],
-        MIN_SAMPLES_RANGE[2 + CHARTS_NUMBER * order_number]
+        axs, 1, 0, epsilons_and_scores[2 + SUBPLOTS_PER_CHART * order_number],
+        MIN_SAMPLES_RANGE[2 + SUBPLOTS_PER_CHART * order_number]
     )
     _set_subplot(
-        axs, 1, 1, epsilons_and_scores[3 + CHARTS_NUMBER * order_number],
-        MIN_SAMPLES_RANGE[3 + CHARTS_NUMBER * order_number]
+        axs, 1, 1, epsilons_and_scores[3 + SUBPLOTS_PER_CHART * order_number],
+        MIN_SAMPLES_RANGE[3 + SUBPLOTS_PER_CHART * order_number]
     )
 
     if save_latex:
