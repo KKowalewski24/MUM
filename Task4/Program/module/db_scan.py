@@ -10,7 +10,7 @@ from module.LatexGenerator import LatexGenerator
 
 LATEX_RESULTS_DIR = "db_scan"
 MIN_SAMPLES_RANGE = np.arange(2, 10, 1)
-EPSILON_RANGE = np.arange(0.1, 10, 0.1)
+EPSILON_RANGE = np.arange(0.1, 10, 0.1).round(2)
 CHARTS_NUMBER = 4
 
 latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
@@ -33,18 +33,22 @@ def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
                 score = round(silhouette_score(data_set, cluster_labels), 4)
                 epsilons_and_scores[i][0].append(epsilon)
                 epsilons_and_scores[i][1].append(score)
-                print("Silhouette:\t" + str(score))
 
-    _draw_score()
+    _draw_score(epsilons_and_scores, data_set_name, is_euclidean_metric, save_latex)
     _draw_chart(epsilons_and_scores, data_set_name, is_euclidean_metric, save_latex, 0)
     _draw_chart(epsilons_and_scores, data_set_name, is_euclidean_metric, save_latex, 1)
 
 
-def _draw_score() -> None:
-    pass
+def _draw_score(epsilons_and_scores: List[Tuple[List[float], List[float]]], data_set_name: str,
+                is_euclidean_metric: bool, save_latex: bool) -> None:
+    for i in range(len(epsilons_and_scores)):
+        print("Min Sample:\t" + str(MIN_SAMPLES_RANGE[i]))
+        for j in range(len(epsilons_and_scores[i][1])):
+            print("\tEpsilon:\t" + str(epsilons_and_scores[i][0][j]), end=", ")
+            print("\tSilhouette:\t" + str(epsilons_and_scores[i][1][j]))
 
 
-def _draw_chart(score: List[Tuple[List[float], List[float]]], data_set_name: str,
+def _draw_chart(epsilons_and_scores: List[Tuple[List[float], List[float]]], data_set_name: str,
                 is_euclidean_metric: bool, save_latex: bool, order_number: int) -> None:
     fig, axs = plt.subplots(2, 2)
     plt.subplots_adjust(hspace=0.5)
@@ -57,19 +61,19 @@ def _draw_chart(score: List[Tuple[List[float], List[float]]], data_set_name: str
         ax.set(xlabel="Epsilon", ylabel="Silhouette Score")
 
     _set_subplot(
-        axs, 0, 0, score[0 + CHARTS_NUMBER * order_number],
+        axs, 0, 0, epsilons_and_scores[0 + CHARTS_NUMBER * order_number],
         MIN_SAMPLES_RANGE[0 + CHARTS_NUMBER * order_number]
     )
     _set_subplot(
-        axs, 0, 1, score[1 + CHARTS_NUMBER * order_number],
+        axs, 0, 1, epsilons_and_scores[1 + CHARTS_NUMBER * order_number],
         MIN_SAMPLES_RANGE[1 + CHARTS_NUMBER * order_number]
     )
     _set_subplot(
-        axs, 1, 0, score[2 + CHARTS_NUMBER * order_number],
+        axs, 1, 0, epsilons_and_scores[2 + CHARTS_NUMBER * order_number],
         MIN_SAMPLES_RANGE[2 + CHARTS_NUMBER * order_number]
     )
     _set_subplot(
-        axs, 1, 1, score[3 + CHARTS_NUMBER * order_number],
+        axs, 1, 1, epsilons_and_scores[3 + CHARTS_NUMBER * order_number],
         MIN_SAMPLES_RANGE[3 + CHARTS_NUMBER * order_number]
     )
 
