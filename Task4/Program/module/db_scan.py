@@ -35,13 +35,17 @@ def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
                 epsilons_and_scores[i][1].append(score)
                 print("Silhouette:\t" + str(score))
 
-    draw_chart(data_set_name, is_euclidean_metric, epsilons_and_scores, 0, save_latex)
-    draw_chart(data_set_name, is_euclidean_metric, epsilons_and_scores, 1, save_latex)
+    _draw_score()
+    _draw_chart(epsilons_and_scores, data_set_name, is_euclidean_metric, save_latex, 0)
+    _draw_chart(epsilons_and_scores, data_set_name, is_euclidean_metric, save_latex, 1)
 
 
-def draw_chart(data_set_name: str, is_euclidean_metric: bool,
-               score: List[Tuple[List[float], List[float]]], order_number: int,
-               save_latex: bool) -> None:
+def _draw_score() -> None:
+    pass
+
+
+def _draw_chart(score: List[Tuple[List[float], List[float]]], data_set_name: str,
+                is_euclidean_metric: bool, save_latex: bool, order_number: int) -> None:
     fig, axs = plt.subplots(2, 2)
     plt.subplots_adjust(hspace=0.5)
     plt.subplots_adjust(wspace=0.5)
@@ -52,19 +56,19 @@ def draw_chart(data_set_name: str, is_euclidean_metric: bool,
     for ax in axs.flat:
         ax.set(xlabel="Epsilon", ylabel="Silhouette Score")
 
-    set_subplot(
+    _set_subplot(
         axs, 0, 0, score[0 + CHARTS_NUMBER * order_number],
         MIN_SAMPLES_RANGE[0 + CHARTS_NUMBER * order_number]
     )
-    set_subplot(
+    _set_subplot(
         axs, 0, 1, score[1 + CHARTS_NUMBER * order_number],
         MIN_SAMPLES_RANGE[1 + CHARTS_NUMBER * order_number]
     )
-    set_subplot(
+    _set_subplot(
         axs, 1, 0, score[2 + CHARTS_NUMBER * order_number],
         MIN_SAMPLES_RANGE[2 + CHARTS_NUMBER * order_number]
     )
-    set_subplot(
+    _set_subplot(
         axs, 1, 1, score[3 + CHARTS_NUMBER * order_number],
         MIN_SAMPLES_RANGE[3 + CHARTS_NUMBER * order_number]
     )
@@ -80,7 +84,7 @@ def draw_chart(data_set_name: str, is_euclidean_metric: bool,
     plt.show()
 
 
-def set_subplot(axs, row: int, column: int,
-                score: Tuple[List[float], List[float]], min_sample: float) -> None:
+def _set_subplot(axs, row: int, column: int,
+                 score: Tuple[List[float], List[float]], min_sample: float) -> None:
     axs[row, column].plot(score[0], score[1])
     axs[row, column].set_title("min sample: " + str(min_sample))
