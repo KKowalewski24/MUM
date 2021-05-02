@@ -18,11 +18,10 @@ latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
 def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
                        is_euclidean_metric: bool, save_latex: bool = False) -> None:
-    # Tuple[List[epsilon], List[silhouette_score]]
-    silhouette_scores: List[Tuple[List[float], List[float]]] = []
+    epsilons_and_scores: List[Tuple[List[float], List[float]]] = []
 
     for i in range(len(MIN_SAMPLES_RANGE)):
-        silhouette_scores.append(([], []))
+        epsilons_and_scores.append(([], []))
         for epsilon in EPSILON_RANGE:
             db_scan: DBSCAN = DBSCAN(
                 min_samples=MIN_SAMPLES_RANGE[i], eps=epsilon, p=2 if is_euclidean_metric else 1
@@ -32,12 +31,12 @@ def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
             is_all_items_same = np.all(cluster_labels == cluster_labels[0])
             if not is_all_items_same:
                 score = round(silhouette_score(data_set, cluster_labels), 4)
-                silhouette_scores[i][0].append(epsilon)
-                silhouette_scores[i][1].append(score)
+                epsilons_and_scores[i][0].append(epsilon)
+                epsilons_and_scores[i][1].append(score)
                 print("Silhouette:\t" + str(score))
 
-    draw_chart(data_set_name, is_euclidean_metric, silhouette_scores, 0, save_latex)
-    draw_chart(data_set_name, is_euclidean_metric, silhouette_scores, 1, save_latex)
+    draw_chart(data_set_name, is_euclidean_metric, epsilons_and_scores, 0, save_latex)
+    draw_chart(data_set_name, is_euclidean_metric, epsilons_and_scores, 1, save_latex)
 
 
 def draw_chart(data_set_name: str, is_euclidean_metric: bool,
