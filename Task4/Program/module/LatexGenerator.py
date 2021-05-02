@@ -156,16 +156,15 @@ class LatexGenerator:
 
 
     def generate_horizontal_table(self, header_names: Union[List[str], List[int]],
-                                  horizontal_column_names: Union[List[str], List[int]],
                                   body_values: Union[List[List[str]], List[List[float]]],
                                   filename: str) -> None:
-        if len(horizontal_column_names) != len(body_values):
-            raise Exception(
-                "horizontal_column_names and body_values must have equal length"
-            )
+        # if len(horizontal_column_names) != len(body_values):
+        #     raise Exception(
+        #         "horizontal_column_names and body_values must have equal length"
+        #     )
 
-        result: str = self.table.begin + self.table.centering \
-                      + self.table.get_begin_tabular(len(body_values[0]) + 1) + self.table.hline
+        result: str = "\\begin{minipage}{.24\\textwidth}\n" + self.table.centering \
+                      + self.table.get_begin_tabular(len(body_values[0])) + self.table.hline
 
         if self._compare_array_with_matrix_rows(header_names, body_values):
             header: str = ""
@@ -174,12 +173,11 @@ class LatexGenerator:
                 if i < len(header_names) - 1:
                     header += self.table.ampersand
 
-            result += self.table.ampersand + header + " " \
-                      + self.table.back_slashes + " " + self.table.hline
+            result += header + " " + self.table.back_slashes + " " + self.table.hline
 
         body: str = ""
         for i in range(len(body_values)):
-            body += str(horizontal_column_names[i]) + self.table.ampersand
+            # body += str(horizontal_column_names[i]) + self.table.ampersand
             for j in range(len(body_values[i])):
                 body += str(body_values[i][j])
                 if j < len(body_values[i]) - 1:
@@ -187,7 +185,7 @@ class LatexGenerator:
             body += " " + self.table.back_slashes + " " + self.table.hline
 
         result += body + self.table.end_tabular + self.table.get_caption(filename) \
-                  + self.table.get_label(filename) + self.table.end + self.table.float_barrier
+                  + self.table.get_label(filename) + "\hfill\n"
         self.save_to_file(result, filename)
 
 
