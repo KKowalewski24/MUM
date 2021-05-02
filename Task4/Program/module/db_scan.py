@@ -35,30 +35,29 @@ def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
                 epsilons_and_scores[i][0].append(epsilon)
                 epsilons_and_scores[i][1].append(score)
 
-    _draw_score(epsilons_and_scores, data_set_name, is_euclidean_metric, save_latex)
+        _draw_score(epsilons_and_scores[i], MIN_SAMPLES_RANGE[i], data_set_name,
+                    is_euclidean_metric, save_latex)
     _draw_chart(epsilons_and_scores, data_set_name, is_euclidean_metric, save_latex, 0)
     _draw_chart(epsilons_and_scores, data_set_name, is_euclidean_metric, save_latex, 1)
 
 
-def _draw_score(epsilons_and_scores: List[Tuple[List[float], List[float]]], data_set_name: str,
-                is_euclidean_metric: bool, save_latex: bool) -> None:
-    for i in range(len(epsilons_and_scores)):
-        print("Min Sample:\t" + str(MIN_SAMPLES_RANGE[i]))
-        latex_str: str = "Epsilon" + latex_generator.table.ampersand + "Silhouette" \
-                         + latex_generator.table.ampersand + "\n"
+def _draw_score(epsilons_and_scores: Tuple[List[float], List[float]], min_sample: int,
+                data_set_name: str, is_euclidean_metric: bool, save_latex: bool) -> None:
+    print("Min Sample:\t" + str(min_sample))
 
-        for j in range(len(epsilons_and_scores[i][1])):
-            epsilon = str(epsilons_and_scores[i][0][j])
-            score = str(epsilons_and_scores[i][1][j])
-            print("\tEpsilon:\t" + epsilon, end=", ")
-            print("\tSilhouette:\t" + score)
-            latex_str += epsilon + latex_generator.table.ampersand + score \
-                         + latex_generator.table.ampersand + "\n"
+    latex_scores: List[List[float]] = []
+    for i in range(len(epsilons_and_scores[0])):
+        epsilon = epsilons_and_scores[0][i]
+        score = epsilons_and_scores[1][i]
+        latex_scores.append([epsilon, score])
+        print("\tEpsilon:\t" + str(epsilon), end=", ")
+        print("\tSilhouette:\t" + str(score))
 
-        latex_generator.save_to_file(
-            latex_str,
+    if save_latex:
+        latex_generator.generate_horizontal_table(
+            ["Epsilon", "Silhouette"], latex_scores,
             "db_scan_table_" + data_set_name + ("_eucl" if is_euclidean_metric else "_manh") \
-            + "_min_sample" + str(MIN_SAMPLES_RANGE[i])
+            + "_min_sample" + str(min_sample)
         )
 
 
