@@ -94,16 +94,14 @@ class LatexGenerator:
 
         result += header + body + self.table.end_tabular + self.table.get_caption(filename) \
                   + self.table.get_label(filename) + self.table.end + self.table.float_barrier
-        self.save_to_file(result, filename)
+        self._save_to_file(result, filename)
 
 
     def generate_vertical_table(self, header_names: List[str],
                                 body_values: List[List[float]],
                                 filename: str) -> None:
-        if len(header_names) != len(body_values):
-            raise Exception("Lists must have equal length")
 
-        result: str = self.table.begin + self.table.centering \
+        result: str = "\\begin{minipage}{.24\\textwidth}\n" + self.table.centering \
                       + self.table.get_begin_tabular(len(header_names)) + self.table.hline
 
         header: str = ""
@@ -123,8 +121,8 @@ class LatexGenerator:
             body += " " + self.table.back_slashes + " " + self.table.hline
 
         result += header + body + self.table.end_tabular + self.table.get_caption(filename) \
-                  + self.table.get_label(filename) + self.table.end + self.table.float_barrier
-        self.save_to_file(result, filename)
+                  + self.table.get_label(filename) + "\hfill\n"
+        self._save_to_file(result, filename)
 
 
     def generate_horizontal_table_df(self, df: pd.DataFrame, filename: str) -> None:
@@ -152,19 +150,20 @@ class LatexGenerator:
 
         result += body + self.table.end_tabular + self.table.get_caption(filename) \
                   + self.table.get_label(filename) + self.table.end + self.table.float_barrier
-        self.save_to_file(result, filename)
+        self._save_to_file(result, filename)
 
 
     def generate_horizontal_table(self, header_names: Union[List[str], List[int]],
+                                  horizontal_column_names: Union[List[str], List[int]],
                                   body_values: Union[List[List[str]], List[List[float]]],
                                   filename: str) -> None:
-        # if len(horizontal_column_names) != len(body_values):
-        #     raise Exception(
-        #         "horizontal_column_names and body_values must have equal length"
-        #     )
+        if len(horizontal_column_names) != len(body_values):
+            raise Exception(
+                "horizontal_column_names and body_values must have equal length"
+            )
 
-        result: str = "\\begin{minipage}{.24\\textwidth}\n" + self.table.centering \
-                      + self.table.get_begin_tabular(len(body_values[0])) + self.table.hline
+        result: str = self.table.begin + self.table.centering \
+                      + self.table.get_begin_tabular(len(body_values[0]) + 1) + self.table.hline
 
         if self._compare_array_with_matrix_rows(header_names, body_values):
             header: str = ""
@@ -173,11 +172,12 @@ class LatexGenerator:
                 if i < len(header_names) - 1:
                     header += self.table.ampersand
 
-            result += header + " " + self.table.back_slashes + " " + self.table.hline
+            result += self.table.ampersand + header + " " \
+                      + self.table.back_slashes + " " + self.table.hline
 
         body: str = ""
         for i in range(len(body_values)):
-            # body += str(horizontal_column_names[i]) + self.table.ampersand
+            body += str(horizontal_column_names[i]) + self.table.ampersand
             for j in range(len(body_values[i])):
                 body += str(body_values[i][j])
                 if j < len(body_values[i]) - 1:
@@ -185,8 +185,8 @@ class LatexGenerator:
             body += " " + self.table.back_slashes + " " + self.table.hline
 
         result += body + self.table.end_tabular + self.table.get_caption(filename) \
-                  + self.table.get_label(filename) + "\hfill\n"
-        self.save_to_file(result, filename)
+                  + self.table.get_label(filename) + self.table.end + self.table.float_barrier
+        self._save_to_file(result, filename)
 
 
     def generate_chart_image(self, filename: str) -> None:
@@ -196,7 +196,7 @@ class LatexGenerator:
         result += self.image.get_caption(self._remove_png_extension(filename))
         result += self.image.get_label(self._remove_png_extension(filename))
         result += self.image.end
-        self.save_to_file(result, filename)
+        self._save_to_file(result, filename)
 
 
     def _compare_array_with_matrix_rows(self, array: List[Any], matrix: List[List[Any]]) -> bool:
@@ -207,7 +207,7 @@ class LatexGenerator:
         return True
 
 
-    def save_to_file(self, data: str, filename: str) -> None:
+    def _save_to_file(self, data: str, filename: str) -> None:
         path: str = ""
         if self.dir_name != "":
             path = self.dir_name + "/"
