@@ -54,7 +54,7 @@ def _draw_score(epsilons_and_scores: Tuple[List[float], List[float]], min_sample
         print("\tSilhouette:\t" + str(score))
 
     if save_latex:
-        latex_generator.generate_horizontal_table(
+        latex_generator.generate_vertical_table(
             ["Epsilon", "Silhouette"], latex_scores,
             "db_scan_table_" + data_set_name + ("_eucl" if is_euclidean_metric else "_manh") \
             + "_min_sample" + str(min_sample)
