@@ -25,7 +25,8 @@ def db_scan_clustering(data_set: np.ndarray, data_set_name: str,
         epsilons_and_scores.append(([], []))
         for epsilon in EPSILON_RANGE:
             db_scan: DBSCAN = DBSCAN(
-                min_samples=MIN_SAMPLES_RANGE[i], eps=epsilon, p=2 if is_euclidean_metric else 1
+                min_samples=MIN_SAMPLES_RANGE[i], eps=epsilon, metric='minkowski',
+                p=2 if is_euclidean_metric else 1
             )
             cluster_labels = db_scan.fit_predict(data_set)
 
