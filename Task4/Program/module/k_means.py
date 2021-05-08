@@ -91,7 +91,6 @@ def _draw_and_save_chart(score_clusters: List[List[float]], score_iters: List[Li
         plt.plot(*zip(*score_iters[index:index+10]), colors[cluster_number], label= str("Clusters: " + str(cluster_number)))
         index += 10
 
-    plt.xscale('log')
     plt.ylabel("Silhouette")
     plt.xlabel("Max Iterations number")
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='upper left', fontsize='xx-small', ncol=5, mode="expand")
