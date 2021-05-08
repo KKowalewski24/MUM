@@ -15,7 +15,6 @@ n_clusters_range = np.arange(15, 1, -1)
 def agglomerative_clustering(data_set: np.ndarray,
                              data_set_name: str,
                              save_latex: bool = False) -> None:
-
     plt.suptitle("dataset: " + data_set_name)
     plt.subplots_adjust(hspace=0.5, wspace=0.5)
     for variant_id, linkage in zip(range(len(variants)), variants.keys()):
@@ -32,7 +31,6 @@ def agglomerative_clustering(data_set: np.ndarray,
                 score.append(silhouette_score(data_set, y))
             plt.plot(n_clusters_range,
                      score,
-                     label=affinity + ' max=' +
-                     str(np.round(np.max(score), 2)))
+                     label=affinity + ' max=' + str(np.round(np.max(score), 2)))
             plt.legend()
     plt.show()
