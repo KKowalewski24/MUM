@@ -52,7 +52,7 @@ def k_means_clustering(data_set: np.ndarray, data_set_name: str,
     #     _draw_and_save_chart_clusters(scores_clusters_numbers, data_set_name, 0)
     if save_latex :
         # _save_score(scores_clusters_numbers, data_set_name)   
-        _draw_and_save_chart(scores_clusters_numbers, scores_iter_numbers, data_set_name, 0)
+        _draw_and_save_chart(scores_clusters_numbers, scores_iter_numbers, data_set_name)
 
 
 def _save_score(score: List[List[float]], data_set_name: str) -> None:
@@ -62,9 +62,9 @@ def _save_score(score: List[List[float]], data_set_name: str) -> None:
         "kmeans_table" + filename_description
     )
 
-def _draw_and_save_chart(score_clusters: List[List[float]], score_iters: List[List[float]], data_set_name: str, order_number: int) -> None:
-    base_filename = "_" + data_set_name + "_"
-    image_filename = base_filename + str(order_number) + "-" + datetime.now().strftime("%H%M%S")
+def _draw_and_save_chart(score_clusters: List[List[float]], score_iters: List[List[float]], data_set_name: str) -> None:
+    base_filename = "_" + data_set_name
+    image_filename = base_filename + "_" + datetime.now().strftime("%H%M%S")
     colors = {2: "red", 6: "blue", 8: "green", 19: "purple", 25: "orange"}
 
 #CLUSTER CHARTS
