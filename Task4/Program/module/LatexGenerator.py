@@ -121,7 +121,7 @@ class LatexGenerator:
             body += " " + self.table.back_slashes + " " + self.table.hline
 
         result += header + body + self.table.end_tabular + self.table.get_caption(filename) \
-                  + self.table.get_label(filename) + "\hfill\n"
+                  + self.table.get_label(filename) + "\end{minipage}\n\hfill\n"
         self._save_to_file(result, filename)
 
 
