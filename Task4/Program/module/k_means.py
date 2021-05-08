@@ -89,7 +89,7 @@ def _draw_and_save_chart(score_clusters: List[List[float]], score_iters: List[Li
     plt.xscale('log')
     plt.ylabel("Silhouette")
     plt.xlabel("Max Iterations number")
-    plt.legend(loc="best")
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='upper left', fontsize='xx-small', ncol=5, mode="expand")
     
     latex_generator.generate_chart_image("kmeans_chart" + image_filename)
     plt.savefig(LATEX_RESULTS_DIR + "/kmeans_chart" + image_filename)
