@@ -21,16 +21,16 @@ def k_means_clustering(data_set: np.ndarray, data_set_name: str,
     scores_clusters_numbers: List[Tuple[List[float], List[float]]] = []
     scores_iter_numbers: List[Tuple[List[float], List[float]]] = []
 
-    # for cluster_value in CLUSTERS_NUMBER:
-    #     k_means = KMeans(
-    #         n_clusters = cluster_value
-    #     )
-    #     cluster_labels = k_means.fit_predict(data_set)
-    #     is_all_items_same = np.all(cluster_labels == cluster_labels[0])
-    #     if not is_all_items_same:
-    #         score = round(silhouette_score(data_set, cluster_labels), 4)
-    #         scores_clusters_numbers.append((cluster_value, score))
-    #         print("Clusters number: " + str(cluster_value) + "\tSilhouette:\t" + str(score))
+    for cluster_value in CLUSTERS_NUMBER:
+        k_means = KMeans(
+            n_clusters = cluster_value
+        )
+        cluster_labels = k_means.fit_predict(data_set)
+        is_all_items_same = np.all(cluster_labels == cluster_labels[0])
+        if not is_all_items_same:
+            score = round(silhouette_score(data_set, cluster_labels), 4)
+            scores_clusters_numbers.append((cluster_value, score))
+            print("Clusters number: " + str(cluster_value) + "\tSilhouette:\t" + str(score))
 
     for cluster_value in CLUSTERS_NUMBER_TO_MAX_ITER:
         for iter_value in MAX_ITER:
@@ -42,9 +42,9 @@ def k_means_clustering(data_set: np.ndarray, data_set_name: str,
             is_all_items_same = np.all(cluster_labels == cluster_labels[0])
             if not is_all_items_same:
                 score = round(silhouette_score(data_set, cluster_labels), 4)
-                scores_iter_numbers.append((iter_value, score))
-                # print("Clusters number: " + str(cluster_value) + "\tMax iterations number:\t" + str(iter_value)
-                # + "\tSilhouette:\t" + str(score))
+                scores_iter_numbers.append(("1e" + str(int(np.log10(iter_value))), score))
+                print("Clusters number: " + str(cluster_value) + "\tMax iterations number:\t" + str(iter_value)
+                + "\tSilhouette:\t" + str(score))
 
     if save_latex :
         _draw_and_save_chart(scores_clusters_numbers, scores_iter_numbers, data_set_name)
@@ -53,24 +53,19 @@ def k_means_clustering(data_set: np.ndarray, data_set_name: str,
 
 def _save_score(score_clusters: List[List[float]], score_iters: List[List[float]], data_set_name: str) -> None:
     filename_description = "_" + data_set_name
-    # latex_generator.generate_vertical_table(
-    #     header_names = ["Clusters", "Silhouette"], 
-    #     body_values = score_clusters,
-    #     filename = "kmeans_table_clusters" + filename_description
-    # ) 
-    add = []
-    for x in CLUSTERS_NUMBER_TO_MAX_ITER:
-        for y in MAX_ITER:
-            add.append(x)
-    for x in add:
-        print("add: ", x)
-
-    latex_generator.generate_horizontal_table(
-        header_names = ["2", "6", "8", "19", "25"], # ["Clusters number", "Max iterations"], 
-        body_values = score_iters,
-        horizontal_column_names =  add,
-        filename = "kmeans_table_iters" + filename_description
-    )
+    latex_generator.generate_vertical_table(
+        header_names = ["Clusters", "Silhouette"], 
+        body_values = score_clusters,
+        filename = "kmeans_table_clusters" + filename_description
+    ) 
+    index = 0
+    for cluster_number in CLUSTERS_NUMBER_TO_MAX_ITER:
+        latex_generator.generate_vertical_table(
+            header_names=  ["Max iterations", "Silhouette"],
+            body_values = score_iters[index : index + 10],
+            filename = "kmeans_table_iters" + filename_description + "_" + str(cluster_number) + "_clusters"
+        )
+        index += 10
 
 def _draw_and_save_chart(score_clusters: List[List[float]], score_iters: List[List[float]], data_set_name: str) -> None:
     base_filename = "_" + data_set_name
