@@ -19,19 +19,18 @@ latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 def k_means_clustering(data_set: np.ndarray, data_set_name: str,
                        save_latex: bool = False) -> None:
     scores_clusters_numbers: List[Tuple[List[float], List[float]]] = []
-    # scores_iter_numbers: List[Tuple[List[float], List[float], List[float]]] = []
     scores_iter_numbers: List[Tuple[List[float], List[float]]] = []
 
-    # for cluster_value in CLUSTERS_NUMBER:
-    #     k_means = KMeans(
-    #         n_clusters = cluster_value
-    #     )
-    #     cluster_labels = k_means.fit_predict(data_set)
-    #     is_all_items_same = np.all(cluster_labels == cluster_labels[0])
-    #     if not is_all_items_same:
-    #         score = round(silhouette_score(data_set, cluster_labels), 4)
-    #         scores_clusters_numbers.append((cluster_value, score))
-    #         print("Clusters number: " + str(cluster_value) + "\tSilhouette:\t" + str(score))
+    for cluster_value in CLUSTERS_NUMBER:
+        k_means = KMeans(
+            n_clusters = cluster_value
+        )
+        cluster_labels = k_means.fit_predict(data_set)
+        is_all_items_same = np.all(cluster_labels == cluster_labels[0])
+        if not is_all_items_same:
+            score = round(silhouette_score(data_set, cluster_labels), 4)
+            scores_clusters_numbers.append((cluster_value, score))
+            print("Clusters number: " + str(cluster_value) + "\tSilhouette:\t" + str(score))
 
     for cluster_value in CLUSTERS_NUMBER_TO_MAX_ITER:
         for iter_value in MAX_ITER:
@@ -53,7 +52,7 @@ def k_means_clustering(data_set: np.ndarray, data_set_name: str,
     #     _draw_and_save_chart_clusters(scores_clusters_numbers, data_set_name, 0)
     if save_latex :
         # _save_score(scores_clusters_numbers, data_set_name)   
-        _draw_and_save_chart_iters(scores_iter_numbers, data_set_name, 0)
+        _draw_and_save_chart(scores_clusters_numbers, scores_iter_numbers, data_set_name, 0)
 
 
 def _save_score(score: List[List[float]], data_set_name: str) -> None:
@@ -63,34 +62,36 @@ def _save_score(score: List[List[float]], data_set_name: str) -> None:
         "kmeans_table" + filename_description
     )
 
-def _draw_and_save_chart_clusters(score: List[List[float]], data_set_name: str, order_number: int) -> None:
-    base_filename = "_" + data_set_name + "_clusters_"
+def _draw_and_save_chart(score_clusters: List[List[float]], score_iters: List[List[float]], data_set_name: str, order_number: int) -> None:
+    base_filename = "_" + data_set_name + "_"
     image_filename = base_filename + str(order_number) + "-" + datetime.now().strftime("%H%M%S")
+    colors = {2: "red", 6: "blue", 8: "green", 19: "purple", 25: "orange"}
 
-    plt.xscale('log')
-    plt.plot(*zip(*score), "red")
-    latex_generator.generate_chart_image("kmeans_chart_clusters" + image_filename)
-    plt.savefig(LATEX_RESULTS_DIR + "/kmeans_chart" + image_filename)
-    plt.close()
-    plt.show()
+#CLUSTER CHARTS
+    plt.subplot(211)
+    plt.subplots_adjust(left=0.1,
+                        bottom=0.2,
+                        right=0.9,
+                        top=0.9,
+                        wspace=0.4,
+                        hspace=0.5)
+    plt.plot(*zip(*score_clusters), "green")
+    plt.ylabel("Silhouette")
+    plt.xlabel("Clusters number")
 
-def _draw_and_save_chart_iters(score: List[List[float]], data_set_name: str, order_number: int) -> None:
-    base_filename = "_" + data_set_name + "_iters_"
-    image_filename = base_filename + str(order_number) + "-" + datetime.now().strftime("%H%M%S")
-    colors = {2: "red", 6: "blue", 8: "green", 19: "yellow", 25: "orange"}
-    # plt.plot(*zip(*score), "red")
-    # plt.plot(*zip(*score[0:10]), "red", label= str("Clusters: " + str(CLUSTERS_NUMBER_TO_MAX_ITER[0])))
+#ITERATIONS CHARTS
+    plt.subplot(212)
     index = 0
     for cluster_number in CLUSTERS_NUMBER_TO_MAX_ITER:
-        plt.plot(*zip(*score[index:index+10]), colors[cluster_number], label= str("Clusters: " + str(cluster_number)))
+        plt.plot(*zip(*score_iters[index:index+10]), colors[cluster_number], label= str("Clusters: " + str(cluster_number)))
         index += 10
 
     plt.xscale('log')
     plt.ylabel("Silhouette")
-    plt.xlabel("Iteration number")
+    plt.xlabel("Max Iterations number")
     plt.legend(loc="best")
     
-    latex_generator.generate_chart_image("kmeans_chart_iters" + image_filename)
+    latex_generator.generate_chart_image("kmeans_chart" + image_filename)
     plt.savefig(LATEX_RESULTS_DIR + "/kmeans_chart" + image_filename)
     plt.close()
     plt.show()
