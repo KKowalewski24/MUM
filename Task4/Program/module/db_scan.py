@@ -57,7 +57,7 @@ def _draw_score(epsilons_and_scores: Tuple[List[float], List[float]], min_sample
     if save_latex:
         latex_generator.generate_vertical_table(
             ["Eps", "Silh"], latex_scores,
-            "db_scan_table_" + data_set_name + ("_eucl" if is_euclidean_metric else "_manh") \
+            "db_scan_table_" + data_set_name + ("_eucl" if is_euclidean_metric else "_manh")
             + "_min_sample" + str(min_sample)
         )
 
@@ -93,8 +93,7 @@ def _draw_chart(epsilons_and_scores: List[Tuple[List[float], List[float]]], data
 
     if save_latex:
         base_filename = "_" + data_set_name + ("_eucl" if is_euclidean_metric else "_manh")
-        image_filename = base_filename + str(order_number) + "-" \
-                         + datetime.now().strftime("%H%M%S")
+        image_filename = base_filename + str(order_number) + "-" + datetime.now().strftime("%H%M%S")
         latex_generator.generate_chart_image("db_scan_chart" + image_filename)
         plt.savefig(LATEX_RESULTS_DIR + "/db_scan_chart" + image_filename)
         plt.close()
