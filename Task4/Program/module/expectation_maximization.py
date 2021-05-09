@@ -19,31 +19,37 @@ def expectation_maximization_clustering(data_set: np.ndarray, data_set_name: str
     fig.subplots_adjust(hspace=0.5, wspace=0.5)
 
     print("Dataset: "+data_set_name)
-    for variant_id in covariance_types:
-        print(covariance_types[variant_id]+"...")
-        plt.subplot(2, 2, variant_id + 1, title="covariance: " + covariance_types[variant_id])
-        plt.grid()
-        plt.xlabel('Max iterations')
-        plt.ylabel('Silhouette coefficient value')
-        for n_clusters in n_clusters_range:
-            latex_lebels = []
+    for n_clusters in n_clusters_range:
+        print("Cluster number: " + str(n_clusters))
+        latex_data = []
+        for max_it in n_iters_range:
+            latex_data.append([max_it])
+
+        for variant_id in covariance_types:
+            print(covariance_types[variant_id]+"...")
+            plt.subplot(2, 2, variant_id + 1, title="covariance: " + covariance_types[variant_id])
+            plt.grid()
+            plt.xlabel('Max iterations')
+            plt.ylabel('Silhouette coefficient value')
             score = []
+            index = 0
             for max_iter in n_iters_range:
                 y = GaussianMixture(
                     n_components=n_clusters,
                     covariance_type="full",
                     max_iter=max_iter).fit_predict(data_set)
                 silhouette = silhouette_score(data_set, y)
-                latex_lebels.append([max_iter, silhouette])
+                latex_data[index].append(silhouette)
                 score.append(silhouette)
+                index += 1
             plt.plot(n_iters_range, score, label=str(n_clusters))
-            if save_latex:
-                file_name = data_set_name+"_"+covariance_types[variant_id]+"_"+str(n_clusters)+"_"+datetime.now().strftime("%H%M%S")
-                latex_generator.generate_vertical_table(header_names=["Max iterations", "Silhouette score"], body_values=latex_lebels, filename=file_name)
+        if save_latex:
+            file_name = data_set_name+"_"+str(n_clusters)+"_"+datetime.now().strftime("%H%M%S")
+            latex_generator.generate_vertical_table(header_names=["Max iterations", "Silhouette score - full", "Silhouette score - tied", "Silhouette score - diag", "Silhouette score - spherical"], body_values=latex_data, filename=file_name)
 
     lines, labels = fig.axes[-1].get_legend_handles_labels()
     fig.legend(lines, labels, title="\n Clusters: ", bbox_to_anchor=(1, 1), loc="upper right", ncol=1)
-    plt.show()
+
     if save_latex:
         base_filename = "_" + data_set_name
         image_filename = base_filename + "-" + datetime.now().strftime("%H%M%S")
