@@ -7,7 +7,7 @@ from datetime import datetime
 
 LATEX_RESULTS_DIR = "em_algo"
 n_clusters_range = [4, 6, 9, 15, 20]
-n_iters_range = [int(1e2), int(1e3), int(1e4), int(1e5), int(1e6)]
+n_iters_range = [int(1e2), int(1e3), int(1e4), int(1e5), int(1e6), int(1e7), int(1e8), int(1e9), int(1e10)]
 covariance_types = {0: "full", 1: "tied", 2: "diag", 3: "spherical"}
 latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
@@ -26,21 +26,23 @@ def expectation_maximization_clustering(data_set: np.ndarray, data_set_name: str
         plt.xlabel('Max iterations')
         plt.ylabel('Silhouette coefficient value')
         for n_clusters in n_clusters_range:
-            print("Number of clusters: "+str(n_clusters))
+            latex_lebels = []
             score = []
             for max_iter in n_iters_range:
-                print("Number of max iterations: "+str(max_iter))
                 y = GaussianMixture(
                     n_components=n_clusters,
                     covariance_type="full",
                     max_iter=max_iter).fit_predict(data_set)
                 silhouette = silhouette_score(data_set, y)
-                print("Score: " + str(silhouette))
+                latex_lebels.append([max_iter, silhouette])
                 score.append(silhouette)
             plt.plot(n_iters_range, score, label=str(n_clusters))
+            if save_latex:
+                file_name = data_set_name+"_"+covariance_types[variant_id]+"_"+str(n_clusters)+"_"+datetime.now().strftime("%H%M%S")
+                latex_generator.generate_vertical_table(header_names=["Max iterations", "Silhouette score"], body_values=latex_lebels, filename=file_name)
+
     lines, labels = fig.axes[-1].get_legend_handles_labels()
-    fig.legend(lines, labels, title="Clusters: ", bbox_to_anchor=(1,1), loc="upper right",
-                ncol=1)
+    fig.legend(lines, labels, title="\n Clusters: ", bbox_to_anchor=(1, 1), loc="upper right", ncol=1)
     plt.show()
     if save_latex:
         base_filename = "_" + data_set_name
