@@ -18,9 +18,9 @@ def expectation_maximization_clustering(data_set: np.ndarray, data_set_name: str
     fig.suptitle("dataset: " + data_set_name)
     fig.subplots_adjust(hspace=0.5, wspace=0.5)
 
-    print("Dataset:"+data_set_name)
+    print("Dataset: "+data_set_name)
     for variant_id in covariance_types:
-        print(covariance_types[variant_id]+":")
+        print(covariance_types[variant_id]+"...")
         plt.subplot(2, 2, variant_id + 1, title="covariance: " + covariance_types[variant_id])
         plt.grid()
         plt.xlabel('Max iterations')
@@ -47,8 +47,8 @@ def expectation_maximization_clustering(data_set: np.ndarray, data_set_name: str
     if save_latex:
         base_filename = "_" + data_set_name
         image_filename = base_filename + "-" + datetime.now().strftime("%H%M%S")
-        latex_generator.generate_chart_image("db_scan_chart" + image_filename)
-        plt.savefig(LATEX_RESULTS_DIR + "/db_scan_chart" + image_filename)
+        latex_generator.generate_chart_image("em_scan_chart" + image_filename)
+        plt.savefig(LATEX_RESULTS_DIR + "/em_scan_chart" + image_filename)
         plt.close()
 
 
