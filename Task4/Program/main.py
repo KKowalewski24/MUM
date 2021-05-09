@@ -27,8 +27,8 @@ def main() -> None:
         present_data_sets()
 
     process_clustering(read_iris_ds(), "Iris", save_latex)
-    # process_clustering(read_mall_customers(), "Customers", save_latex)
-    # process_clustering(read_moons_ds(), "Moons", save_latex)
+    process_clustering(read_mall_customers(), "Customers", save_latex)
+    process_clustering(read_moons_ds(), "Moons", save_latex)
     display_finish()
 
 
