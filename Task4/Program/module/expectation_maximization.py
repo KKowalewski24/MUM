@@ -7,7 +7,7 @@ from datetime import datetime
 
 LATEX_RESULTS_DIR = "em_algo"
 n_clusters_range = [4, 6, 9, 15, 20]
-n_iters_range = [int(1e2), int(1e3), int(1e4), int(1e5), int(1e6), int(1e7), int(1e8), int(1e9), int(1e10)]
+n_iters_range = [40, 60, 80, int(1e2), 200, int(1e3), int(1e4), int(1e5), int(1e6), int(1e7), int(1e8), int(1e9), int(1e10)]
 covariance_types = {0: "full", 1: "tied", 2: "diag", 3: "spherical"}
 latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
@@ -39,13 +39,13 @@ def expectation_maximization_clustering(data_set: np.ndarray, data_set_name: str
                     covariance_type="full",
                     max_iter=max_iter).fit_predict(data_set)
                 silhouette = silhouette_score(data_set, y)
-                latex_data[index].append(silhouette)
+                latex_data[index].append(round(silhouette,3))
                 score.append(silhouette)
                 index += 1
             plt.plot(n_iters_range, score, label=str(n_clusters))
         if save_latex:
             file_name = data_set_name+"_"+str(n_clusters)+"_"+datetime.now().strftime("%H%M%S")
-            latex_generator.generate_vertical_table(header_names=["Max iterations", "Silhouette score - full", "Silhouette score - tied", "Silhouette score - diag", "Silhouette score - spherical"], body_values=latex_data, filename=file_name)
+            latex_generator.generate_vertical_table(header_names=["Max iterations", "full", "tied", "diag", "spherical"], body_values=latex_data, filename=file_name)
 
     lines, labels = fig.axes[-1].get_legend_handles_labels()
     fig.legend(lines, labels, title="\n Clusters: ", bbox_to_anchor=(1, 1), loc="upper right", ncol=1)
