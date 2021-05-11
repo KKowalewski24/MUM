@@ -20,18 +20,25 @@ def knn_classification(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.nd
     plt.suptitle("dataset: " + data_set_name)
     plt.subplots_adjust(hspace=0.5, wspace=0.5)
 
-    for k_value in K_RANGE:
-        for metric in reversed(METRICS):
+    for metric in reversed(METRICS):
+        plt.grid()
+        plt.ylabel("Accuracy")
+        plt.xlabel("K parameter value")
+        accuracies = []
+        for k_value in K_RANGE:
             knn_classifier = KNeighborsClassifier(
                 n_neighbors=k_value, p=metric
             )
             knn_classifier.fit(X_train, y_train)
             y_prediction = knn_classifier.predict(X_test)
             accuracy = round(metrics.accuracy_score(y_test, y_prediction), 4)
+            accuracies.append(accuracy)
             print(
                 "Metric:", METRICS[metric], "\t",
-                "K parameter value:", k_value,
-                "\t", "accuracy:", accuracy
+                "K parameter value:", k_value, "\t",
+                "accuracy:", accuracy
             )
+        plt.plot(K_RANGE, accuracies, label="Metric: " + METRICS[metric])
+        plt.legend()
 
-    # plt.show()
+    plt.show()
