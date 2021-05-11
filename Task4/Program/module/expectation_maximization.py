@@ -18,35 +18,32 @@ def expectation_maximization_clustering(data_set: np.ndarray, data_set_name: str
     fig.suptitle("dataset: " + data_set_name)
     fig.subplots_adjust(hspace=0.5, wspace=0.5)
 
-    print("Dataset: "+data_set_name)
     for n_clusters in n_clusters_range:
-        print("Cluster number: " + str(n_clusters))
         latex_data = []
         for max_it in n_iters_range:
             latex_data.append([max_it])
 
         for variant_id in covariance_types:
-            print(covariance_types[variant_id]+"...")
             plt.subplot(2, 2, variant_id + 1, title="covariance: " + covariance_types[variant_id])
             plt.grid()
             plt.xlabel('Max iterations')
             plt.ylabel('Silhouette coefficient value')
             score = []
-            index = 0
+            latex_row_index = 0
             for max_iter in n_iters_range:
                 y = GaussianMixture(
                     n_components=n_clusters,
                     covariance_type="full",
                     max_iter=max_iter).fit_predict(data_set)
                 silhouette = silhouette_score(data_set, y)
-                latex_data[index].append(round(silhouette,3))
+                latex_data[latex_row_index].append(round(silhouette, 3))
                 score.append(silhouette)
-                index += 1
+                latex_row_index += 1
             plt.plot(n_iters_range, score, label=str(n_clusters))
         if save_latex:
             file_name = data_set_name+"_"+str(n_clusters)+"_"+datetime.now().strftime("%H%M%S")
-            latex_generator.generate_vertical_table(header_names=["Max iterations", "full", "tied", "diag", "spherical"], body_values=latex_data, filename=file_name)
-
+            latex_generator.generate_vertical_table(header_names=["Max iterations", "full", "tied", "diag", "spherical"]
+                                                    , body_values=latex_data, filename=file_name)
     lines, labels = fig.axes[-1].get_legend_handles_labels()
     fig.legend(lines, labels, title="\n Clusters: ", bbox_to_anchor=(1, 1), loc="upper right", ncol=1)
 
@@ -55,7 +52,10 @@ def expectation_maximization_clustering(data_set: np.ndarray, data_set_name: str
         image_filename = base_filename + "-" + datetime.now().strftime("%H%M%S")
         latex_generator.generate_chart_image("em_scan_chart" + image_filename)
         plt.savefig(LATEX_RESULTS_DIR + "/em_scan_chart" + image_filename)
-        plt.close()
+    if not save_latex:
+        plt.show()
+
+    plt.close()
 
 
 

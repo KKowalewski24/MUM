@@ -35,16 +35,16 @@ def main() -> None:
 # DEF ------------------------------------------------------------------------ #
 def process_clustering(data_set: np.ndarray, data_set_name: str,
                        save_latex: bool) -> None:
-    # display_header(data_set_name + " data set")
-    # display_header("K Means")
-    # k_means_clustering(data_set, data_set_name, save_latex)
-    # display_header("Agglomerative")
-    # agglomerative_clustering(data_set, data_set_name, save_latex)
+    display_header(data_set_name + " data set")
+    display_header("K Means")
+    k_means_clustering(data_set, data_set_name, save_latex)
+    display_header("Agglomerative")
+    agglomerative_clustering(data_set, data_set_name, save_latex)
     display_header("Expectation Maximization")
     expectation_maximization_clustering(data_set, data_set_name, save_latex)
-    # display_header("DBSCAN")
-    # db_scan_clustering(data_set, data_set_name, True, save_latex)
-    # db_scan_clustering(data_set, data_set_name, False, save_latex)
+    display_header("DBSCAN")
+    db_scan_clustering(data_set, data_set_name, True, save_latex)
+    db_scan_clustering(data_set, data_set_name, False, save_latex)
 
 
 def display_header(name: str) -> None:
