@@ -51,11 +51,7 @@ def main() -> None:
 def process_classifiers(data_sets: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
                         data_set_name: str, save_latex: bool, test_data_size: float) -> None:
     display_header("k-nearest neighbors classifier")
-    knn_classification(data_sets, True, data_set_name, save_latex)
-    knn_classification(data_sets, False, data_set_name, save_latex)
-
-    display_header("naive Bayes classifier")
-    bayes_classification(data_sets, save_latex, test_data_size)
+    knn_classification(data_sets, data_set_name, save_latex)
 
     display_header("support vector machine classifier")
     svm_classification(data_sets, data_set_name, save_latex)
