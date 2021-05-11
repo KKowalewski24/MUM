@@ -53,6 +53,9 @@ def process_classifiers(data_sets: Tuple[np.ndarray, np.ndarray, np.ndarray, np.
     display_header("k-nearest neighbors classifier")
     knn_classification(data_sets, data_set_name, save_latex)
 
+    display_header("naive Bayes classifier")
+    bayes_classification(data_sets, save_latex, test_data_size)
+
     display_header("support vector machine classifier")
     svm_classification(data_sets, data_set_name, save_latex)
 
