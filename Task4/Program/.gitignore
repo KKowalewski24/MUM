@@ -57,6 +57,7 @@ cover/
 *.pot
 
 # Django stuff:
+*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -138,36 +139,8 @@ dmypy.json
 cython_debug/
 
 # --------------------------------------------- #
+.idea
 *~
 .mypy_cache
-
-# --------------------------------------------- #
-.idea
-auxil
-out
-*.bbl
-*.blg
-*.aux
-*.bcf
-*.locode
-*.lof
-*.log
-*.lot
-*.out
-*.pdf
-*.xml
-*.gz
-*.toc
-
-!MUM-Task1-Report.pdf
-!MUM-ProblemSet2.pdf
-!MUM-ProblemSet3.pdf
-!MUM-ProblemSet4.pdf
-!MUM-ProblemSet5.pdf
-!MUM-ProblemSet6.pdf
-
-Task2/Program/results/
-
-Task3/Program/knn/
-
-Task3/Program/svm/
+*.png
+*.txt

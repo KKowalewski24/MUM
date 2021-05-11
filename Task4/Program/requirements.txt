@@ -1,0 +1,7 @@
+numpy
+matplotlib
+scikit-learn
+pandas
+flake8
+pep8-naming
+mypy
