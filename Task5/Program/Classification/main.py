@@ -7,6 +7,7 @@ import numpy as np
 from module.reader import read_gestures_ds, read_heart_ds, read_weather_AUS
 from sklearn import metrics, naive_bayes, svm
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
@@ -52,26 +53,41 @@ classifiers_configuration = {
 def main() -> None:
     args = prepare_args()
     save_latex: bool = args.save
+
     for config in classifiers_configuration:
         display_header(config)
         data_set = classifiers_configuration[config][0]
         classifiers = classifiers_configuration[config][1]
         for classifier in classifiers:
-            print(classifier)
-            calculate_metrics(data_set, classifiers[classifier])
-            print()
+            display_header(classifier)
+            evaluate_classifier(data_set, classifiers[classifier])
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
-def calculate_metrics(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-                      classifier) -> None:
+def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
+                        classifier) -> None:
     X_train, X_test, y_train, y_test = data_set
     classifier.fit(X_train, y_train)
     y_prediction = classifier.predict(X_test)
+
+    matrix = confusion_matrix(y_test, y_prediction)
+    sensitivity = 0
     accuracy = round(metrics.accuracy_score(y_test, y_prediction), 4)
-    print(accuracy)
+    precision = 0
+    specificity = 0
+
+    display_result("Confusion matrix", matrix)
+    display_result("Sensitivity", sensitivity)
+    display_result("Accuracy", accuracy)
+    display_result("Precision", precision)
+    display_result("Specificity", specificity)
+
+
+def display_result(label: str, value) -> None:
+    print(label)
+    print(value, end="\n\n")
 
 
 def display_header(name: str) -> None:
