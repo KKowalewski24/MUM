@@ -4,6 +4,8 @@ from argparse import ArgumentParser, Namespace
 from typing import Tuple
 
 import numpy as np
+
+from module.LatexGenerator import LatexGenerator
 from module.reader import read_gestures_ds, read_heart_ds, read_weather_AUS
 from sklearn import naive_bayes, svm
 from sklearn.ensemble import RandomForestClassifier
@@ -16,6 +18,10 @@ Sample usage:
     python main.py
     python main.py -s
 """
+
+# VAR ------------------------------------------------------------------------ #
+LATEX_RESULTS_DIR = "result"
+latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
 # TODO SET PROPER PARAMETERS
 classifiers_configuration = {
@@ -60,30 +66,35 @@ def main() -> None:
         classifiers = classifiers_configuration[config][1]
         for classifier in classifiers:
             display_header(classifier)
-            evaluate_classifier(data_set, classifiers[classifier])
+            evaluate_classifier(data_set, classifiers[classifier], save_latex)
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
 def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-                        classifier) -> None:
+                        classifier, save_latex: bool) -> None:
     X_train, X_test, y_train, y_test = data_set
     classifier.fit(X_train, y_train)
     y_prediction = classifier.predict(X_test)
 
-    matrix = confusion_matrix(y_test, y_prediction)
-    # sensitivity == recall
-    sensitivity = np.round(recall_score(y_test, y_prediction, average=None), 4)
-    accuracy = round(accuracy_score(y_test, y_prediction), 4)
-    precision = np.round(precision_score(y_test, y_prediction, average=None), 4)
-    specificity = 0
+    headers = [
+        "Confusion matrix", "Sensitivity", "Accuracy", "Precision", "Specificity"
+    ]
+    results = []
 
-    display_result("Confusion matrix", matrix)
-    display_result("Sensitivity", sensitivity)
-    display_result("Accuracy", accuracy)
-    display_result("Precision", precision)
-    display_result("Specificity", specificity)
+    results.append(confusion_matrix(y_test, y_prediction))
+    results.append(np.round(recall_score(y_test, y_prediction, average=None), 4))
+    results.append(round(accuracy_score(y_test, y_prediction), 4))
+    results.append(np.round(precision_score(y_test, y_prediction, average=None), 4))
+    # TODO
+    results.append(0)
+
+    for i in range(len(headers)):
+        display_result(headers[i], results[i])
+
+    if save_latex:
+        pass
 
 
 def display_result(label: str, value) -> None:
