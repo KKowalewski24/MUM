@@ -5,9 +5,9 @@ from typing import Tuple
 
 import numpy as np
 from module.reader import read_gestures_ds, read_heart_ds, read_weather_AUS
-from sklearn import metrics, naive_bayes, svm
+from sklearn import naive_bayes, svm
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
@@ -73,9 +73,10 @@ def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.n
     y_prediction = classifier.predict(X_test)
 
     matrix = confusion_matrix(y_test, y_prediction)
-    sensitivity = 0
-    accuracy = round(metrics.accuracy_score(y_test, y_prediction), 4)
-    precision = 0
+    # sensitivity == recall
+    sensitivity = np.round(recall_score(y_test, y_prediction, average=None), 4)
+    accuracy = round(accuracy_score(y_test, y_prediction), 4)
+    precision = np.round(precision_score(y_test, y_prediction, average=None), 4)
     specificity = 0
 
     display_result("Confusion matrix", matrix)
