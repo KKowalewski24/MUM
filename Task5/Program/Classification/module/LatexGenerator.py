@@ -108,7 +108,7 @@ class LatexGenerator:
 
         header: str = ""
         for i in range(len(header_names)):
-            header += header_names[i]
+            header += str(header_names[i])
             if i < len(header_names) - 1:
                 header += self.table.ampersand
 

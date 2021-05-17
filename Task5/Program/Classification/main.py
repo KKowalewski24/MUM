@@ -20,7 +20,7 @@ Sample usage:
 """
 
 # VAR ------------------------------------------------------------------------ #
-LATEX_RESULTS_DIR = "result"
+LATEX_RESULTS_DIR = "latex_results"
 latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
 # TODO SET PROPER PARAMETERS
@@ -66,14 +66,15 @@ def main() -> None:
         classifiers = classifiers_configuration[config][1]
         for classifier in classifiers:
             display_header(classifier)
-            evaluate_classifier(data_set, classifiers[classifier], save_latex)
+            evaluate_classifier(data_set, classifiers[classifier],
+                                config + "_" + classifier, save_latex)
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
 def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-                        classifier, save_latex: bool) -> None:
+                        classifier, filename: str, save_latex: bool) -> None:
     X_train, X_test, y_train, y_test = data_set
     classifier.fit(X_train, y_train)
     y_prediction = classifier.predict(X_test)
@@ -94,7 +95,13 @@ def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.n
         display_result(headers[i], results[i])
 
     if save_latex:
-        pass
+        matrix = results[0]
+        latex_generator.generate_vertical_table(
+            matrix[0], matrix[1:], filename + "_confusion_matrix"
+        )
+        latex_generator.generate_vertical_table(
+            headers[1:], [results[1:]], filename + "_statistics"
+        )
 
 
 def display_result(label: str, value) -> None:
