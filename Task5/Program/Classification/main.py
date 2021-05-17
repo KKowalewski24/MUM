@@ -2,11 +2,48 @@ import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
 
+from module.reader import read_gestures_ds, read_heart_ds, read_weather_AUS
+from sklearn import naive_bayes, svm
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+
 """
 Sample usage:
     python main.py
     python main.py -s
 """
+
+# TODO SET PROPER PARAMETERS
+classifier_configuration = {
+    "Heart": (read_heart_ds(), [
+        {"knn": KNeighborsClassifier(n_neighbors=9, p=2)},
+        {"bayes": naive_bayes.GaussianNB()},
+        # {"svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma)},
+        # {"decision_tree": DecisionTreeClassifier(min_samples_leaf=min_samples_leaf,
+        #                                          max_depth=max_depth, random_state=47)},
+        # {"random_forest": RandomForestClassifier(n_jobs=-1, n_estimators=n_estimators,
+        #                                          **best_params, random_state=47)}
+    ]),
+    "Gestures": (read_gestures_ds(), [
+        {"knn": KNeighborsClassifier(n_neighbors=9, p=2)},
+        {"bayes": naive_bayes.GaussianNB()},
+        # {"svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma)},
+        # {"decision_tree": DecisionTreeClassifier(min_samples_leaf=min_samples_leaf,
+        #                                          max_depth=max_depth, random_state=47)},
+        # {"random_forest": RandomForestClassifier(n_jobs=-1, n_estimators=n_estimators,
+        #                                          **best_params, random_state=47)}
+    ]),
+    "Weather": (read_weather_AUS(), [
+        {"knn": KNeighborsClassifier(n_neighbors=9, p=2)},
+        {"bayes": naive_bayes.GaussianNB()},
+        # {"svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma)},
+        # {"decision_tree": DecisionTreeClassifier(min_samples_leaf=min_samples_leaf,
+        #                                          max_depth=max_depth, random_state=47)},
+        # {"random_forest": RandomForestClassifier(n_jobs=-1, n_estimators=n_estimators,
+        #                                          **best_params, random_state=47)}
+    ])
+}
 
 
 # MAIN ----------------------------------------------------------------------- #
