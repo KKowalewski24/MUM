@@ -2,13 +2,7 @@ import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
 
-import numpy as np
-
-from module.agglomerative import agglomerative_clustering
-from module.db_scan import db_scan_clustering
-from module.expectation_maximization import expectation_maximization_clustering
-from module.k_means import k_means_clustering
-from module.reader import present_data_sets, read_iris_ds, read_mall_customers, read_moons_ds
+from module.reader import present_data_sets
 
 """
 Sample usage:
@@ -26,26 +20,10 @@ def main() -> None:
     if args.present:
         present_data_sets()
 
-    process_clustering(read_iris_ds(), "Iris", save_latex)
-    process_clustering(read_mall_customers(), "Customers", save_latex)
-    process_clustering(read_moons_ds(), "Moons", save_latex)
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
-def process_clustering(data_set: np.ndarray, data_set_name: str,
-                       save_latex: bool) -> None:
-    display_header(data_set_name + " data set")
-    display_header("K Means")
-    k_means_clustering(data_set, data_set_name, save_latex)
-    display_header("Agglomerative")
-    agglomerative_clustering(data_set, data_set_name, save_latex)
-    display_header("Expectation Maximization")
-    expectation_maximization_clustering(data_set, data_set_name, save_latex)
-    display_header("DBSCAN")
-    db_scan_clustering(data_set, data_set_name, save_latex)
-
-
 def display_header(name: str) -> None:
     print("------------------------------------------------------------------------")
     print(name)
