@@ -100,8 +100,10 @@ class LatexGenerator:
     def generate_vertical_table(self, header_names: List[str],
                                 body_values: List[List[float]],
                                 filename: str) -> None:
+        if not self._compare_array_with_matrix_rows(header_names, body_values):
+            raise Exception("Lists must have equal length")
 
-        result: str = "\\begin{minipage}{.24\\textwidth}\n" + self.table.centering \
+        result: str = self.table.begin + self.table.centering \
                       + self.table.get_begin_tabular(len(header_names)) + self.table.hline
 
         header: str = ""
@@ -121,7 +123,7 @@ class LatexGenerator:
             body += " " + self.table.back_slashes + " " + self.table.hline
 
         result += header + body + self.table.end_tabular + self.table.get_caption(filename) \
-                  + self.table.get_label(filename) + "\end{minipage}\n\hfill\n"
+                  + self.table.get_label(filename) + self.table.end + self.table.float_barrier
         self._save_to_file(result, filename)
 
 
