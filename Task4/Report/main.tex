@@ -62,12 +62,26 @@
         
         \subsection{Metoda aglomeracyjna}
         \label{agglomerative_description} {
-            Jeżeli chodzi o algorytm aglomeracyjny, to jest to algorytm hierarchiczny, który na początku zakłada, że każda próbka jest osobnym klastrem. W kolejnych iteracjach łączy najbliższe siebie klastry w jeden. W ten sposób z każdą iteracją jest jeden klaster mniej. Algorytm kończy się, kiedy powstanie zadana liczba klastrów, w skrajnym przypadku jeden. Podobieństwo klastrów mierzy się z wykorzystaniem odpowiedniej metryki (np. euklidesowej bądź miejskiej) i odpowiedniej metody łączenia. Te dwa parametry mają zasadniczy wpływ na działanie algorytmu. Trzecim badanym parametrem jest liczba klastrów, na której algorytm się zatrzymuje. Oczywiście aby osiągnąć zadaną liczbę klastrów K dla N próbek, algorytm aglomeracyjny musi przejść przez wszystkie całkowite liczby klastrów od N do K.
+            Jeżeli chodzi o algorytm aglomeracyjny, to jest to algorytm hierarchiczny,
+            który na początku zakłada, że każda próbka jest osobnym klastrem. W
+            kolejnych iteracjach łączy najbliższe siebie klastry w jeden. W ten sposób
+            z każdą iteracją jest jeden klaster mniej. Algorytm kończy się, kiedy
+            powstanie zadana liczba klastrów, w skrajnym przypadku jeden. Podobieństwo
+            klastrów mierzy się z wykorzystaniem odpowiedniej metryki (np. euklidesowej
+            bądź miejskiej) i odpowiedniej metody łączenia. Te dwa parametry mają
+            zasadniczy wpływ na działanie algorytmu. Trzecim badanym parametrem jest
+            liczba klastrów, na której algorytm się zatrzymuje. Oczywiście aby osiągnąć
+            zadaną liczbę klastrów K dla N próbek, algorytm aglomeracyjny musi przejść
+            przez wszystkie całkowite liczby klastrów od N do K.
         }
 
         \subsection{Metoda EM}
         \label{em_description} {
-            Algorytm Oczekiwania-Maksymalizacji (ang. \textit{Expectation-Maximization}, w ramach sprawozdania \textit{EM}) to iteracyjna metoda, która wylicza rozkłady prawdopodobieństwa przynależności obserwacji do danego centrum. Metoda składa się z dwóch kroków wykonywanych na przemian w iteracjach, aż do osiągnięcia warunku końcowego:
+            Algorytm Oczekiwania-Maksymalizacji (ang.
+            \textit{Expectation-Maximization}, w ramach sprawozdania \textit{EM}) to
+            iteracyjna metoda, która wylicza rozkłady prawdopodobieństwa przynależności
+            obserwacji do danego centrum. Metoda składa się z dwóch kroków wykonywanych
+            na przemian w iteracjach, aż do osiągnięcia warunku końcowego:
             \begin{itemize}
                 \item estymacja (expectation) - dla wyestymowanego układu parametrów rozkładu przypadków dokonywane jest przypisanie przykładom prawdopodobieństwa przynależenia do skupień
                 \item maksymalizacja (maximization) - wyznaczenie wartości parametrów skupień, przy których wiarygodność rozkładu osiąga maksymalną wartość
@@ -91,7 +105,11 @@
 
             \subsubsection{Zbiór Iris Species}
             \label{opis_zbiorow_intro_iris} {
-                Jeden z najpopularniejszych zbiorów wykorzystywanych w Machine Learningu. Zbiór zawiera informacje o 3 gatunkach Irysów, po 50 próbek na gatunek.Jeden gatunek jest liniowo separowalny od pozostałych dwóch, które nie są liniowo separowalne od siebie nawzajem. Zbiór składa się z następujących kolumn:
+                Jeden z najpopularniejszych zbiorów wykorzystywanych w Machine
+                Learningu. Zbiór zawiera informacje o 3 gatunkach Irysów, po 50 próbek
+                na gatunek.Jeden gatunek jest liniowo separowalny od pozostałych dwóch,
+                które nie są liniowo separowalne od siebie nawzajem. Zbiór składa się z
+                następujących kolumn:
                 \begin{itemize}
                     \item \textit{ID} - identyfikator;
                     \item \textit{SepalLengthCm} - długość działki kielicha w cm;
@@ -104,7 +122,9 @@
 
             \subsubsection{Zbiór Mall Customer Segmentation Data}
             \label{opis_zbiorow_intro_customers} {
-                Zbiór zawiera informacje o klientach centrum handlowego, zebrane przy okazji zakładania przez klientów kont członkowskich. Zbiór zawiera 200 rekordów i składa się z następujących kolumn:
+                Zbiór zawiera informacje o klientach centrum handlowego, zebrane przy
+                okazji zakładania przez klientów kont członkowskich. Zbiór zawiera 200
+                rekordów i składa się z następujących kolumn:
                 \begin{itemize}
                     \item \textit{CustomerID} - identyfikator;
                     \item \textit{Gender} - płeć;
@@ -116,7 +136,12 @@
 
             \subsubsection{Zbiór Moons}
             \label{opis_zbiorow_intro_moons} {
-                Ostatnim z wybranych zbiorów był dostępny w ramach pakietu sklearn zbiór \textit{moons}. Za pomocą metody generowana jest podana liczba próbek w postaci tupli o dwóch wartościach. Dataset jest opisywany jako przeznaczony do testowania algorytmów klasteryzacji i klasyfikacji. Podczas eksperymentów przeprowadzonych w ramach realizacji zadania dla każdego algorytmu generujemy 700 próbek.
+                Ostatnim z wybranych zbiorów był dostępny w ramach pakietu sklearn
+                zbiór \textit{moons}. Za pomocą metody generowana jest podana liczba
+                próbek w postaci tupli o dwóch wartościach. Dataset jest opisywany jako
+                przeznaczony do testowania algorytmów klasteryzacji i klasyfikacji.
+                Podczas eksperymentów przeprowadzonych w ramach realizacji zadania dla
+                każdego algorytmu generujemy 700 próbek.
             }
 
         }
@@ -2044,7 +2069,13 @@
             danych zawartych na wykresie \ref{kmeans_chart_Iris_173201} można
             wywnioskować, że optymalną liczbą klastrów jest liczba 2, natomiast
             wartości współczynnika zarysu dla liczby klastrów większej od 5 drastycznie
-            spadają, przez co należy uznać je jako nieodpowiednie dla tego zbioru. Natomiast badanie wpływu wartości maksymalnej liczby iteracji wskazało, że największy wpływ na wartość współczynnika zarysu ma liczba z przedziału [1e9; 1e11] dla liczby klastrów równej 19 lub 25. Niestety dla pozostałych wartości liczby klastrów nie zauważono żadnej wartości maksymalnej liczby iteracji, którą należałoby dokładniej zbadać - nie udało się ustalić rzędu wielkości tego parametru, który mógłby mieć wpływ na końcowy wynik.
+            spadają, przez co należy uznać je jako nieodpowiednie dla tego zbioru.
+            Natomiast badanie wpływu wartości maksymalnej liczby iteracji wskazało, że
+            największy wpływ na wartość współczynnika zarysu ma liczba z przedziału
+            [1e9; 1e11] dla liczby klastrów równej 19 lub 25. Niestety dla pozostałych
+            wartości liczby klastrów nie zauważono żadnej wartości maksymalnej liczby
+            iteracji, którą należałoby dokładniej zbadać - nie udało się ustalić rzędu
+            wielkości tego parametru, który mógłby mieć wpływ na końcowy wynik.
 
             Analizując wartości współczynnika zarysu dla zbioru
             \cite{dataset_customers}, dzięki tabeli
@@ -2054,7 +2085,18 @@
             gdyż dla tego przedziału współczynnik zarysu osiągał najwyższe wartości.
             Warto zauważyć, że dla liczby klastrów równej 29, dla tego zbioru danych,
             widać delikatny wzrost dokładności, dlatego zasadne może okazać się
-            wykorzystanie go przy odpowiedniej manipulacji innymi parametrami. Natomiast badanie wpływu wartości maksymalnej liczby iteracji wskazało, że największy wpływ na wartość współczynnika zarysu ma liczba z przedziału [1e6; 1e11] dla liczby klastrów równej 19 lub 25. Warty zauważenia jet fakt, że dal liczby klastrów równej 8, między wartościami 1e10 a 1e11 zaobserwowano wzrost wartości współczynnika zarysu, co może świadczyć o tym, że dobranie maksymalnej liczby iteracji o podobnej wartości do wymienionych może skutkować wzrostem wartości współczynnika. Niestety dla pozostałych wartości liczby klastrów nie zauważono żadnej wartości maksymalnej liczby iteracji, którą należałoby dokładniej zbadać - nie udało się ustalić rzędu wielkości tego parametru, który mógłby mieć wpływ na końcowy wynik.
+            wykorzystanie go przy odpowiedniej manipulacji innymi parametrami.
+            Natomiast badanie wpływu wartości maksymalnej liczby iteracji wskazało, że
+            największy wpływ na wartość współczynnika zarysu ma liczba z przedziału
+            [1e6; 1e11] dla liczby klastrów równej 19 lub 25. Warty zauważenia jet
+            fakt, że dal liczby klastrów równej 8, między wartościami 1e10 a 1e11
+            zaobserwowano wzrost wartości współczynnika zarysu, co może świadczyć o
+            tym, że dobranie maksymalnej liczby iteracji o podobnej wartości do
+            wymienionych może skutkować wzrostem wartości współczynnika. Niestety dla
+            pozostałych wartości liczby klastrów nie zauważono żadnej wartości
+            maksymalnej liczby iteracji, którą należałoby dokładniej zbadać - nie udało
+            się ustalić rzędu wielkości tego parametru, który mógłby mieć wpływ na
+            końcowy wynik.
 
             Analizując wartości współczynnika zarysu dla zbioru \cite{dataset_moons},
             dzięki tabeli \ref{kmeans_table_clusters_Moons} oraz wizualizacji tych
@@ -2064,7 +2106,13 @@
             wartości. Warto zauważyć, że dla liczby klastrów większej niż 25, dla tego
             zbioru danych, widać delikatny wzrost dokładności, dlatego zasadne może
             okazać się wykorzystanie tej wartości przy odpowiedniej manipulacji innymi
-            parametrami. Natomiast badanie wpływu wartości maksymalnej liczby iteracji wskazało, że największy wpływ na wartość współczynnika zarysu ma liczba z przedziału [1e7; 1e101] dla liczby klastrów równej 25. Niestety dla pozostałych wartości liczby klastrów nie zauważono żadnej wartości maksymalnej liczby iteracji, którą należałoby dokładniej zbadać - nie udało się ustalić rzędu wielkości tego parametru, który mógłby mieć wpływ na końcowy wynik.
+            parametrami. Natomiast badanie wpływu wartości maksymalnej liczby iteracji
+            wskazało, że największy wpływ na wartość współczynnika zarysu ma liczba z
+            przedziału [1e7; 1e101] dla liczby klastrów równej 25. Niestety dla
+            pozostałych wartości liczby klastrów nie zauważono żadnej wartości
+            maksymalnej liczby iteracji, którą należałoby dokładniej zbadać - nie udało
+            się ustalić rzędu wielkości tego parametru, który mógłby mieć wpływ na
+            końcowy wynik.
             
         
         }
@@ -2161,20 +2209,45 @@
 
         \subsection{Algorytm EM}
         \label{summary_3} {
-            Podczas ewaluacji wyników przeprowadzonych eksperymentów pierwszym parametrem, który został poddany analizie była liczba klastrów. Na początku program został uruchomiony przy stałej wartości maksymalnej liczby iteracji (300) dla liczby klastrów przyjmującej wartość od 1 do 20. Na podstawie wyników z wstępnego eksperymentu zostało wybranych 5 wartości (4,6,9,15,20) przy których zauważono największe ''załamania'' wykresu i które posłużyły jako wartości parametru dla kolejnych testów.
-            
-            Dla każdego zbioru optymalna liczba skupisk przyjmuje inną wartość, co jest związane z samą charakterystyką danych użytych do eksperymentu. Dla zbioru Irysów najlepszą wartością klastrów wydaje się być 4, w przypadku Customers jest to 6, a dla zbioru danych Moons najlepsze wyniki były osiągane przy 9 klastrach. Dla każdego zbioru danych zwiększenie liczby klastrów ponad wartość optymalną powodowało coraz częstsze występowanie ujemnych wartości współczynnika zarysu wśród testowanych konfiguracji maksymalnych iteracji oraz macierzy kowariancji. Różnice między wynikami w ramach sąsiednich maksymalnych liczb iteracji również wydawały się większe.
-            
-            Kolejnym parametrem, który ulegał zmianie podczas przeprowadzonych testów algorytmu była liczba maksymalnych iteracji. Maksymalna liczba iteracji została dobrana poniekąd wykładniczo, aby możliwa była analiza zachowania metody w przypadku zarówno małych, jak i skrajnie dużych wartości. W przypadku każdego zbioru danych można zauważyć pewną prawidłowość. Algorytm osiągał zadowalające wyniki nawet w przypadku mniejszych wartości maksymalnych iteracji (100 - 200) i nie ulegały one poprawie dla wartości większych.
-            
-            Ostatnim z parametrów wykorzystywanym podczas rozwiązania problem setu był rodzaj macierzy kowariancji stosowanej przy metodzie EM. Dostępne były 4 warianty, z których każdy wpływa na zachowanie algorytmu:
+            Podczas ewaluacji wyników przeprowadzonych eksperymentów pierwszym
+            parametrem, który został poddany analizie była liczba klastrów. Na początku
+            program został uruchomiony przy stałej wartości maksymalnej liczby iteracji
+            (300) dla liczby klastrów przyjmującej wartość od 1 do 20. Na podstawie
+            wyników z wstępnego eksperymentu zostało wybranych 5 wartości (4,6,9,15,20)
+            przy których zauważono największe ''załamania'' wykresu i które posłużyły
+            jako wartości parametru dla kolejnych testów.
+
+            Dla każdego zbioru optymalna liczba skupisk przyjmuje inną wartość, co jest
+            związane z samą charakterystyką danych użytych do eksperymentu. Dla zbioru
+            Irysów najlepszą wartością klastrów wydaje się być 4, w przypadku Customers
+            jest to 6, a dla zbioru danych Moons najlepsze wyniki były osiągane przy 9
+            klastrach. Dla każdego zbioru danych zwiększenie liczby klastrów ponad
+            wartość optymalną powodowało coraz częstsze występowanie ujemnych wartości
+            współczynnika zarysu wśród testowanych konfiguracji maksymalnych iteracji
+            oraz macierzy kowariancji. Różnice między wynikami w ramach sąsiednich
+            maksymalnych liczb iteracji również wydawały się większe.
+
+            Kolejnym parametrem, który ulegał zmianie podczas przeprowadzonych testów
+            algorytmu była liczba maksymalnych iteracji. Maksymalna liczba iteracji
+            została dobrana poniekąd wykładniczo, aby możliwa była analiza zachowania
+            metody w przypadku zarówno małych, jak i skrajnie dużych wartości. W
+            przypadku każdego zbioru danych można zauważyć pewną prawidłowość. Algorytm
+            osiągał zadowalające wyniki nawet w przypadku mniejszych wartości
+            maksymalnych iteracji (100 - 200) i nie ulegały one poprawie dla wartości
+            większych.
+
+            Ostatnim z parametrów wykorzystywanym podczas rozwiązania problem setu był
+            rodzaj macierzy kowariancji stosowanej przy metodzie EM. Dostępne były 4
+            warianty, z których każdy wpływa na zachowanie algorytmu:
             \begin{itemize}
                 \item \textit{full}
                 \item \textit{tied}
                 \item \textit{diagonal}
                 \item \textit{spherical}
             \end{itemize}
-            Przypadek dla każdego zestawu danych należy rozpatrywać indywidualnie, gdyż dla każdego zbioru optymalną wartość osiągał inny rodzaj wariantu macierzy kowariancji.
+            Przypadek dla każdego zestawu danych należy rozpatrywać indywidualnie, gdyż
+            dla każdego zbioru optymalną wartość osiągał inny rodzaj wariantu macierzy
+            kowariancji.
         }
 
         \subsection{Algorytm DBSCAN}
