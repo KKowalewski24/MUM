@@ -11,7 +11,6 @@ from sklearn import naive_bayes, svm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
 
 """
 Sample usage:
@@ -23,32 +22,25 @@ Sample usage:
 LATEX_RESULTS_DIR = "latex_results"
 latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
-# TODO SET PROPER PARAMETERS
 classifiers_configuration = {
     "Heart": (read_heart_ds(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
-        # "svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma),
-        # "decision_tree": DecisionTreeClassifier(min_samples_leaf=min_samples_leaf,
-        #                                         max_depth=max_depth, random_state=47),
+        "svm": svm.SVC(kernel="poly", C=1.6, gamma=0.0001),
         # "random_forest": RandomForestClassifier(n_jobs=-1, n_estimators=n_estimators,
         #                                         **best_params, random_state=47)
     }),
     "Gestures": (read_gestures_ds(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
-        # "svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma),
-        # "decision_tree": DecisionTreeClassifier(min_samples_leaf=min_samples_leaf,
-        #                                         max_depth=max_depth, random_state=47),
+        "svm": svm.SVC(kernel="rbf", C=2.0, gamma=0.0001),
         # "random_forest": RandomForestClassifier(n_jobs=-1, n_estimators=n_estimators,
         #                                         **best_params, random_state=47)
     }),
     "Weather": (read_weather_AUS(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
-        # "svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma),
-        # "decision_tree": DecisionTreeClassifier(min_samples_leaf=min_samples_leaf,
-        #                                         max_depth=max_depth, random_state=47),
+        "svm": svm.SVC(kernel="rbf", C=1.6, gamma=0.001),
         # "random_forest": RandomForestClassifier(n_jobs=-1, n_estimators=n_estimators,
         #                                         **best_params, random_state=47)
     })
