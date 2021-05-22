@@ -12,11 +12,8 @@ from sklearn import naive_bayes, svm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, roc_curve
 from sklearn.neighbors import KNeighborsClassifier
-<<<<<<< HEAD
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import learning_curve
-=======
->>>>>>> 02d794784b23f90725c46f1c26d283a97f415a67
 
 """
 Sample usage:
