@@ -71,7 +71,12 @@ def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.n
     X_train, X_test, y_train, y_test = data_set
     classifier.fit(X_train, y_train)
     y_pred = classifier.predict(X_test)
-    y_proba = classifier.predict_proba(X_test)
+    if type(classifier) is svm.SVC:
+        y_proba = classifier.decision_function(X_test)
+        if len(y_proba.shape) == 1:
+            y_proba = np.stack([np.zeros((len(y_proba),)), y_proba], axis=1)
+    else:
+        y_proba = classifier.predict_proba(X_test)
 
     results = {
         "confusion_matrix": confusion_matrix(y_test, y_pred),
