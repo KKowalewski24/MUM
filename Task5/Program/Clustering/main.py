@@ -1,9 +1,16 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
+from typing import Tuple
 
-from module.reader import present_data_sets
+import numpy as np
 
+from module.LatexGenerator import LatexGenerator
+from module.reader import read_mall_customers, read_iris_ds, read_moons_ds
+from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
+from sklearn.mixture import GaussianMixture
+from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
+from sklearn.metrics import rand_score, fowlkes_mallows_score
 """
 Sample usage:
     python main.py
@@ -12,18 +19,95 @@ Sample usage:
 
 
 # VAR ------------------------------------------------------------------------ #
+LATEX_RESULTS_DIR = "latex_results"
+latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
+clusters_configuration = {
+    "Iris": (read_iris_ds(), {
+        "k_means": KMeans(n_clusters=3),
+        # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
+        # "expectation_maximization": GaussianMixture(n_components=1, covariance_type="full", max_iter=1),
+        "db_scan":  DBSCAN(min_samples=7, eps=0.9, metric='minkowski', p=2)
+    }),
+    "Customers": (read_mall_customers(), {
+        "k_means": KMeans(n_clusters=6),
+        # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
+        # "expectation_maximization": GaussianMixture(n_components=1, covariance_type="full", max_iter=1),
+        "db_scan":  DBSCAN(min_samples=7, eps=23, metric='minkowski', p=2)
+    }),
+    "Moons": (read_moons_ds(), {
+        "k_means": KMeans(n_clusters=8),
+        # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
+        # "expectation_maximization": GaussianMixture(n_components=1, covariance_type="full", max_iter=1),
+        "db_scan":  DBSCAN(min_samples=5, eps=0.2, metric='minkowski', p=2)
+    })
+}
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
     save_latex: bool = args.save
-    if args.present:
-        present_data_sets()
+    for config in clusters_configuration:
+        display_header(config)
+        data_set = clusters_configuration[config][0]
+        classifiers = clusters_configuration[config][1]
+        metrics = {}
+        for classifier in classifiers:
+            print("\t", classifier)
+            metrics[classifier] = evaluate_classifier(data_set, config, classifiers[classifier])
+        if save_latex:
+            save_metrics(metrics, config)
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
+def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray], data_set_name,
+                        classifier) -> None:
+    cluster_labels = classifier.fit_predict(data_set)
+
+    if data_set_name != "Customers":
+        results = {
+            "silhouette": silhouette_score(data_set, cluster_labels),
+            "calinski_harabasz": calinski_harabasz_score(data_set, cluster_labels),
+            "davies_bouldin": davies_bouldin_score(data_set, cluster_labels),
+            "rand_score": rand_score(data_set, cluster_labels),
+            "fowlkes_mallows": fowlkes_mallows_score(data_set, cluster_labels)
+        }
+    else:
+        results = {
+            "silhouette": silhouette_score(data_set, cluster_labels),
+            "calinski_harabasz": calinski_harabasz_score(data_set, cluster_labels),
+            "davies_bouldin": davies_bouldin_score(data_set, cluster_labels)
+        }
+    return results
+
+def save_metrics(metrics, filename_prefix):
+    # save tables with basic metrics
+    if filename_prefix == "Customers":
+        matrix = [
+            [classifier,
+             metrics[classifier]["silhouette"],
+             metrics[classifier]["calinski_harabasz"],
+             metrics[classifier]["davies_bouldin"]]
+            for classifier in metrics]
+        latex_generator.generate_vertical_table(
+            ["Silhouette", "Calinski_Harabasz", "Davies_Bouldin"],
+            matrix, filename_prefix + "_basic_metrics"
+        )
+    else:
+        matrix = [
+            [classifier,
+             metrics[classifier]["silhouette"],
+             metrics[classifier]["calinski_harabasz"],
+             metrics[classifier]["davies_bouldin"],
+             metrics[classifier]["rand_score"],
+             metrics[classifier]["fowlkes_mallows"]]
+            for classifier in metrics]
+        latex_generator.generate_vertical_table(
+            ["Silhouette", "Calinski_Harabasz", "Davies_Bouldin", "Rand_score", "Fowlkes_Mallows"],
+            matrix, filename_prefix + "_basic_metrics"
+        )
+
 def display_header(name: str) -> None:
     print("------------------------------------------------------------------------")
     print(name)
