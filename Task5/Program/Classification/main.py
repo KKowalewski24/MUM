@@ -54,8 +54,7 @@ def main() -> None:
 
     for config in classifiers_configuration:
         display_header(config)
-        data_set = classifiers_configuration[config][0]
-        classifiers = classifiers_configuration[config][1]
+        data_set, classifiers = classifiers_configuration[config]
         metrics = {}
         for classifier in classifiers:
             print("\t", classifier)
@@ -80,9 +79,9 @@ def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.n
 
     results = {
         "confusion_matrix": confusion_matrix(y_test, y_pred),
-        "accuracy": accuracy_score(y_test, y_pred),
-        "recall": recall_score(y_test, y_pred, average=None),
-        "precision": precision_score(y_test, y_pred, average=None),
+        "accuracy": np.round(accuracy_score(y_test, y_pred), 4),
+        "recall": np.round(recall_score(y_test, y_pred, average=None), 4),
+        "precision": np.round(precision_score(y_test, y_pred, average=None), 4),
         "roc_curves": [roc_curve(y_test, y_proba[:,i], pos_label=i) for i in np.unique(y_test)],
         "learning_curve": learning_curve(classifier, X_train, y_train, n_jobs=-1, train_sizes=np.linspace(0.1, 1.0, 10))
     }
