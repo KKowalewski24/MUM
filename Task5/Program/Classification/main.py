@@ -12,8 +12,11 @@ from sklearn import naive_bayes, svm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, roc_curve
 from sklearn.neighbors import KNeighborsClassifier
+<<<<<<< HEAD
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import learning_curve
+=======
+>>>>>>> 02d794784b23f90725c46f1c26d283a97f415a67
 
 """
 Sample usage:
@@ -25,24 +28,23 @@ Sample usage:
 LATEX_RESULTS_DIR = "latex_results"
 latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 
-# TODO SET PROPER PARAMETERS
 classifiers_configuration = {
     "Heart": (read_heart_ds(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
-        # "svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma),
+        "svm": svm.SVC(kernel="poly", C=1.6, gamma=0.0001),
         "random_forest": RandomForestClassifier(n_jobs=-1, min_samples_leaf=10, n_estimators=50, max_samples=0.5, random_state=47)
     }),
     "Gestures": (read_gestures_ds(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
-        # "svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma),
+        "svm": svm.SVC(kernel="rbf", C=2.0, gamma=0.0001),
         "random_forest": RandomForestClassifier(n_jobs=-1, min_samples_leaf=8, n_estimators=500, random_state=47)
     }),
     "Weather": (read_weather_AUS(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
-        # "svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma),
+        "svm": svm.SVC(kernel="rbf", C=1.6, gamma=0.001),
         "random_forest": RandomForestClassifier(n_jobs=-1, max_depth=5, n_estimators=200, max_samples=0.05, random_state=47)
     })
 }
