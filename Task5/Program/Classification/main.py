@@ -1,19 +1,19 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Tuple
+from typing import Tuple, Dict
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import naive_bayes, svm
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, \
+    roc_curve
+from sklearn.model_selection import learning_curve
+from sklearn.neighbors import KNeighborsClassifier
 
 from module.LatexGenerator import LatexGenerator
 from module.reader import read_gestures_ds, read_heart_ds, read_weather_AUS
-from sklearn import naive_bayes, svm
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, roc_curve
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import learning_curve
 
 """
 Sample usage:
@@ -30,19 +30,22 @@ classifiers_configuration = {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
         "svm": svm.SVC(kernel="poly", C=1.6, gamma=0.0001),
-        "random_forest": RandomForestClassifier(n_jobs=-1, min_samples_leaf=10, n_estimators=50, max_samples=0.5, random_state=47)
+        "random_forest": RandomForestClassifier(n_jobs=-1, min_samples_leaf=10, n_estimators=50,
+                                                max_samples=0.5, random_state=47)
     }),
     "Gestures": (read_gestures_ds(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
         "svm": svm.SVC(kernel="rbf", C=2.0, gamma=0.0001),
-        "random_forest": RandomForestClassifier(n_jobs=-1, min_samples_leaf=8, n_estimators=500, random_state=47)
+        "random_forest": RandomForestClassifier(n_jobs=-1, min_samples_leaf=8, n_estimators=500,
+                                                random_state=47)
     }),
     "Weather": (read_weather_AUS(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
         "svm": svm.SVC(kernel="rbf", C=1.6, gamma=0.001),
-        "random_forest": RandomForestClassifier(n_jobs=-1, max_depth=5, n_estimators=200, max_samples=0.05, random_state=47)
+        "random_forest": RandomForestClassifier(n_jobs=-1, max_depth=5, n_estimators=200,
+                                                max_samples=0.05, random_state=47)
     })
 }
 
@@ -66,7 +69,8 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray], classifier) -> None:
+def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
+                        classifier) -> Dict:
     X_train, X_test, y_train, y_test = data_set
     classifier.fit(X_train, y_train)
     y_pred = classifier.predict(X_test)
@@ -82,10 +86,11 @@ def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.n
         "accuracy": np.round(accuracy_score(y_test, y_pred), 4),
         "recall": np.round(recall_score(y_test, y_pred, average=None), 4),
         "precision": np.round(precision_score(y_test, y_pred, average=None), 4),
-        "roc_curves": [roc_curve(y_test, y_proba[:,i], pos_label=i) for i in np.unique(y_test)],
-        "learning_curve": learning_curve(classifier, X_train, y_train, n_jobs=-1, train_sizes=np.linspace(0.1, 1.0, 10))
+        "roc_curves": [roc_curve(y_test, y_proba[:, i], pos_label=i) for i in np.unique(y_test)],
+        "learning_curve": learning_curve(classifier, X_train, y_train, n_jobs=-1,
+                                         train_sizes=np.linspace(0.1, 1.0, 10))
     }
-    
+
     return results
 
 
@@ -100,26 +105,26 @@ def save_metrics(metrics, filename_prefix):
     # save tables with basic metrics
     if len(list(metrics.values())[0]["recall"]) == 2:
         matrix = [
-                [classifier, 
-                 metrics[classifier]["accuracy"],
-                 metrics[classifier]["recall"][1], 
-                 metrics[classifier]["recall"][0],
-                 metrics[classifier]["precision"][1]] 
-                for classifier in metrics]
+            [classifier,
+             metrics[classifier]["accuracy"],
+             metrics[classifier]["recall"][1],
+             metrics[classifier]["recall"][0],
+             metrics[classifier]["precision"][1]]
+            for classifier in metrics]
         latex_generator.generate_vertical_table(
-                ["Classifier", "Accuracy", "Sensitivity", "Specificity", "Precision"],
-                matrix, filename_prefix + "_basic_metrics"
+            ["Classifier", "Accuracy", "Sensitivity", "Specificity", "Precision"],
+            matrix, filename_prefix + "_basic_metrics"
         )
     else:
         matrix = [
-                [classifier, 
-                 metrics[classifier]["accuracy"],
-                 str(metrics[classifier]["recall"]),
-                 str(metrics[classifier]["precision"])]
-                for classifier in metrics]
+            [classifier,
+             metrics[classifier]["accuracy"],
+             str(metrics[classifier]["recall"]),
+             str(metrics[classifier]["precision"])]
+            for classifier in metrics]
         latex_generator.generate_vertical_table(
-                ["Classifier", "Accuracy", "Sensitivities", "Precisions"],
-                matrix, filename_prefix + "_basic_metrics"
+            ["Classifier", "Accuracy", "Sensitivities", "Precisions"],
+            matrix, filename_prefix + "_basic_metrics"
         )
 
     # save chart with ROC curve
