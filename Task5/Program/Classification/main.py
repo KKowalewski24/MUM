@@ -4,14 +4,16 @@ from argparse import ArgumentParser, Namespace
 from typing import Tuple
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 from module.LatexGenerator import LatexGenerator
 from module.reader import read_gestures_ds, read_heart_ds, read_weather_AUS
 from sklearn import naive_bayes, svm
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, roc_curve
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import learning_curve
 
 """
 Sample usage:
@@ -29,28 +31,19 @@ classifiers_configuration = {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
         # "svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma),
-        # "decision_tree": DecisionTreeClassifier(min_samples_leaf=min_samples_leaf,
-        #                                         max_depth=max_depth, random_state=47),
-        # "random_forest": RandomForestClassifier(n_jobs=-1, n_estimators=n_estimators,
-        #                                         **best_params, random_state=47)
+        "random_forest": RandomForestClassifier(n_jobs=-1, min_samples_leaf=10, n_estimators=50, max_samples=0.5, random_state=47)
     }),
     "Gestures": (read_gestures_ds(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
         # "svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma),
-        # "decision_tree": DecisionTreeClassifier(min_samples_leaf=min_samples_leaf,
-        #                                         max_depth=max_depth, random_state=47),
-        # "random_forest": RandomForestClassifier(n_jobs=-1, n_estimators=n_estimators,
-        #                                         **best_params, random_state=47)
+        "random_forest": RandomForestClassifier(n_jobs=-1, min_samples_leaf=8, n_estimators=500, random_state=47)
     }),
     "Weather": (read_weather_AUS(), {
         "knn": KNeighborsClassifier(n_neighbors=9, p=2),
         "bayes": naive_bayes.GaussianNB(),
         # "svm": svm.SVC(kernel=kernel_function, C=c, gamma=gamma),
-        # "decision_tree": DecisionTreeClassifier(min_samples_leaf=min_samples_leaf,
-        #                                         max_depth=max_depth, random_state=47),
-        # "random_forest": RandomForestClassifier(n_jobs=-1, n_estimators=n_estimators,
-        #                                         **best_params, random_state=47)
+        "random_forest": RandomForestClassifier(n_jobs=-1, max_depth=5, n_estimators=200, max_samples=0.05, random_state=47)
     })
 }
 
@@ -64,49 +57,94 @@ def main() -> None:
         display_header(config)
         data_set = classifiers_configuration[config][0]
         classifiers = classifiers_configuration[config][1]
+        metrics = {}
         for classifier in classifiers:
-            display_header(classifier)
-            evaluate_classifier(data_set, classifiers[classifier],
-                                config + "_" + classifier, save_latex)
+            print("\t", classifier)
+            metrics[classifier] = evaluate_classifier(data_set, classifiers[classifier])
+        if save_latex:
+            save_metrics(metrics, config)
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
-def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-                        classifier, filename: str, save_latex: bool) -> None:
+def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray], classifier) -> None:
     X_train, X_test, y_train, y_test = data_set
     classifier.fit(X_train, y_train)
-    y_prediction = classifier.predict(X_test)
+    y_pred = classifier.predict(X_test)
+    y_proba = classifier.predict_proba(X_test)
 
-    headers = [
-        "Confusion matrix", "Sensitivity", "Accuracy", "Precision", "Specificity"
-    ]
-    results = []
+    results = {
+        "confusion_matrix": confusion_matrix(y_test, y_pred),
+        "accuracy": accuracy_score(y_test, y_pred),
+        "recall": recall_score(y_test, y_pred, average=None),
+        "precision": precision_score(y_test, y_pred, average=None),
+        "roc_curves": [roc_curve(y_test, y_proba[:,i], pos_label=i) for i in np.unique(y_test)],
+        "learning_curve": learning_curve(classifier, X_train, y_train, n_jobs=-1, train_sizes=np.linspace(0.1, 1.0, 10))
+    }
+    
+    return results
 
-    results.append(confusion_matrix(y_test, y_prediction))
-    results.append(np.round(recall_score(y_test, y_prediction, average=None), 4))
-    results.append(round(accuracy_score(y_test, y_prediction), 4))
-    results.append(np.round(precision_score(y_test, y_prediction, average=None), 4))
-    # TODO
-    results.append(0)
 
-    for i in range(len(headers)):
-        display_result(headers[i], results[i])
-
-    if save_latex:
-        matrix = results[0]
+def save_metrics(metrics, filename_prefix):
+    # save tables with confusion matrices
+    for classifier in metrics:
+        matrix = metrics[classifier]["confusion_matrix"]
         latex_generator.generate_vertical_table(
-            matrix[0], matrix[1:], filename + "_confusion_matrix"
-        )
-        latex_generator.generate_vertical_table(
-            headers[1:], [results[1:]], filename + "_statistics"
+            matrix[0], matrix[1:], filename_prefix + "_" + classifier + "_confusion_matrix"
         )
 
+    # save tables with basic metrics
+    if len(list(metrics.values())[0]["recall"]) == 2:
+        matrix = [
+                [classifier, 
+                 metrics[classifier]["accuracy"],
+                 metrics[classifier]["recall"][1], 
+                 metrics[classifier]["recall"][0],
+                 metrics[classifier]["precision"][1]] 
+                for classifier in metrics]
+        latex_generator.generate_vertical_table(
+                ["Classifier", "Accuracy", "Sensitivity", "Specificity", "Precision"],
+                matrix, filename_prefix + "_basic_metrics"
+        )
+    else:
+        matrix = [
+                [classifier, 
+                 metrics[classifier]["accuracy"],
+                 str(metrics[classifier]["recall"]),
+                 str(metrics[classifier]["precision"])]
+                for classifier in metrics]
+        latex_generator.generate_vertical_table(
+                ["Classifier", "Accuracy", "Sensitivities", "Precisions"],
+                matrix, filename_prefix + "_basic_metrics"
+        )
 
-def display_result(label: str, value) -> None:
-    print(label)
-    print(value, end="\n\n")
+    # save chart with ROC curve
+    number_of_roc_curves = len(list(metrics.values())[0]["roc_curves"])
+    if number_of_roc_curves == 2:
+        for classifier in metrics:
+            fpr, tpr, _ = metrics[classifier]["roc_curves"][1]
+            plt.plot(fpr, tpr, label=classifier)
+        plt.legend()
+    else:
+        for i in range(number_of_roc_curves):
+            plt.subplot(int(np.ceil(number_of_roc_curves / 2)), 2, i + 1)
+            plt.title("class: " + str(i))
+            for classifier in metrics:
+                fpr, tpr, _ = metrics[classifier]["roc_curves"][i]
+                plt.plot(fpr, tpr, label=classifier)
+            plt.legend()
+    plt.show()
+
+    # save charts with learning curves
+    for classifier, i in zip(metrics, range(len(metrics))):
+        plt.subplot(int(np.ceil(len(metrics) / 2)), 2, i + 1)
+        plt.title(classifier)
+        train_sizes_abs, train_scores, test_scores, = metrics[classifier]["learning_curve"]
+        plt.plot(train_sizes_abs, np.average(train_scores, axis=1), label="train")
+        plt.plot(train_sizes_abs, np.average(test_scores, axis=1), label="test")
+        plt.legend()
+    plt.show()
 
 
 def display_header(name: str) -> None:
