@@ -20,7 +20,7 @@ def read_mall_customers() -> np.ndarray:
 # to do this return tuple of samples and classes
 def read_moons_ds() -> Tuple[np.ndarray, np.ndarray]:
     samples, classes = datasets.make_moons(n_samples=700, noise=0.09, random_state=1)
-    return samples
+    return samples, classes
 
 
 def present_data_sets() -> None:
