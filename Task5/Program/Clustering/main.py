@@ -26,17 +26,23 @@ clusters_configuration = {
     "Iris": (read_iris_ds(), {
         "k_means": KMeans(n_clusters=3),
         # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
+        "agglomerative":  KMeans(n_clusters=3),
+        "expectation_maximization":  KMeans(n_clusters=3),
         # "expectation_maximization": GaussianMixture(n_components=1, covariance_type="full", max_iter=1),
         "db_scan":  DBSCAN(min_samples=7, eps=0.9, metric='minkowski', p=2)
     }),
     "Customers": (read_mall_customers(), {
         "k_means": KMeans(n_clusters=6),
+        "agglomerative": KMeans(n_clusters=6),
+        "expectation_maximization": KMeans(n_clusters=6),
         # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
         # "expectation_maximization": GaussianMixture(n_components=1, covariance_type="full", max_iter=1),
         "db_scan":  DBSCAN(min_samples=7, eps=23, metric='minkowski', p=2)
     }),
     "Moons": (read_moons_ds(), {
         "k_means": KMeans(n_clusters=8),
+        "agglomerative": KMeans(n_clusters=8),
+        "expectation_maximization": KMeans(n_clusters=8),
         # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
         # "expectation_maximization": GaussianMixture(n_components=1, covariance_type="full", max_iter=1),
         "db_scan":  DBSCAN(min_samples=5, eps=0.2, metric='minkowski', p=2)
@@ -70,8 +76,8 @@ def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.n
             "silhouette": silhouette_score(data_set, cluster_labels),
             "calinski_harabasz": calinski_harabasz_score(data_set, cluster_labels),
             "davies_bouldin": davies_bouldin_score(data_set, cluster_labels),
-            "rand_score": rand_score(data_set, cluster_labels),
-            "fowlkes_mallows": fowlkes_mallows_score(data_set, cluster_labels)
+            # "rand_score": rand_score(data_set["Species"] if data_set_name == "Iris" else data_set, cluster_labels),
+            # "fowlkes_mallows": fowlkes_mallows_score(data_set, cluster_labels)
         }
     else:
         results = {
@@ -91,7 +97,7 @@ def save_metrics(metrics, filename_prefix):
              metrics[classifier]["davies_bouldin"]]
             for classifier in metrics]
         latex_generator.generate_vertical_table(
-            ["Silhouette", "Calinski_Harabasz", "Davies_Bouldin"],
+            ["Classifier", "Silhouette", "Calinski_Harabasz", "Davies_Bouldin"],
             matrix, filename_prefix + "_basic_metrics"
         )
     else:
@@ -99,12 +105,13 @@ def save_metrics(metrics, filename_prefix):
             [classifier,
              metrics[classifier]["silhouette"],
              metrics[classifier]["calinski_harabasz"],
-             metrics[classifier]["davies_bouldin"],
-             metrics[classifier]["rand_score"],
-             metrics[classifier]["fowlkes_mallows"]]
+             metrics[classifier]["davies_bouldin"]]
+             # metrics[classifier]["rand_score"],
+             # metrics[classifier]["fowlkes_mallows"]]
             for classifier in metrics]
         latex_generator.generate_vertical_table(
-            ["Silhouette", "Calinski_Harabasz", "Davies_Bouldin", "Rand_score", "Fowlkes_Mallows"],
+            ["Classifier", "Silhouette", "Calinski_Harabasz", "Davies_Bouldin"],
+            # ["Silhouette", "Calinski_Harabasz", "Davies_Bouldin", "Rand_score", "Fowlkes_Mallows"],
             matrix, filename_prefix + "_basic_metrics"
         )
 
