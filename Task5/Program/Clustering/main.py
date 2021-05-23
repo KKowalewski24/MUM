@@ -27,24 +27,21 @@ clusters_configuration = {
         "k_means": KMeans(n_clusters=3),
         # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
         "agglomerative":  KMeans(n_clusters=3),
-        "expectation_maximization":  KMeans(n_clusters=3),
-        # "expectation_maximization": GaussianMixture(n_components=1, covariance_type="full", max_iter=1),
+        "expectation_maximization": GaussianMixture(n_components=4, covariance_type="full", max_iter=200),
         "db_scan":  DBSCAN(min_samples=7, eps=0.9, metric='minkowski', p=2)
     }),
     "Customers": (read_mall_customers(), {
         "k_means": KMeans(n_clusters=6),
         "agglomerative": KMeans(n_clusters=6),
-        "expectation_maximization": KMeans(n_clusters=6),
         # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
-        # "expectation_maximization": GaussianMixture(n_components=1, covariance_type="full", max_iter=1),
+        "expectation_maximization": GaussianMixture(n_components=6, covariance_type="diag", max_iter=200),
         "db_scan":  DBSCAN(min_samples=7, eps=23, metric='minkowski', p=2)
     }),
     "Moons": (read_moons_ds(), {
         "k_means": KMeans(n_clusters=8),
         "agglomerative": KMeans(n_clusters=8),
-        "expectation_maximization": KMeans(n_clusters=8),
         # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
-        # "expectation_maximization": GaussianMixture(n_components=1, covariance_type="full", max_iter=1),
+        "expectation_maximization": GaussianMixture(n_components=9, covariance_type="full", max_iter=200),
         "db_scan":  DBSCAN(min_samples=5, eps=0.2, metric='minkowski', p=2)
     })
 }
@@ -70,7 +67,8 @@ def main() -> None:
 def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray], data_set_name,
                         classifier) -> None:
     cluster_labels = classifier.fit_predict(data_set)
-
+    print("testy")
+    print(data_set[ :,3])
     if data_set_name != "Customers":
         results = {
             "silhouette": silhouette_score(data_set, cluster_labels),
