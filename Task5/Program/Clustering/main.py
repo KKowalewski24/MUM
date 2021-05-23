@@ -37,13 +37,13 @@ clusters_configuration = {
         "expectation_maximization": GaussianMixture(n_components=6, covariance_type="diag", max_iter=200),
         "db_scan":  DBSCAN(min_samples=7, eps=23, metric='minkowski', p=2)
     }),
-    "Moons": (read_moons_ds(), {
-        "k_means": KMeans(n_clusters=8),
-        "agglomerative": KMeans(n_clusters=8),
-        # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
-        "expectation_maximization": GaussianMixture(n_components=9, covariance_type="full", max_iter=200),
-        "db_scan":  DBSCAN(min_samples=5, eps=0.2, metric='minkowski', p=2)
-    })
+    # "Moons": (read_moons_ds(), {
+    #     "k_means": KMeans(n_clusters=8),
+    #     "agglomerative": KMeans(n_clusters=8),
+    #     # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
+    #     "expectation_maximization": GaussianMixture(n_components=9, covariance_type="full", max_iter=200),
+    #     "db_scan":  DBSCAN(min_samples=5, eps=0.2, metric='minkowski', p=2)
+    # })
 }
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
@@ -66,16 +66,19 @@ def main() -> None:
 # DEF ------------------------------------------------------------------------ #
 def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray], data_set_name,
                         classifier) -> None:
+    data_set_labels = []
+    if data_set_name == "Iris":
+        data_set_labels = data_set[:,4]
+        data_set = data_set[:, 0:4]
     cluster_labels = classifier.fit_predict(data_set)
-    print("testy")
-    print(data_set[ :,3])
+
     if data_set_name != "Customers":
         results = {
             "silhouette": silhouette_score(data_set, cluster_labels),
             "calinski_harabasz": calinski_harabasz_score(data_set, cluster_labels),
             "davies_bouldin": davies_bouldin_score(data_set, cluster_labels),
-            # "rand_score": rand_score(data_set["Species"] if data_set_name == "Iris" else data_set, cluster_labels),
-            # "fowlkes_mallows": fowlkes_mallows_score(data_set, cluster_labels)
+            "rand_score": rand_score(data_set_labels, cluster_labels),
+            "fowlkes_mallows": fowlkes_mallows_score(data_set_labels, cluster_labels)
         }
     else:
         results = {
@@ -103,13 +106,13 @@ def save_metrics(metrics, filename_prefix):
             [classifier,
              metrics[classifier]["silhouette"],
              metrics[classifier]["calinski_harabasz"],
-             metrics[classifier]["davies_bouldin"]]
-             # metrics[classifier]["rand_score"],
-             # metrics[classifier]["fowlkes_mallows"]]
+             metrics[classifier]["davies_bouldin"],
+             metrics[classifier]["rand_score"],
+             metrics[classifier]["fowlkes_mallows"]]
             for classifier in metrics]
         latex_generator.generate_vertical_table(
-            ["Classifier", "Silhouette", "Calinski_Harabasz", "Davies_Bouldin"],
-            # ["Silhouette", "Calinski_Harabasz", "Davies_Bouldin", "Rand_score", "Fowlkes_Mallows"],
+            # ["Classifier", "Silhouette", "Calinski_Harabasz", "Davies_Bouldin"],
+            ["Classifier", "Silhouette", "Calinski_Harabasz", "Davies_Bouldin", "Rand_score", "Fowlkes_Mallows"],
             matrix, filename_prefix + "_basic_metrics"
         )
 
