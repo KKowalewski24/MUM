@@ -3,10 +3,11 @@ import numpy as np
 import pandas as pd
 from sklearn import datasets
 from sklearn.preprocessing import LabelEncoder
+from typing import Tuple
 
 
 def read_iris_ds() -> np.ndarray:
-    return pd.read_csv("data/Iris.csv").iloc[:, 1:5].to_numpy()
+    return pd.read_csv("data/Iris.csv").iloc[:, 1:6].to_numpy()
 
 
 def read_mall_customers() -> np.ndarray:
@@ -17,7 +18,7 @@ def read_mall_customers() -> np.ndarray:
 
 # Returns only generated samples without class membership - in order
 # to do this return tuple of samples and classes
-def read_moons_ds() -> np.ndarray:
+def read_moons_ds() -> Tuple[np.ndarray, np.ndarray]:
     samples, classes = datasets.make_moons(n_samples=700, noise=0.09, random_state=1)
     return samples
 
