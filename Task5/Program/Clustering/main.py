@@ -74,17 +74,17 @@ def evaluate_classifier(data_set, data_set_name, classifier) -> Dict:
 
     if data_set_name != "Customers":
         results = {
-            "silhouette": silhouette_score(data_set, cluster_labels),
-            "calinski_harabasz": calinski_harabasz_score(data_set, cluster_labels),
-            "davies_bouldin": davies_bouldin_score(data_set, cluster_labels),
-            "rand_score": rand_score(data_set_labels, cluster_labels),
-            "fowlkes_mallows": fowlkes_mallows_score(data_set_labels, cluster_labels)
+            "silhouette": round(silhouette_score(data_set, cluster_labels), 3),
+            "calinski_harabasz": round(calinski_harabasz_score(data_set, cluster_labels), 3),
+            "davies_bouldin": round(davies_bouldin_score(data_set, cluster_labels), 3),
+            "rand_score": round(rand_score(data_set_labels, cluster_labels), 3),
+            "fowlkes_mallows": round(fowlkes_mallows_score(data_set_labels, cluster_labels), 3)
         }
     else:
         results = {
-            "silhouette": silhouette_score(data_set, cluster_labels),
-            "calinski_harabasz": calinski_harabasz_score(data_set, cluster_labels),
-            "davies_bouldin": davies_bouldin_score(data_set, cluster_labels)
+            "silhouette": round(silhouette_score(data_set, cluster_labels), 3),
+            "calinski_harabasz": round(calinski_harabasz_score(data_set, cluster_labels), 3),
+            "davies_bouldin": round(davies_bouldin_score(data_set, cluster_labels), 3)
         }
     return results
 
