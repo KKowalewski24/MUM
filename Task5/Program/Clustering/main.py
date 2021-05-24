@@ -3,7 +3,7 @@ import sys
 from argparse import ArgumentParser, Namespace
 from typing import Dict
 
-from sklearn.cluster import DBSCAN, KMeans
+from sklearn.cluster import DBSCAN, KMeans, AgglomerativeClustering
 from sklearn.metrics import calinski_harabasz_score, davies_bouldin_score, fowlkes_mallows_score, \
     rand_score, silhouette_score
 from sklearn.mixture import GaussianMixture
@@ -24,27 +24,21 @@ latex_generator: LatexGenerator = LatexGenerator(LATEX_RESULTS_DIR)
 clusters_configuration = {
     "Iris": (read_iris_ds(), {
         "k_means": KMeans(n_clusters=3),
-        # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
-        "agglomerative": KMeans(n_clusters=3),
-        "expectation_maximization": GaussianMixture(
-            n_components=4, covariance_type="full", max_iter=200),
-        "db_scan": DBSCAN(min_samples=7, eps=0.9, metric='minkowski', p=2)
+        "agglomerative": AgglomerativeClustering(n_clusters=3, affinity='manhattan', linkage='complete'),
+        "expectation_maximization": GaussianMixture(n_components=4, covariance_type="full", max_iter=200),
+        "db_scan":  DBSCAN(min_samples=7, eps=0.9, metric='minkowski', p=2)
     }),
     "Customers": (read_mall_customers(), {
         "k_means": KMeans(n_clusters=6),
-        "agglomerative": KMeans(n_clusters=6),
-        # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
-        "expectation_maximization": GaussianMixture(
-            n_components=6, covariance_type="diag", max_iter=200),
-        "db_scan": DBSCAN(min_samples=7, eps=23, metric='minkowski', p=2)
+        "agglomerative": AgglomerativeClustering(n_clusters=6, linkage='ward'),
+        "expectation_maximization": GaussianMixture(n_components=6, covariance_type="diag", max_iter=200),
+        "db_scan":  DBSCAN(min_samples=7, eps=23, metric='minkowski', p=2)
     }),
     "Moons": (read_moons_ds(), {
         "k_means": KMeans(n_clusters=8),
-        "agglomerative": KMeans(n_clusters=8),
-        # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
-        "expectation_maximization": GaussianMixture(
-            n_components=9, covariance_type="full", max_iter=200),
-        "db_scan": DBSCAN(min_samples=5, eps=0.2, metric='minkowski', p=2)
+        "agglomerative": AgglomerativeClustering(n_clusters=8, linkage='ward'),
+        "expectation_maximization": GaussianMixture(n_components=9, covariance_type="full", max_iter=200),
+        "db_scan":  DBSCAN(min_samples=5, eps=0.2, metric='minkowski', p=2)
     })
 }
 
