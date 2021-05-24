@@ -1,9 +1,8 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Dict, Tuple
+from typing import Dict
 
-import numpy as np
 from sklearn.cluster import DBSCAN, KMeans
 from sklearn.metrics import calinski_harabasz_score, davies_bouldin_score, fowlkes_mallows_score, \
     rand_score, silhouette_score
@@ -69,8 +68,7 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-                        data_set_name, classifier) -> Dict:
+def evaluate_classifier(data_set, data_set_name, classifier) -> Dict:
     data_set_labels = []
     if data_set_name == "Iris":
         data_set_labels = data_set[:, 4]
