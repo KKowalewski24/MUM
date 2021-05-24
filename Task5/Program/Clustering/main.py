@@ -1,23 +1,22 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Tuple, Dict
+from typing import Dict, Tuple
 
 import numpy as np
+from sklearn.cluster import DBSCAN, KMeans
+from sklearn.metrics import calinski_harabasz_score, davies_bouldin_score, fowlkes_mallows_score, \
+    rand_score, silhouette_score
+from sklearn.mixture import GaussianMixture
 
 from module.LatexGenerator import LatexGenerator
-from module.reader import read_mall_customers, read_iris_ds, read_moons_ds
-from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
-from sklearn.mixture import GaussianMixture
-from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
-from sklearn.metrics import rand_score, fowlkes_mallows_score
+from module.reader import read_iris_ds, read_mall_customers, read_moons_ds
 
 """
 Sample usage:
     python main.py
     python main.py -s
 """
-
 
 # VAR ------------------------------------------------------------------------ #
 LATEX_RESULTS_DIR = "latex_results"
@@ -27,23 +26,26 @@ clusters_configuration = {
     "Iris": (read_iris_ds(), {
         "k_means": KMeans(n_clusters=3),
         # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
-        "agglomerative":  KMeans(n_clusters=3),
-        "expectation_maximization": GaussianMixture(n_components=4, covariance_type="full", max_iter=200),
-        "db_scan":  DBSCAN(min_samples=7, eps=0.9, metric='minkowski', p=2)
+        "agglomerative": KMeans(n_clusters=3),
+        "expectation_maximization": GaussianMixture(
+            n_components=4, covariance_type="full", max_iter=200),
+        "db_scan": DBSCAN(min_samples=7, eps=0.9, metric='minkowski', p=2)
     }),
     "Customers": (read_mall_customers(), {
         "k_means": KMeans(n_clusters=6),
         "agglomerative": KMeans(n_clusters=6),
         # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
-        "expectation_maximization": GaussianMixture(n_components=6, covariance_type="diag", max_iter=200),
-        "db_scan":  DBSCAN(min_samples=7, eps=23, metric='minkowski', p=2)
+        "expectation_maximization": GaussianMixture(
+            n_components=6, covariance_type="diag", max_iter=200),
+        "db_scan": DBSCAN(min_samples=7, eps=23, metric='minkowski', p=2)
     }),
     "Moons": (read_moons_ds(), {
         "k_means": KMeans(n_clusters=8),
         "agglomerative": KMeans(n_clusters=8),
         # "agglomerative": AgglomerativeClustering(n_clusters=1, affinity=1, linkage=1),
-        "expectation_maximization": GaussianMixture(n_components=9, covariance_type="full", max_iter=200),
-        "db_scan":  DBSCAN(min_samples=5, eps=0.2, metric='minkowski', p=2)
+        "expectation_maximization": GaussianMixture(
+            n_components=9, covariance_type="full", max_iter=200),
+        "db_scan": DBSCAN(min_samples=5, eps=0.2, metric='minkowski', p=2)
     })
 }
 
@@ -67,8 +69,8 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray], data_set_name,
-                        classifier) -> Dict:
+def evaluate_classifier(data_set: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
+                        data_set_name, classifier) -> Dict:
     data_set_labels = []
     if data_set_name == "Iris":
         data_set_labels = data_set[:, 4]
@@ -118,7 +120,8 @@ def save_metrics(metrics, filename_prefix):
              metrics[classifier]["fowlkes_mallows"]]
             for classifier in metrics]
         latex_generator.generate_vertical_table(
-            ["Classifier", "Silhouette", "Calinski_Harabasz", "Davies_Bouldin", "Rand_score", "Fowlkes_Mallows"],
+            ["Classifier", "Silhouette", "Calinski_Harabasz",
+             "Davies_Bouldin", "Rand_score", "Fowlkes_Mallows"],
             matrix, filename_prefix + "_basic_metrics"
         )
 

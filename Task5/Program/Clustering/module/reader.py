@@ -1,9 +1,10 @@
+from typing import Tuple
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn import datasets
 from sklearn.preprocessing import LabelEncoder
-from typing import Tuple
 
 
 def read_iris_ds() -> np.ndarray:
