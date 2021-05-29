@@ -57,11 +57,10 @@ def main() -> None:
     save_latex: bool = args.save
 
     for dim_reduction_method in dim_reduction_methods:
-        print(dim_reduction_method.__name__)
+        display_header(dim_reduction_method.__name__)
 
-        # prepare datasets - each method should add new variants (applying some
-        # dimentionality reduction) after 'original' variant (no dimentionality
-        # reduction)
+        # prepare datasets - each method should add new variants (applying some dimensionality
+        # reduction) after 'original' variant (no dimensionality reduction)
         datasets = {
             ds_name: {
                 "orignal": (datasets_config[ds_name][0].copy(),
@@ -77,16 +76,23 @@ def main() -> None:
         for ds_name in datasets:
             for variant_name in datasets[ds_name]:
                 for classifier_name in classifiers_per_datasets[ds_name]:
-                    print("\t", ds_name, "\t", variant_name, "\t", classifier_name)
-                    classifier = classifiers_per_datasets[ds_name][classifier_name]
+                    print("\t", ds_name + ",", "\t", variant_name + ",", "\t", classifier_name)
+
                     X_train, X_test, y_train, y_test = datasets[ds_name][variant_name]
+                    classifier = classifiers_per_datasets[ds_name][classifier_name]
                     classifier.fit(X_train, y_train)
                     y_pred = classifier.predict(X_test)
+
                     print("\t\taccuracy:", round(accuracy_score(y_test, y_pred), 3))
-                    print("\t\trecall:",
-                          list(np.round(recall_score(y_test, y_pred, average=None), 3)))
-                    print("\t\tprecision:", list(np.round(precision_score(
-                        y_test, y_pred, average=None, zero_division=0), 3)))
+                    print(
+                        "\t\trecall:",
+                        list(np.round(recall_score(y_test, y_pred, average=None), 3))
+                    )
+                    print(
+                        "\t\tprecision:",
+                        list(np.round(precision_score(
+                            y_test, y_pred, average=None, zero_division=0), 3)
+                        ))
 
     display_finish()
 
@@ -102,11 +108,9 @@ def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
 
     arg_parser.add_argument(
-        "-s",
-        "--save",
-        default=False,
-        action="store_true",
-        help="Create LaTeX source code based on generated data")
+        "-s", "--save", default=False, action="store_true",
+        help="Create LaTeX source code based on generated data"
+    )
 
     return arg_parser.parse_args()
 
