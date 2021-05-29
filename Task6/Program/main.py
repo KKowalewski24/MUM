@@ -63,10 +63,10 @@ def main() -> None:
         # reduction) after 'original' variant (no dimensionality reduction)
         datasets = {
             ds_name: {
-                "orignal": (datasets_config[ds_name][0].copy(),
-                            datasets_config[ds_name][1].copy(),
-                            datasets_config[ds_name][2].copy(),
-                            datasets_config[ds_name][3].copy()),
+                "original": (datasets_config[ds_name][0].copy(),
+                             datasets_config[ds_name][1].copy(),
+                             datasets_config[ds_name][2].copy(),
+                             datasets_config[ds_name][3].copy()),
             }
             for ds_name in datasets_config.keys()
         }
@@ -93,6 +93,7 @@ def main() -> None:
                         list(np.round(precision_score(
                             y_test, y_pred, average=None, zero_division=0), 3)
                         ))
+                    print()
 
     display_finish()
 
