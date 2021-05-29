@@ -9,6 +9,8 @@ RANDOM_STATE_VALUE = 21
 TEST_DATA_PERCENTAGE = 0.3
 
 
+# TODO MAKE DATASETS SMALLER !!!
+
 def read_student_alcohol_consumption() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     df = pd.read_csv("data/student_alcohol_consumption.csv")
     _encode_columns(

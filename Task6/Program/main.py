@@ -16,7 +16,7 @@ Sample usage:
 
 # VAR ------------------------------------------------------------------------ #
 # TODO SET PROPER PARAMS FOR CLASSIFIERS
-dataset_configuration = {
+datasets_configuration = {
     "student_alcohol_consumption": (
         read_student_alcohol_consumption(), {
             "knn": KNeighborsClassifier(n_neighbors=9, p=2),
@@ -50,26 +50,17 @@ def main() -> None:
     args = prepare_args()
     save_latex: bool = args.save
 
-    process_dimensionality_reduction("", save_latex)
-    process_dimensionality_reduction("", save_latex)
-    process_dimensionality_reduction("", save_latex)
+    for dataset_config in datasets_configuration:
+        display_header(dataset_config + " data set")
+        data_set, classifiers = datasets_configuration[dataset_config]
+        for classifier in classifiers:
+            print("\t", classifier)
+            classifiers[classifier]
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
-def process_dimensionality_reduction(data_set_name: str, save_latex: bool) -> None:
-    display_header(data_set_name + " data set")
-
-    display_header("")
-
-    display_header("")
-
-    display_header("")
-
-    display_header("")
-
-
 def display_header(name: str) -> None:
     print("------------------------------------------------------------------------")
     print(name)
