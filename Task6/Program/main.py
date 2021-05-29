@@ -2,14 +2,48 @@ import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
 
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+
+from module.reader import read_company_bankruptcy_prediction, read_student_alcohol_consumption, \
+    read_wafer_manufacturing_anomalies
+
 """
 Sample usage:
     python main.py
     python main.py -s
 """
 
-
 # VAR ------------------------------------------------------------------------ #
+# TODO SET PROPER PARAMS FOR CLASSIFIERS
+dataset_configuration = {
+    "student_alcohol_consumption": (
+        read_student_alcohol_consumption(), {
+            "knn": KNeighborsClassifier(n_neighbors=9, p=2),
+            "random_forest": RandomForestClassifier(
+                n_jobs=-1, min_samples_leaf=10, n_estimators=50,
+                max_samples=0.5, random_state=47
+            )
+        }),
+    "company_bankruptcy_prediction": (
+        read_company_bankruptcy_prediction(), {
+            "knn": KNeighborsClassifier(n_neighbors=9, p=2),
+            "random_forest": RandomForestClassifier(
+                n_jobs=-1, min_samples_leaf=10, n_estimators=50,
+                max_samples=0.5, random_state=47
+            )
+        }),
+    "wafer_manufacturing_anomalies": (
+        read_wafer_manufacturing_anomalies(), {
+            "knn": KNeighborsClassifier(n_neighbors=9, p=2),
+            "random_forest": RandomForestClassifier(
+                n_jobs=-1, min_samples_leaf=10, n_estimators=50,
+                max_samples=0.5, random_state=47
+            )
+        })
+
+}
+
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
