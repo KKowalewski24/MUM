@@ -142,3 +142,5 @@ cython_debug/
 .idea
 *~
 .mypy_cache
+*.txt
+!requirements.txt
