@@ -479,13 +479,83 @@
 
         \subsection{Klasyfikacja}
         \label{summary:classification} {
-            \paragraph{Algorytm K Najbliższych Sąsiadów} sprawuje się zdecydowanie gorzej od pozostałych. Widać to bardzo wyraźnie, w przypadku zbiorów danych ,,hearts'' oraz ,,gestures'' oraz trochę mniej wyraźnie w przypadku zbioru danych ,,weather''. Zaczynając od pierwszego z nich, już po macierzy pomyłek można łatwo spostrzec słabość tego algorytmu. Widać też, że zarówno sensitivity, specificity jak i precision są niższe niż dla pozostałych algorytmów, samo accuracy również. Na wykresie krzywych ROC niebieska linia jest znacznie niżej od pozostałych. W przypadku drugiego zbioru danych sytuacja jest bardzo podobna - wartości wszystkich metryk są zdecydowanie niższe. Ponadto można dostrzec, że klasyfikator w ogóle nie nauczył się rozpoznawać przykładów z klasy trzeciej i ma tendencję do przyporzadkowywania przykładów do klasy drugiej. Jest zdecydowanie niedouczony, co widać dla tego zbioru również po krzywej uczenia. Również krzywe ROC prezentują jego niższość, wobec pozostałych metod. Jeżeli chodzi o trzeci zbiór danych, to tutaj wszystkie cztery krzywe ROC niemalże się pokrywają. Klasyfikatory sprawują się więc stosunkowo podobnie. Można jednak zaryzykować stwierdzenie, że KNN podjął tutaj słaby kompromis między sensitivity a specificity. To pierwsze ma bardzo niską wartość, a to drugie bardzo wysoką. Jego wyniki są najbardziej podobne do działania lasu losowego, wykazującego się podobną tendencją, dla zbioru ,,weather''. Klasyfikator KNN ma jeszcze tę cechę, że prawie zawsze, więcej przykładów uczących mu pomaga osiągnąć lepsze wyniki, zarówno na zbiorze uczącym jak i testowym - rosnące krzywe uczenia.
-            
-            \paragraph{Naiwny Klasyfikator Bayesa} najbardziej różni się od pozostałych algorytmów krzywymi uczenia. Są one najbardziej chaotyczne i zbiegają się, a czasem nawet przecinają. W przypadku zbioru danych ,,weather'' są to ruchy prawie zupełnie losowe, gdyż zakres na osi dokładności jest bardzo niewielki. W przypadku pozostałych zbiorów, wyniki dla zbioru testowego przy małej ilości próbek są wyższe, niż dla innych metod. Klasyfikator ten ma mniejszą tendencję do przetrenowania i szybciej się uczy. Często niewiele daje mu więcej próbek uczących. Jego krzywe ROC są zbliżone do krzywych lasu losowego i SVM (poza ostatnim zbiorem danych, gdzie wszystkie są podobne). Trudno porównać jego dokładność z pozostałymi algorytmami. Te trzy, poza KNN, sprawdzają się bardzo podobnie i jedne osiągają wyższą czułość dla jednych klas, a drugie dla innych. Tutaj należałoby stwierdzić, co jest właściwym zadaniem klasyfikatora i czy powinien on bardziej skupiać się na eliminowaniu błędów pierwszego, czy drugiego rodzaju.
-            
-            \paragraph{Maszyna Wektorów Nośnych} sprawuje się podobnie jak Naiwny Klasyfikator Bayesa i Lasy Losowe. Charakteryzuje się natomiast tym, że trochę podobnie jak w przypadku KNN, zdecydowanie więcej przykładów uczących poprawia wyniki na zbiorze testowym. Nie zawsze dzieje się tak natomiast w przypadku Naiwnego Klasyfikatora Bayesa i Lasów Losowych. Co do ciekawszych spostrzeżeń, to widać również, że dla zbioru ,,weather'' udaje się klasyfikatorowi SVM osiągnąć chyba najlepszy kompromis między czułością a specyficznością. Krzywa ROC jest najbardziej zbliżona do lewego, górnego rogu. W przypadku zbioru ,,gestures'' jest ona natomiast, dla niektórych klas, gorsza niż pozostałe algorytmy, a dla innych lepsza, chociaż oczywiście zawsze lepsza, niż KNN. Być może wynika to z faktu, że algorytm ten jest przystosowany do klasyfikacji binarnej. Poza tymi uwagami, sprawuje się on, jak już wspomniano, bardzo podobnie do pozostałych dwóch lepszych algorytmów - kwestia zdefiniowania, co jest najbardziej istotne w danym zadaniu klasyfikacji.
-            
-            \paragraph{Algorytm Lasów Losowych} jest ostatnim i jednocześnie prawdopodobnie najlepszym algorytmem klasyfikacji, spośród testowanych w ramach tego zadania. Osiąga on najwyższe wartości dokładności, a krzywe ROC okazują się być tak samo dobre albo lepsze, niż dla pozostałych algorytmów. Dla zbioru ,,hearts'' sprawuje się on zdecydowanie lepiej niż Naiwny Klasyfikator Bayesa i bardzo podobnie do SVM (zależy od tego, co w danym zadaniu jest krytyczne). Dla zbioru ,,gestures'' również osiąga średnio najlepsze wyniki. Tutaj jednak dla różnych klas, różnie sprawują się różne klasyfikatory. Można jednak również zaryzykować stwierdzenie, że sprawdził się najlepiej - zwłaszcza, że w przypadku wielu klas znacznie trudniej wydzielić te bardziej istotne i uśredniony wynik (czyli miara accuracy) może okazać się najlepszy do porównania z innymi metodami. W zbiorze ,,weather'' osiągnął on dokładność mniejszą niż SVM, który tutaj sprawuje się najlepiej. Co więcej, podobnie jak KNN mamy tutaj do czynienia z dużym naciskiem na jedną z dwóch klas. Tak więc klasyfikator ten nauczył się stosunkowo dobrze rozpoznawać klasę negatywną, natomiast próbki z klasy pozytywnej zostały zaklasyfikowane w mniej niż 50\%. Pozwoliło to jednak osiągnąć najwyższą precyzję, ze wszystkich klasyfikatorów. Wracamy więc znowu do stwierdzenia, że najważniejsze to określić, które miary są krytyczne i najistotniejsze - to natomiast zależy od samego tematu - dziedziny badań.
+
+            \paragraph{Algorytm K Najbliższych Sąsiadów} sprawuje się zdecydowanie
+            gorzej od pozostałych. Widać to bardzo wyraźnie, w przypadku zbiorów danych
+            ,,hearts'' oraz ,,gestures'' oraz trochę mniej wyraźnie w przypadku zbioru
+            danych ,,weather''. Zaczynając od pierwszego z nich, już po macierzy
+            pomyłek można łatwo spostrzec słabość tego algorytmu. Widać też, że zarówno
+            sensitivity, specificity jak i precision są niższe niż dla pozostałych
+            algorytmów, samo accuracy również. Na wykresie krzywych ROC niebieska linia
+            jest znacznie niżej od pozostałych. W przypadku drugiego zbioru danych
+            sytuacja jest bardzo podobna - wartości wszystkich metryk są zdecydowanie
+            niższe. Ponadto można dostrzec, że klasyfikator w ogóle nie nauczył się
+            rozpoznawać przykładów z klasy trzeciej i ma tendencję do
+            przyporzadkowywania przykładów do klasy drugiej. Jest zdecydowanie
+            niedouczony, co widać dla tego zbioru również po krzywej uczenia. Również
+            krzywe ROC prezentują jego niższość, wobec pozostałych metod. Jeżeli chodzi
+            o trzeci zbiór danych, to tutaj wszystkie cztery krzywe ROC niemalże się
+            pokrywają. Klasyfikatory sprawują się więc stosunkowo podobnie. Można
+            jednak zaryzykować stwierdzenie, że KNN podjął tutaj słaby kompromis między
+            sensitivity a specificity. To pierwsze ma bardzo niską wartość, a to drugie
+            bardzo wysoką. Jego wyniki są najbardziej podobne do działania lasu
+            losowego, wykazującego się podobną tendencją, dla zbioru ,,weather''.
+            Klasyfikator KNN ma jeszcze tę cechę, że prawie zawsze, więcej przykładów
+            uczących mu pomaga osiągnąć lepsze wyniki, zarówno na zbiorze uczącym jak i
+            testowym - rosnące krzywe uczenia.
+
+            \paragraph{Naiwny Klasyfikator Bayesa} najbardziej różni się od pozostałych
+            algorytmów krzywymi uczenia. Są one najbardziej chaotyczne i zbiegają się,
+            a czasem nawet przecinają. W przypadku zbioru danych ,,weather'' są to
+            ruchy prawie zupełnie losowe, gdyż zakres na osi dokładności jest bardzo
+            niewielki. W przypadku pozostałych zbiorów, wyniki dla zbioru testowego
+            przy małej ilości próbek są wyższe, niż dla innych metod. Klasyfikator ten
+            ma mniejszą tendencję do przetrenowania i szybciej się uczy. Często
+            niewiele daje mu więcej próbek uczących. Jego krzywe ROC są zbliżone do
+            krzywych lasu losowego i SVM (poza ostatnim zbiorem danych, gdzie wszystkie
+            są podobne). Trudno porównać jego dokładność z pozostałymi algorytmami. Te
+            trzy, poza KNN, sprawdzają się bardzo podobnie i jedne osiągają wyższą
+            czułość dla jednych klas, a drugie dla innych. Tutaj należałoby stwierdzić,
+            co jest właściwym zadaniem klasyfikatora i czy powinien on bardziej skupiać
+            się na eliminowaniu błędów pierwszego, czy drugiego rodzaju.
+
+            \paragraph{Maszyna Wektorów Nośnych} sprawuje się podobnie jak Naiwny
+            Klasyfikator Bayesa i Lasy Losowe. Charakteryzuje się natomiast tym, że
+            trochę podobnie jak w przypadku KNN, zdecydowanie więcej przykładów
+            uczących poprawia wyniki na zbiorze testowym. Nie zawsze dzieje się tak
+            natomiast w przypadku Naiwnego Klasyfikatora Bayesa i Lasów Losowych. Co do
+            ciekawszych spostrzeżeń, to widać również, że dla zbioru ,,weather'' udaje
+            się klasyfikatorowi SVM osiągnąć chyba najlepszy kompromis między czułością
+            a specyficznością. Krzywa ROC jest najbardziej zbliżona do lewego, górnego
+            rogu. W przypadku zbioru ,,gestures'' jest ona natomiast, dla niektórych
+            klas, gorsza niż pozostałe algorytmy, a dla innych lepsza, chociaż
+            oczywiście zawsze lepsza, niż KNN. Być może wynika to z faktu, że algorytm
+            ten jest przystosowany do klasyfikacji binarnej. Poza tymi uwagami,
+            sprawuje się on, jak już wspomniano, bardzo podobnie do pozostałych dwóch
+            lepszych algorytmów - kwestia zdefiniowania, co jest najbardziej istotne w
+            danym zadaniu klasyfikacji.
+
+            \paragraph{Algorytm Lasów Losowych} jest ostatnim i jednocześnie
+            prawdopodobnie najlepszym algorytmem klasyfikacji, spośród testowanych w
+            ramach tego zadania. Osiąga on najwyższe wartości dokładności, a krzywe ROC
+            okazują się być tak samo dobre albo lepsze, niż dla pozostałych algorytmów.
+            Dla zbioru ,,hearts'' sprawuje się on zdecydowanie lepiej niż Naiwny
+            Klasyfikator Bayesa i bardzo podobnie do SVM (zależy od tego, co w danym
+            zadaniu jest krytyczne). Dla zbioru ,,gestures'' również osiąga średnio
+            najlepsze wyniki. Tutaj jednak dla różnych klas, różnie sprawują się różne
+            klasyfikatory. Można jednak również zaryzykować stwierdzenie, że sprawdził
+            się najlepiej - zwłaszcza, że w przypadku wielu klas znacznie trudniej
+            wydzielić te bardziej istotne i uśredniony wynik (czyli miara accuracy)
+            może okazać się najlepszy do porównania z innymi metodami. W zbiorze ,,
+            weather'' osiągnął on dokładność mniejszą niż SVM, który tutaj sprawuje się
+            najlepiej. Co więcej, podobnie jak KNN mamy tutaj do czynienia z dużym
+            naciskiem na jedną z dwóch klas. Tak więc klasyfikator ten nauczył się
+            stosunkowo dobrze rozpoznawać klasę negatywną, natomiast próbki z klasy
+            pozytywnej zostały zaklasyfikowane w mniej niż 50\%. Pozwoliło to jednak
+            osiągnąć najwyższą precyzję, ze wszystkich klasyfikatorów. Wracamy więc
+            znowu do stwierdzenia, że najważniejsze to określić, które miary są
+            krytyczne i najistotniejsze - to natomiast zależy od samego tematu -
+            dziedziny badań.
         }
 
         \subsection{Klasteryzacja}
@@ -502,18 +572,39 @@
                     \item indeks Fowlkes–Mallows
                 \end{itemize}
             \end{itemize}
-            
-            Ze względu na charakterystykę zbioru Customers (nie ma informacji o klasach, które mogą zostać przypisane), niemożliwe było wykorzystanie dla niego metryk zewnętrznych. W przypadku każdej z nich poza indeksem Daviesa-Bouldina, wyższa wartość oznacza lepszy wynik. Nie można jednak porównywać metryk bezpośrednio między sobą.
-            
-            W przypadku metryki Silhouette określane jest podobieństwo obiektu do własnego skupienia w porównaniu do innych skupień. Indeks przyjmuje wartości z przedziału od -1 do +1, gdzie wysoka wartość wskazuje, że dany obiekt został dobrze dopasowany do własnego klastra i słabo dopasowany do sąsiednich skupień. Najlepsze wartości Silhouette score zostały osiągnięte dla metody k-średnich i algorytmu aglomeracyjnego dla zbiorów posiadających etykietę. Wartości silhoutte osiągały wyższe wyniki dla metody innej niż dbscan z wyjątkiem zbioru danych Irysów, gdzie właśnie dbscan zanotował najwyższy wynik, co może być skutkiem samej charakterystyki zbioru.
-            
-            Indeks Calinski-Harabasz jest obliczany jako stosunek sumy dyspersji pomiędzy klastrami do sumy dyspersji wewnątrz klastra. Dla zbiorów w przypadku których analizowane było więcej próbek wartości indeksu osiągały większe wartości.
-            
-            Davies-Bouldin to indeks, w przypadku którego sprawdzanie poprawności grupowania odbywa się przy wykorzystaniu ilości cech charakterystycznych dla zestawu danych. Wartości tej metryki osiągały wyższe wyniki dla każdej metody poza dbscan z wyjątkiem zbioru danych Moons.
-            
-            Indeks Rand oblicza stopień podobieństwa między skupiskami poprzez porównanie wszystkich par próbek i obliczenie liczby próbek, które są przydzielone poprawnie, lub niepoprawnie do danego skupiska.
-            
-            Indeks Fowlkes-Mallows jest obliczany jako wartość średniej geometrycznej miar precision oraz recall.
+
+            Ze względu na charakterystykę zbioru Customers (nie ma informacji o
+            klasach, które mogą zostać przypisane), niemożliwe było wykorzystanie dla
+            niego metryk zewnętrznych. W przypadku każdej z nich poza indeksem
+            Daviesa-Bouldina, wyższa wartość oznacza lepszy wynik. Nie można jednak
+            porównywać metryk bezpośrednio między sobą.
+
+            W przypadku metryki Silhouette określane jest podobieństwo obiektu do
+            własnego skupienia w porównaniu do innych skupień. Indeks przyjmuje
+            wartości z przedziału od -1 do +1, gdzie wysoka wartość wskazuje, że dany
+            obiekt został dobrze dopasowany do własnego klastra i słabo dopasowany do
+            sąsiednich skupień. Najlepsze wartości Silhouette score zostały osiągnięte
+            dla metody k-średnich i algorytmu aglomeracyjnego dla zbiorów posiadających
+            etykietę. Wartości silhoutte osiągały wyższe wyniki dla metody innej niż
+            dbscan z wyjątkiem zbioru danych Irysów, gdzie właśnie dbscan zanotował
+            najwyższy wynik, co może być skutkiem samej charakterystyki zbioru.
+
+            Indeks Calinski-Harabasz jest obliczany jako stosunek sumy dyspersji
+            pomiędzy klastrami do sumy dyspersji wewnątrz klastra. Dla zbiorów w
+            przypadku których analizowane było więcej próbek wartości indeksu osiągały
+            większe wartości.
+
+            Davies-Bouldin to indeks, w przypadku którego sprawdzanie poprawności
+            grupowania odbywa się przy wykorzystaniu ilości cech charakterystycznych
+            dla zestawu danych. Wartości tej metryki osiągały wyższe wyniki dla każdej
+            metody poza dbscan z wyjątkiem zbioru danych Moons.
+
+            Indeks Rand oblicza stopień podobieństwa między skupiskami poprzez
+            porównanie wszystkich par próbek i obliczenie liczby próbek, które są
+            przydzielone poprawnie, lub niepoprawnie do danego skupiska.
+
+            Indeks Fowlkes-Mallows jest obliczany jako wartość średniej geometrycznej
+            miar precision oraz recall.
         }
 
     }
@@ -521,9 +612,21 @@
     \section{Wnioski}
     \label{conclusions} {
         \begin{itemize}
-            \item Algorytm KNN sprawuje się zazwyczaj gorzej niż inne, bardziej złożone algorytmy klasyfikacji, potrzebuje również znacznie więcej przykładów uczących. Cechuje go natomiast prostota i łatwość w implementacji.
-            \item Pozostałe algorytmy osiągają bardzo zbliżone wyniki, niektóre z pozoru mogą wydawać się lepsze od pozostałych poprzez osiągnięcie wyższej wartości miary \emph{accuracy}. Po przeanalizowaniu wyników innych miar oraz samych macierzy pomyłek, widać wyraźnie, że każdy z nich radzi sobie, w jakimś aspekcie, lepiej od pozostałych. Tak więc kluczowym dla zadania klasyfikacji jest zdefiniować, która miara jest krytyczna - czy bardziej istotne są błędy pierwszego czy drugiego rodzaju, a może któraś z wielu różnych klas odgrywa najistotniejszą rolę.
-            \item Dbscan zadziałał najlepiej w przypadku klasteryzacji zbioru Moons. Jako metoda gęstościową najlepiej poradził sobie z danymi zgodnie z "intuicją ludzką", co widać po wynikach metryk zewnętrznych
+            \item Algorytm KNN sprawuje się zazwyczaj gorzej niż inne, bardziej złożone
+            algorytmy klasyfikacji, potrzebuje również znacznie więcej przykładów
+            uczących. Cechuje go natomiast prostota i łatwość w implementacji.
+            \item Pozostałe algorytmy osiągają bardzo zbliżone wyniki, niektóre z
+            pozoru mogą wydawać się lepsze od pozostałych poprzez osiągnięcie
+            wyższej wartości miary \emph{accuracy}. Po przeanalizowaniu wyników
+            innych miar oraz samych macierzy pomyłek, widać wyraźnie, że każdy z
+            nich radzi sobie, w jakimś aspekcie, lepiej od pozostałych. Tak więc
+            kluczowym dla zadania klasyfikacji jest zdefiniować, która miara jest
+            krytyczna - czy bardziej istotne są błędy pierwszego czy drugiego
+            rodzaju, a może któraś z wielu różnych klas odgrywa najistotniejszą
+            rolę.
+            \item Dbscan zadziałał najlepiej w przypadku klasteryzacji zbioru Moons.
+            Jako metoda gęstościową najlepiej poradził sobie z danymi zgodnie z
+            "intuicją ludzką", co widać po wynikach metryk zewnętrznych
             \item Miary wewnętrzne nie określają jednoznacznie jakości klasyfikacji
         \end{itemize}
     }
