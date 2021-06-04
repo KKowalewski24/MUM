@@ -9,7 +9,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.neighbors import KNeighborsClassifier
 
 from module.LatexGenerator import LatexGenerator
-from module.correlation_based_feature_selection import correlation_based_feature_selection
+from module.CFS.correlation_based_feature_selection import correlation_based_feature_selection
 from module.principal_component_analysis import principal_component_analysis
 from module.reader import read_company_bankruptcy_prediction, read_student_alcohol_consumption, \
     read_wafer_manufacturing_anomalies
