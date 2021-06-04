@@ -1,4 +1,4 @@
-import CFSmethod.entropy_estimators as ee
+import module.CFS.entropy_estimators as ee
 
 
 def information_gain(f1, f2):

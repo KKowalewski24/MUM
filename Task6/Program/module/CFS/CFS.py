@@ -1,5 +1,5 @@
 import numpy as np
-from CFSmethod.mutual_information import su_calculation
+from module.CFS.mutual_information import su_calculation
 
 
 def merit_calculation(X, y):
@@ -29,7 +29,7 @@ def merit_calculation(X, y):
     return merits
 
 
-def cfs(X, y):
+def cfs(X, y, n_stop):
     """
     This function uses a correlation based heuristic to evaluate the worth of features which is called CFS
 
@@ -41,7 +41,8 @@ def cfs(X, y):
     n_samples, n_features = X.shape
     F = []
     M = []  # M stores the merit values
-    while True:
+    continue_loop = True
+    while continue_loop:
         merit = -100000000000
         idx = -1
         for i in range(n_features):
@@ -55,10 +56,9 @@ def cfs(X, y):
                 F.pop()
         F.append(idx)
         M.append(merit)
-        if len(M) > 5:
-            if M[len(M)-1] <=M[len(M)-2]:
-                if M[len(M)-2] <= M[len(M)-3]:
-                    if M[len(M)-3] <= M[len(M)-4]:
-                        if M[len(M)-4] <= M[len(M)-5]:
-                            break
+        if len(M) > n_stop:
+            for temp_stop in range(n_stop):
+                if M[len(M) - temp_stop - 1] <= M[len(M) - temp_stop - 2]:
+                    continue_loop = False
+                    break
     return np.array(F)
