@@ -1,7 +1,7 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import List, Union
+from typing import List
 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
@@ -78,9 +78,9 @@ def main() -> None:
 
         # classification
         for ds_name in datasets:
-            params_accuracy_values: List[List[Union[str, float]]] = []
+            params_accuracy_values: List[List[str]] = []
             for variant_name in datasets[ds_name]:
-                accuracy_values: List[Union[str, float]] = []
+                accuracy_values: List[str] = []
                 for classifier_name in classifiers_per_datasets[ds_name]:
                     print("\t", ds_name + ",", "\t", variant_name + ",", "\t", classifier_name)
 
@@ -91,7 +91,7 @@ def main() -> None:
 
                     accuracy = round(accuracy_score(y_test, y_pred), 3)
                     accuracy_values.append(classifier_name)
-                    accuracy_values.append(accuracy)
+                    accuracy_values.append(str(accuracy))
                     print("\t\taccuracy:", accuracy)
                     print(
                         "\t\trecall:",

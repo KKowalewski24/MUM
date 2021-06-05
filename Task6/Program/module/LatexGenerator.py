@@ -98,7 +98,7 @@ class LatexGenerator:
 
 
     def generate_vertical_table(self, header_names: List[str],
-                                body_values: List[List[float]],
+                                body_values: List[List[str]],
                                 filename: str) -> None:
         if not self._compare_array_with_matrix_rows(header_names, body_values):
             raise Exception("Lists must have equal length")
