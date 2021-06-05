@@ -16,12 +16,12 @@ def principal_component_analysis(
 
         # Find min in shape - rows and cols number - this is required
         # for proper working of PCA from sklearn
-        cols_number = min(X_train.shape[0], X_train.shape[1])
+        min_dimension = min(X_train.shape[0], X_train.shape[1])
 
         for svd_solver in SVD_SOLVERS:
-            for components_percentage in COMPONENTS_FRACTIONS:
-                # fraction multiplied by number of cols in certain dataset
-                components_value: int = round(components_percentage * cols_number)
+            for components_fraction in COMPONENTS_FRACTIONS:
+                # Fraction multiplied by min dimension (number of cols or rows) in certain dataset
+                components_value: int = round(components_fraction * min_dimension)
                 pca: PCA = PCA(n_components=components_value,
                                svd_solver=svd_solver, random_state=21)
                 pca.fit(X_train)
