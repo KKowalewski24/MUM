@@ -1,41 +1,31 @@
-from typing import List, Tuple
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-
-RANDOM_STATE_VALUE = 21
-TEST_DATA_PERCENTAGE = 0.3
 
 
-def read_student_alcohol_consumption() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    df = pd.read_csv("data/student_alcohol_consumption.csv")
-    _encode_columns(
-        df, ["school", "sex", "address", "famsize", "Pstatus", "Mjob", "Fjob", "reason",
-             "guardian", "schoolsup", "famsup", "paid", "activities", "nursery", "higher",
-             "internet", "romantic"]
-    )
-    X = df.iloc[:, :-1].to_numpy()
-    y = df.iloc[:, -1].to_numpy()
-    return train_test_split(X, y, test_size=TEST_DATA_PERCENTAGE, random_state=RANDOM_STATE_VALUE)
+def read_letters_ds() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    letters_train = pd.read_csv('data/isolet_train.csv', header=None)
+    X_train = letters_train.iloc[:, :-1].to_numpy()
+    y_train = letters_train.iloc[:, -1].to_numpy()
+
+    letters_test = pd.read_csv('data/isolet_test.csv', header=None)
+    X_test = letters_test.iloc[:, :-1].to_numpy()
+    y_test = letters_test.iloc[:, -1].to_numpy()
+
+    return X_train, X_test, y_train, y_test
 
 
-def read_company_bankruptcy_prediction() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    df = pd.read_csv("data/company_bankruptcy_prediction.csv")
-    X = df.iloc[:, 1:].to_numpy()
-    y = df.iloc[:, 0].to_numpy()
-    return train_test_split(X, y, test_size=TEST_DATA_PERCENTAGE, random_state=RANDOM_STATE_VALUE)
+def read_numerals_ds() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    numerals = pd.read_csv('data/numerals.csv', header=None)
+    X = numerals.iloc[:, :-1].to_numpy()
+    y = numerals.iloc[:, -1].to_numpy()
+    return train_test_split(X, y, test_size=0.3, stratify=y, random_state=47)
 
 
-def read_wafer_manufacturing_anomalies() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    df = pd.read_csv("data/wafer_manufacturing_anomalies.csv")
-    X = df.iloc[:, :-1].to_numpy()
-    y = df.iloc[:, -1].to_numpy()
-    return train_test_split(X, y, test_size=TEST_DATA_PERCENTAGE, random_state=RANDOM_STATE_VALUE)
-
-
-def _encode_columns(df: pd.DataFrame, columns_to_encode: List[str]) -> None:
-    label_encoder = LabelEncoder()
-    for column in columns_to_encode:
-        df[column] = label_encoder.fit_transform(df[column])
+def read_documents_ds() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    documents = pd.read_csv('data/documents.csv', header=None)
+    X = documents.iloc[:, 1:].to_numpy()
+    y = documents.iloc[:, 0].to_numpy()
+    return train_test_split(X, y, test_size=0.3, stratify=y, random_state=47)

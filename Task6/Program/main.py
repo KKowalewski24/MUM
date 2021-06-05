@@ -11,8 +11,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from module.LatexGenerator import LatexGenerator
 from module.correlation_based_feature_selection import correlation_based_feature_selection
 from module.principal_component_analysis import principal_component_analysis
-from module.reader import read_company_bankruptcy_prediction, read_student_alcohol_consumption, \
-    read_wafer_manufacturing_anomalies
+from module.reader import read_letters_ds, read_numerals_ds, read_documents_ds
 from module.singular_value_decomposition import singular_value_decomposition
 from module.variance_analysis import variance_analysis
 
@@ -24,27 +23,24 @@ Sample usage:
 
 # VAR ------------------------------------------------------------------------ #
 classifiers_per_datasets = {
-    "student_alcohol_consumption": {
-        "knn": KNeighborsClassifier(n_neighbors=3),
-        "random_forest": RandomForestClassifier(n_jobs=-1, max_depth=4,
-                                                n_estimators=50, random_state=47)
+    "letters": {
+        "knn": KNeighborsClassifier(n_neighbors=7, n_jobs=-1),
+        "random_forest": RandomForestClassifier(n_jobs=-1, random_state=47)
     },
-    "company_bankruptcy_prediction": {
-        "knn": KNeighborsClassifier(n_neighbors=3),
-        "random_forest": RandomForestClassifier(n_jobs=-1, max_depth=4,
-                                                n_estimators=50, random_state=47)
+    "numerals": {
+        "knn": KNeighborsClassifier(n_neighbors=3, n_jobs=-1),
+        "random_forest": RandomForestClassifier(n_jobs=-1, random_state=47)
     },
-    "wafer_manufacturing_anomalies": {
-        "knn": KNeighborsClassifier(n_neighbors=3),
-        "random_forest": RandomForestClassifier(n_jobs=-1, max_depth=4,
-                                                n_estimators=50, random_state=47)
+    "documents": {
+        "knn": KNeighborsClassifier(n_neighbors=1, n_jobs=-1),
+        "random_forest": RandomForestClassifier(n_jobs=-1, random_state=47)
     }
 }
 
 datasets_config = {
-    "student_alcohol_consumption": read_student_alcohol_consumption(),
-    "company_bankruptcy_prediction": read_company_bankruptcy_prediction(),
-    "wafer_manufacturing_anomalies": read_wafer_manufacturing_anomalies()
+    "letters": read_letters_ds(),
+    "numerals": read_numerals_ds(),
+    "documents": read_documents_ds()
 }
 
 dim_reduction_methods = [
