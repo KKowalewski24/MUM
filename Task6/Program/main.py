@@ -11,7 +11,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from module.LatexGenerator import LatexGenerator
 from module.correlation_based_feature_selection import correlation_based_feature_selection
 from module.principal_component_analysis import principal_component_analysis
-from module.reader import read_letters_ds, read_numerals_ds, read_documents_ds
+from module.reader import read_documents_ds, read_letters_ds, read_numerals_ds
 from module.singular_value_decomposition import singular_value_decomposition
 from module.variance_analysis import variance_analysis
 
@@ -44,8 +44,10 @@ datasets_config = {
 }
 
 dim_reduction_methods = [
-    principal_component_analysis, singular_value_decomposition,
-    variance_analysis, correlation_based_feature_selection
+    principal_component_analysis,
+    singular_value_decomposition,
+    variance_analysis,
+    correlation_based_feature_selection
 ]
 
 
@@ -57,6 +59,7 @@ def main() -> None:
 
     for dim_reduction_method in dim_reduction_methods:
         display_header(dim_reduction_method.__name__)
+        print("Dimensionality reduction in progress ...")
 
         # prepare datasets - each method should add new variants (applying some dimensionality
         # reduction) after 'original' variant (no dimensionality reduction)
@@ -70,6 +73,8 @@ def main() -> None:
             for ds_name in datasets_config.keys()
         }
         dim_reduction_method(datasets, save_latex)
+
+        print("Dimensionality reduction is finished!")
 
         # classification
         for ds_name in datasets:
