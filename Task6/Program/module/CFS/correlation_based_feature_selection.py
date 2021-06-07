@@ -10,16 +10,12 @@ def correlation_based_feature_selection(
     for ds_name in datasets:
         X_train, X_test, y_train, y_test = datasets[ds_name]["original"]
         print("ds_name: ", ds_name)
-        idx = cfs(X_train, y_train, 2)
-        X_train_transformed = []
-        Y_train_transformed = []
-        X_test_transformed = []
-        Y_test_transformed = []
-        for index in idx:
-            X_train_transformed.append(X_train[index])
-            Y_train_transformed.append(y_train[index])
-            X_test_transformed.append(X_test[index])
-            Y_test_transformed.append(y_test[index])
+        d = X_train.shape[1]
+        idx = cfs(X_train, y_train, d)
+        for n in [.01, .05, .1, .3, .5, .75]:
+            indexes = idx[:int(n*d)]
+            X_train_transformed = X_train[:,indexes]
+            X_test_transformed = X_test[:,indexes]
 
-        key: str = "cfs_" #+ n_stop + "_n_stop"
-        datasets[ds_name][key] = (X_train_transformed, X_test_transformed, Y_train_transformed, Y_test_transformed)
+            key: str = "cfs_" + n + "_n"
+            datasets[ds_name][key] = (X_train_transformed, X_test_transformed, y_train, y_test)

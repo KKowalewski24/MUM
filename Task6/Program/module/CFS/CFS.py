@@ -42,8 +42,7 @@ def cfs(X, y, n_stop):
     n_samples, n_features = X.shape
     F = []
     M = []  # M stores the merit values
-    continue_loop = True
-    while continue_loop:
+    while len(M) < n_stop:
         merit = -100000000000
         idx = -1
         for i in range(n_features):
@@ -56,10 +55,8 @@ def cfs(X, y, n_stop):
                     idx = i
                 F.pop()
         F.append(idx)
+        print("Appended index: ", idx)
+        print("Currently found: ", len(F))
         M.append(merit)
-        if len(M) > n_stop:
-            for temp_stop in range(n_stop):
-                if M[len(M) - temp_stop - 1] <= M[len(M) - temp_stop - 2]:
-                    continue_loop = False
-                    break
-    return np.array(F)
+
+    return np.array(F, dtype=np.int32)
