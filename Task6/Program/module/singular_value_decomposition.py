@@ -7,6 +7,7 @@ from sklearn.decomposition import TruncatedSVD
 COMPONENTS_FRACTIONS: List[float] = np.arange(0.2, 1.0, 0.1).round(2)
 SVD_ALGORITHMS: List[str] = ["arpack", "randomized"]
 
+
 def singular_value_decomposition(
         datasets: Dict[str, Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]]],
         save_latex: bool = False) -> None:
@@ -22,7 +23,7 @@ def singular_value_decomposition(
                 print(components_fraction)
                 components_value = int((min_dimension * components_fraction))
                 svd: TruncatedSVD = TruncatedSVD(n_components=components_value,
-                               algorithm=svd_algorithm, random_state=21)
+                                                 algorithm=svd_algorithm, random_state=21)
                 svd.fit(X_train.astype(float))
                 X_train_transformed = svd.transform(X_train)
                 X_test_transformed = svd.transform(X_test)
