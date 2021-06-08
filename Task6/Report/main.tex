@@ -1,0 +1,763 @@
+\documentclass{classrep}
+\usepackage[utf8]{inputenc}
+\frenchspacing
+
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[hidelinks]{hyperref}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{url}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{listings}
+\usepackage{fancyhdr, lastpage}
+
+\pagestyle{fancyplain}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot{\thepage\ / \pageref*{LastPage}}
+
+%--------------------------------------------------------------------------------------%
+\studycycle{Informatyka stosowana, studia dzienne, II st.}
+\coursesemester{I}
+
+\coursename{Wprowadzenie do Data Science i metod uczenia maszynowego}
+\courseyear{2020/2021}
+
+\courseteacher{mgr inż. Rafał Woźniak}
+\coursegroup{Wtorek, 13:15}
+
+\author{%
+    \studentinfo[239661@edu.p.lodz.pl]{Szymon Gruda}{239661}\\
+    \studentinfo[239671@edu.p.lodz.pl]{Jan Karwowski}{239671}\\
+    \studentinfo[239673@edu.p.lodz.pl]{Michał Kidawa}{239673}\\
+    \studentinfo[239676@edu.p.lodz.pl]{Kamil Kowalewski}{239676}\\
+}
+
+\title{Zadanie 6.: Problem Set 6}
+
+\begin{document}
+    \maketitle
+    \thispagestyle{fancyplain}
+
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \section{Wprowadzenie}
+    \label{intro} {
+
+        \subsection{Principal Component Analysis} {
+            Na początku warto wspomnieć, że do badań zostały wykorzystane dwa parametry,
+            pierwszym z nich jest liczba komponentów nazwana w bibliotece
+            \textit{sklearn} jako \textit{n\_components}. Są to procentowe wartości
+            liczby kolumn jakie powinny pozostać po dokonaniu redukcji
+            wielowymiarowości, zostały wykorzystane wartości z przedziału od 30\% to 95\%.
+            Ze względu na drugi parametr wykorzystany w badaniach jakim jest
+            \textit{svd\_solver} czyli rodzaj użytej metody SVD wartości procentowe
+            zostały przemnożone przez liczbę kolumn lub wierszy w danym zbiorze. Wybór
+            kolumn lub wierszy jest podyktowany logiką implementacji tej metody i brane
+            jest pod uwagę minimum z liczby kolumn i wierszy i mnożone przez wybrany
+            procent. Co do samych wersji \textit{svd\_solver} to zostały wykorzystane
+            wszystkie dostępne warianty czyli \textit{auto}, \textit{full},
+            \textit{arpack}, \textit{randomized}. Stąd w kolumnie
+            \textit{parametry metody} jest np \textit{pca\_auto\_185} co oznacza, że
+            została wykorzystana metoda PCA z SVD ustawionym na \textit{auto} oraz liczbę
+            kolumn, która ma zostać na 185.
+        }
+        \subsection{Singular Value Decomposition} {
+            Tak jak w przypadku metody \textit{Principal Component Analysis} podczas eksperymentów, zmianie ulegały wartości dwóch parametrów. Pierwszym z nich jest liczba komponentów - \textit{n\_components}, która przyjmowała wartość liczby kolumn pomnożonej przez liczby z przedziału od 0.2 do 0.9 (które reprezentują procenty nominalnej liczby kolumn). Drugim z badanych parametrów był rodzaj algorytmu wykorzystywany przy redukcji wielowymiarowości. Do dyspozycji były 2 warianty - \textit{arpack} oraz \textit{randomized}. Analogicznie do \textit{Principal Component Analysis} znajduje to odzwierciedlenie w wartościach zapisanych w kolumnie \textit{parametry metody} - \textit{svd\_arpack\_123} oznacza wykorzystanie metody SVD z algorytmem \textit{arpack} i liczbą kolumn równą 123.
+        }
+        \subsection{Analiza wariancji} {
+            Metoda selekcji cech (a tym samym redukcji wymiarów) oparta o analizę wariancji sprowadza się do oceny ,,ważności'' cech, na podstawie prostego kryterium: im większa wariancja danej cechy w całym zbiorze treningowym i im mniejsza wariancja tej cechy w ramach każdej z klas, tym lepsza jest ta cecha. Tak więc każda cecha ma przyporządkowaną wagę, zgodną ze wzorem:
+            \begin{equation}
+                    w_j = \frac{\sigma_j}{\frac{1}{K} \sum_{k=1}^{K} \sigma_{j}^{k}}
+            \end{equation}
+            gdzie $w_j$ to waga j-tej cechy, $\sigma_j$ to wariancja j-tej cechy we wszystkich próbkach uczących, a $\sigma_{j}^{k}$ to wariancja j-tej cechy w ramach próbek z klasy $k$ (wszystkich klas jest $K$). Tak więc czym większa wariancja w ramach całego zbioru i czym mniejsza wariancja w ramach poszczególnych klas, tym cecha jest lepsza. Dodatkowo, jeżeli wartości w liczebniku i mianowniku są równe $0$, to cecha taka jest uznawana za całkowicie nieprzydatną i ma przypisaną możliwie małą wagę. Po wycenie wszystkich cech można przystąpić do właściwiej selekcji, która sprowadza się do posortowania cech od najlepszej (z największą wagą) do najgorszej i wybraniu $n$ (czyli ile się chce) najlepszych cech.
+        }
+     \subsection{Correlation-based Feature Selection} {
+     Jednym z najbardziej zwięzłych, a przy tym najlepiej opisującym działanie metody CFS jest zdanie: \textit{"Dobre podzbiory cech zawierają cechy silnie skorelowane z klasyfikacją, ale nieskorelowane między sobą."}. Metoda ta oblicza metrykę "merit" dla każdego podzbioru, a następnie na podstawie tych wartości tworzy najlepszy (według metody CFS) podzbiór dla danego zbioru. Na skutek liczby obliczeń, które musi wykonać program realizujący ten algorytm, dostępne implementacje są mało wydajne, przez co znalezienie podzbioru klas, składającego się z więcej niż 20 elementów, jeżeli weźmie się pod uwagę złożone zbiory danych, trwa bardzo długo.
+    }
+        \subsection{Opis zbiorów danych}
+        \label{opis_zbiorow_intro} {
+
+            \subsubsection{Letters} {
+                Jest to zbiór \cite{dataset_letters} zawierający wyekstrachowane cechy
+                z nagrań wypowiadanych liter alfabetu. Badane osoby w liczbie 150,
+                dwukrotnie wypowiadały cały alfabel stąd mamy 52 nagrania dla każdej
+                osoby a następnie z nich zostały wyekstrachowane cechy przez autorów
+                tego zbioru danych.
+            }
+
+            \subsubsection{Numerals} {
+                Jest to zbiór \cite{dataset_numerals} zawierający wyekstrachowane cechy
+                z odręcznie pisanych cyfr od \textit{0} do \textit{9} ze zbioru
+                holenderskich map użyteczności publicznej.
+            }
+
+            \subsubsection{Documents} {
+                Jest to zbiór \cite{dataset_documents} zawierający wyekstrachowane cechy
+                ze zbioru 1080 dokumentów opisów biznesowych brazylijskich firm.
+                Został na słowach w dokumentach przeprowadzony proces usuwania 
+                przyimków i słowa na wektor cech został zamieniony poprzez zastowanie
+                miary jaką jest częstotliwość słowa w dokumencie.
+            }
+
+        }
+    }
+    \newpage
+
+    \section{Wyniki}
+    \label{results} {
+
+        \subsection{Principal Component Analysis} {
+
+            \subsubsection{Zbiór letters} {
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                        original & knn & 0.92 & random\_forest & 0.94 \\ \hline
+                        pca\_auto\_185 & knn & 0.919 & random\_forest & 0.911 \\ \hline
+                        pca\_auto\_216 & knn & 0.917 & random\_forest & 0.899 \\ \hline
+                        pca\_auto\_247 & knn & 0.919 & random\_forest & 0.903 \\ \hline
+                        pca\_auto\_278 & knn & 0.918 & random\_forest & 0.899 \\ \hline
+                        pca\_auto\_308 & knn & 0.919 & random\_forest & 0.895 \\ \hline
+                        pca\_auto\_339 & knn & 0.919 & random\_forest & 0.886 \\ \hline
+                        pca\_auto\_370 & knn & 0.92 & random\_forest & 0.885 \\ \hline
+                        pca\_auto\_401 & knn & 0.922 & random\_forest & 0.881 \\ \hline
+                        pca\_auto\_432 & knn & 0.92 & random\_forest & 0.885 \\ \hline
+                        pca\_auto\_463 & knn & 0.922 & random\_forest & 0.885 \\ \hline
+                        pca\_auto\_494 & knn & 0.921 & random\_forest & 0.886 \\ \hline
+                        pca\_auto\_524 & knn & 0.92 & random\_forest & 0.874 \\ \hline
+                        pca\_auto\_555 & knn & 0.92 & random\_forest & 0.885 \\ \hline
+                        pca\_auto\_586 & knn & 0.92 & random\_forest & 0.869 \\ \hline
+                        pca\_full\_185 & knn & 0.918 & random\_forest & 0.911 \\ \hline
+                        pca\_full\_216 & knn & 0.918 & random\_forest & 0.896 \\ \hline
+                        pca\_full\_247 & knn & 0.919 & random\_forest & 0.892 \\ \hline
+                        pca\_full\_278 & knn & 0.917 & random\_forest & 0.899 \\ \hline
+                        pca\_full\_308 & knn & 0.918 & random\_forest & 0.894 \\ \hline
+                        pca\_full\_339 & knn & 0.919 & random\_forest & 0.897 \\ \hline
+                        pca\_full\_370 & knn & 0.922 & random\_forest & 0.898 \\ \hline
+                        pca\_full\_401 & knn & 0.922 & random\_forest & 0.874 \\ \hline
+                        pca\_full\_432 & knn & 0.922 & random\_forest & 0.884 \\ \hline
+                        pca\_full\_463 & knn & 0.92 & random\_forest & 0.883 \\ \hline
+                        pca\_full\_494 & knn & 0.921 & random\_forest & 0.886 \\ \hline
+                        pca\_full\_524 & knn & 0.92 & random\_forest & 0.874 \\ \hline
+                        pca\_full\_555 & knn & 0.92 & random\_forest & 0.885 \\ \hline
+                        pca\_full\_586 & knn & 0.92 & random\_forest & 0.869 \\ \hline
+                    \end{tabular}
+                    \caption
+                    {Zbiór letters cz.1}
+                    \label{table_principal_component_analysis_letters_1}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                        pca\_arpack\_185 & knn & 0.918 & random\_forest & 0.911 \\ \hline
+                        pca\_arpack\_216 & knn & 0.918 & random\_forest & 0.896 \\ \hline
+                        pca\_arpack\_247 & knn & 0.919 & random\_forest & 0.892 \\ \hline
+                        pca\_arpack\_278 & knn & 0.917 & random\_forest & 0.899 \\ \hline
+                        pca\_arpack\_308 & knn & 0.918 & random\_forest & 0.894 \\ \hline
+                        pca\_arpack\_339 & knn & 0.919 & random\_forest & 0.897 \\ \hline
+                        pca\_arpack\_370 & knn & 0.922 & random\_forest & 0.898 \\ \hline
+                        pca\_arpack\_401 & knn & 0.922 & random\_forest & 0.874 \\ \hline
+                        pca\_arpack\_432 & knn & 0.922 & random\_forest & 0.884 \\ \hline
+                        pca\_arpack\_463 & knn & 0.92 & random\_forest & 0.883 \\ \hline
+                        pca\_arpack\_494 & knn & 0.921 & random\_forest & 0.886 \\ \hline
+                        pca\_arpack\_524 & knn & 0.92 & random\_forest & 0.874 \\ \hline
+                        pca\_arpack\_555 & knn & 0.92 & random\_forest & 0.885 \\ \hline
+                        pca\_arpack\_586 & knn & 0.92 & random\_forest & 0.869 \\ \hline
+                        pca\_randomized\_185 & knn & 0.919 & random\_forest & 0.911 \\ \hline
+                        pca\_randomized\_216 & knn & 0.917 & random\_forest & 0.899 \\ \hline
+                        pca\_randomized\_247 & knn & 0.919 & random\_forest & 0.903 \\ \hline
+                        pca\_randomized\_278 & knn & 0.918 & random\_forest & 0.899 \\ \hline
+                        pca\_randomized\_308 & knn & 0.919 & random\_forest & 0.895 \\ \hline
+                        pca\_randomized\_339 & knn & 0.919 & random\_forest & 0.886 \\ \hline
+                        pca\_randomized\_370 & knn & 0.92 & random\_forest & 0.885 \\ \hline
+                        pca\_randomized\_401 & knn & 0.922 & random\_forest & 0.881 \\ \hline
+                        pca\_randomized\_432 & knn & 0.92 & random\_forest & 0.885 \\ \hline
+                        pca\_randomized\_463 & knn & 0.922 & random\_forest & 0.885 \\ \hline
+                        pca\_randomized\_494 & knn & 0.92 & random\_forest & 0.881 \\ \hline
+                        pca\_randomized\_524 & knn & 0.92 & random\_forest & 0.883 \\ \hline
+                        pca\_randomized\_555 & knn & 0.92 & random\_forest & 0.883 \\ \hline
+                        pca\_randomized\_586 & knn & 0.92 & random\_forest & 0.876 \\ \hline
+                    \end{tabular}
+                    \caption
+                    {Zbiór letters cz.2}
+                    \label{table_principal_component_analysis_letters_2}
+                \end{table}
+                \FloatBarrier
+
+            }
+
+            \subsubsection{Zbiór numerals} {
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                        original & knn & 0.952 & random\_forest & 0.985 \\ \hline
+                        pca\_auto\_195 & knn & 0.952 & random\_forest & 0.962 \\ \hline
+                        pca\_auto\_227 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_auto\_260 & knn & 0.952 & random\_forest & 0.962 \\ \hline
+                        pca\_auto\_292 & knn & 0.952 & random\_forest & 0.962 \\ \hline
+                        pca\_auto\_324 & knn & 0.952 & random\_forest & 0.958 \\ \hline
+                        pca\_auto\_357 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_auto\_389 & knn & 0.952 & random\_forest & 0.953 \\ \hline
+                        pca\_auto\_422 & knn & 0.952 & random\_forest & 0.955 \\ \hline
+                        pca\_auto\_454 & knn & 0.952 & random\_forest & 0.958 \\ \hline
+                        pca\_auto\_487 & knn & 0.952 & random\_forest & 0.955 \\ \hline
+                        pca\_auto\_519 & knn & 0.952 & random\_forest & 0.955 \\ \hline
+                        pca\_auto\_552 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_auto\_584 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_auto\_617 & knn & 0.952 & random\_forest & 0.95 \\ \hline
+                        pca\_full\_195 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_full\_227 & knn & 0.952 & random\_forest & 0.958 \\ \hline
+                        pca\_full\_260 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_full\_292 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_full\_324 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_full\_357 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_full\_389 & knn & 0.952 & random\_forest & 0.958 \\ \hline
+                        pca\_full\_422 & knn & 0.952 & random\_forest & 0.96 \\ \hline
+                        pca\_full\_454 & knn & 0.952 & random\_forest & 0.952 \\ \hline
+                        pca\_full\_487 & knn & 0.952 & random\_forest & 0.952 \\ \hline
+                        pca\_full\_519 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_full\_552 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_full\_584 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_full\_617 & knn & 0.952 & random\_forest & 0.95 \\ \hline
+                    \end{tabular}
+                    \caption
+                    {Zbiór numerals cz.1}
+                    \label{table_principal_component_analysis_numerals_1}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                        pca\_arpack\_195 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_arpack\_227 & knn & 0.952 & random\_forest & 0.958 \\ \hline
+                        pca\_arpack\_260 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_arpack\_292 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_arpack\_324 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_arpack\_357 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_arpack\_389 & knn & 0.952 & random\_forest & 0.958 \\ \hline
+                        pca\_arpack\_422 & knn & 0.952 & random\_forest & 0.96 \\ \hline
+                        pca\_arpack\_454 & knn & 0.952 & random\_forest & 0.952 \\ \hline
+                        pca\_arpack\_487 & knn & 0.952 & random\_forest & 0.952 \\ \hline
+                        pca\_arpack\_519 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                        pca\_arpack\_552 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_arpack\_584 & knn & 0.952 & random\_forest & 0.96 \\ \hline
+                        pca\_arpack\_617 & knn & 0.952 & random\_forest & 0.942 \\ \hline
+                        pca\_randomized\_195 & knn & 0.952 & random\_forest & 0.962 \\ \hline
+                        pca\_randomized\_227 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_randomized\_260 & knn & 0.952 & random\_forest & 0.962 \\ \hline
+                        pca\_randomized\_292 & knn & 0.952 & random\_forest & 0.962 \\ \hline
+                        pca\_randomized\_324 & knn & 0.952 & random\_forest & 0.958 \\ \hline
+                        pca\_randomized\_357 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_randomized\_389 & knn & 0.952 & random\_forest & 0.953 \\ \hline
+                        pca\_randomized\_422 & knn & 0.952 & random\_forest & 0.955 \\ \hline
+                        pca\_randomized\_454 & knn & 0.952 & random\_forest & 0.958 \\ \hline
+                        pca\_randomized\_487 & knn & 0.952 & random\_forest & 0.955 \\ \hline
+                        pca\_randomized\_519 & knn & 0.952 & random\_forest & 0.955 \\ \hline
+                        pca\_randomized\_552 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                        pca\_randomized\_584 & knn & 0.952 & random\_forest & 0.953 \\ \hline
+                        pca\_randomized\_617 & knn & 0.952 & random\_forest & 0.952 \\ \hline
+                    \end{tabular}
+                    \caption
+                    {Zbiór numerals cz.2}
+                    \label{table_principal_component_analysis_numerals_2}
+                \end{table}
+                \FloatBarrier
+
+            }
+
+            \subsubsection{Zbiór documents} {
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                        original & knn & 0.867 & random\_forest & 0.92 \\ \hline
+                        pca\_auto\_227 & knn & 0.852 & random\_forest & 0.892 \\ \hline
+                        pca\_auto\_265 & knn & 0.84 & random\_forest & 0.895 \\ \hline
+                        pca\_auto\_302 & knn & 0.843 & random\_forest & 0.895 \\ \hline
+                        pca\_auto\_340 & knn & 0.843 & random\_forest & 0.898 \\ \hline
+                        pca\_auto\_378 & knn & 0.836 & random\_forest & 0.91 \\ \hline
+                        pca\_auto\_416 & knn & 0.84 & random\_forest & 0.907 \\ \hline
+                        pca\_auto\_454 & knn & 0.83 & random\_forest & 0.889 \\ \hline
+                        pca\_auto\_491 & knn & 0.827 & random\_forest & 0.904 \\ \hline
+                        pca\_auto\_529 & knn & 0.846 & random\_forest & 0.864 \\ \hline
+                        pca\_auto\_567 & knn & 0.852 & random\_forest & 0.877 \\ \hline
+                        pca\_auto\_605 & knn & 0.873 & random\_forest & 0.889 \\ \hline
+                        pca\_auto\_643 & knn & 0.864 & random\_forest & 0.898 \\ \hline
+                        pca\_auto\_680 & knn & 0.867 & random\_forest & 0.88 \\ \hline
+                        pca\_auto\_718 & knn & 0.867 & random\_forest & 0.886 \\ \hline
+                        pca\_full\_227 & knn & 0.849 & random\_forest & 0.898 \\ \hline
+                        pca\_full\_265 & knn & 0.843 & random\_forest & 0.904 \\ \hline
+                        pca\_full\_302 & knn & 0.846 & random\_forest & 0.892 \\ \hline
+                        pca\_full\_340 & knn & 0.843 & random\_forest & 0.898 \\ \hline
+                        pca\_full\_378 & knn & 0.836 & random\_forest & 0.904 \\ \hline
+                        pca\_full\_416 & knn & 0.843 & random\_forest & 0.901 \\ \hline
+                        pca\_full\_454 & knn & 0.833 & random\_forest & 0.904 \\ \hline
+                        pca\_full\_491 & knn & 0.83 & random\_forest & 0.898 \\ \hline
+                        pca\_full\_529 & knn & 0.867 & random\_forest & 0.864 \\ \hline
+                        pca\_full\_567 & knn & 0.867 & random\_forest & 0.877 \\ \hline
+                        pca\_full\_605 & knn & 0.873 & random\_forest & 0.889 \\ \hline
+                        pca\_full\_643 & knn & 0.864 & random\_forest & 0.898 \\ \hline
+                        pca\_full\_680 & knn & 0.867 & random\_forest & 0.88 \\ \hline
+                        pca\_full\_718 & knn & 0.867 & random\_forest & 0.886 \\ \hline
+                    \end{tabular}
+                    \caption
+                    {Zbiór documents cz.1}
+                    \label{table_principal_component_analysis_documents_1}
+                \end{table}
+                \FloatBarrier
+
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                        pca\_arpack\_227 & knn & 0.849 & random\_forest & 0.898 \\ \hline
+                        pca\_arpack\_265 & knn & 0.843 & random\_forest & 0.904 \\ \hline
+                        pca\_arpack\_302 & knn & 0.846 & random\_forest & 0.892 \\ \hline
+                        pca\_arpack\_340 & knn & 0.843 & random\_forest & 0.898 \\ \hline
+                        pca\_arpack\_378 & knn & 0.836 & random\_forest & 0.904 \\ \hline
+                        pca\_arpack\_416 & knn & 0.843 & random\_forest & 0.901 \\ \hline
+                        pca\_arpack\_454 & knn & 0.833 & random\_forest & 0.904 \\ \hline
+                        pca\_arpack\_491 & knn & 0.83 & random\_forest & 0.898 \\ \hline
+                        pca\_arpack\_529 & knn & 0.833 & random\_forest & 0.864 \\ \hline
+                        pca\_arpack\_567 & knn & 0.843 & random\_forest & 0.877 \\ \hline
+                        pca\_arpack\_605 & knn & 0.849 & random\_forest & 0.889 \\ \hline
+                        pca\_arpack\_643 & knn & 0.849 & random\_forest & 0.898 \\ \hline
+                        pca\_arpack\_680 & knn & 0.849 & random\_forest & 0.88 \\ \hline
+                        pca\_arpack\_718 & knn & 0.846 & random\_forest & 0.886 \\ \hline
+                        pca\_randomized\_227 & knn & 0.852 & random\_forest & 0.892 \\ \hline
+                        pca\_randomized\_265 & knn & 0.84 & random\_forest & 0.895 \\ \hline
+                        pca\_randomized\_302 & knn & 0.843 & random\_forest & 0.895 \\ \hline
+                        pca\_randomized\_340 & knn & 0.843 & random\_forest & 0.898 \\ \hline
+                        pca\_randomized\_378 & knn & 0.836 & random\_forest & 0.91 \\ \hline
+                        pca\_randomized\_416 & knn & 0.84 & random\_forest & 0.907 \\ \hline
+                        pca\_randomized\_454 & knn & 0.83 & random\_forest & 0.889 \\ \hline
+                        pca\_randomized\_491 & knn & 0.827 & random\_forest & 0.904 \\ \hline
+                        pca\_randomized\_529 & knn & 0.846 & random\_forest & 0.864 \\ \hline
+                        pca\_randomized\_567 & knn & 0.852 & random\_forest & 0.877 \\ \hline
+                        pca\_randomized\_605 & knn & 0.846 & random\_forest & 0.889 \\ \hline
+                        pca\_randomized\_643 & knn & 0.83 & random\_forest & 0.898 \\ \hline
+                        pca\_randomized\_680 & knn & 0.84 & random\_forest & 0.88 \\ \hline
+                        pca\_randomized\_718 & knn & 0.855 & random\_forest & 0.886 \\ \hline
+                    \end{tabular}
+                    \caption
+                    {Zbiór documents cz.2}
+                    \label{table_principal_component_analysis_documents_2}
+                \end{table}
+                \FloatBarrier
+
+            }
+
+        }
+
+        \subsection{Singular Value Decomposition} {
+            \subsubsection{Zbiór letters} {
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                    \hline
+                    Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                    original & knn & 0.92 & random\_forest & 0.94 \\ \hline
+                    svd\_arpack\_123 & knn & 0.92 & random\_forest & 0.91 \\ \hline
+                    svd\_arpack\_185 & knn & 0.919 & random\_forest & 0.903 \\ \hline
+                    svd\_arpack\_246 & knn & 0.919 & random\_forest & 0.899 \\ \hline
+                    svd\_arpack\_308 & knn & 0.918 & random\_forest & 0.892 \\ \hline
+                    svd\_arpack\_370 & knn & 0.922 & random\_forest & 0.889 \\ \hline
+                    svd\_arpack\_431 & knn & 0.922 & random\_forest & 0.888 \\ \hline
+                    svd\_arpack\_493 & knn & 0.921 & random\_forest & 0.874 \\ \hline
+                    svd\_arpack\_555 & knn & 0.92 & random\_forest & 0.881 \\ \hline
+                    svd\_randomized\_123 & knn & 0.92 & random\_forest & 0.915 \\ \hline
+                    svd\_randomized\_185 & knn & 0.919 & random\_forest & 0.912 \\ \hline
+                    svd\_randomized\_246 & knn & 0.917 & random\_forest & 0.894 \\ \hline
+                    svd\_randomized\_308 & knn & 0.918 & random\_forest & 0.903 \\ \hline
+                    svd\_randomized\_370 & knn & 0.92 & random\_forest & 0.894 \\ \hline
+                    svd\_randomized\_431 & knn & 0.921 & random\_forest & 0.871 \\ \hline
+                    svd\_randomized\_493 & knn & 0.921 & random\_forest & 0.887 \\ \hline
+                    svd\_randomized\_555 & knn & 0.92 & random\_forest & 0.876 \\ \hline
+                    \end{tabular}
+                    \caption
+                    [table singular value decomposition letters]{Wyniki klasyfikacji dla zbioru letters}
+                    \label{table_singular_value_decomposition_letters}
+                    \end{table}
+                    \FloatBarrier
+            }
+            
+            \subsubsection{Zbiór numerals} {
+            \begin{table}[!htbp]
+                \centering
+                \begin{tabular}{|c|c|c|c|c|}
+                \hline
+                Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                original & knn & 0.952 & random\_forest & 0.985 \\ \hline
+                svd\_arpack\_129 & knn & 0.952 & random\_forest & 0.97 \\ \hline
+                svd\_arpack\_194 & knn & 0.952 & random\_forest & 0.967 \\ \hline
+                svd\_arpack\_259 & knn & 0.952 & random\_forest & 0.965 \\ \hline
+                svd\_arpack\_324 & knn & 0.952 & random\_forest & 0.972 \\ \hline
+                svd\_arpack\_389 & knn & 0.952 & random\_forest & 0.965 \\ \hline
+                svd\_arpack\_454 & knn & 0.952 & random\_forest & 0.963 \\ \hline
+                svd\_arpack\_519 & knn & 0.952 & random\_forest & 0.955 \\ \hline
+                svd\_arpack\_584 & knn & 0.952 & random\_forest & 0.957 \\ \hline
+                svd\_randomized\_129 & knn & 0.952 & random\_forest & 0.967 \\ \hline
+                svd\_randomized\_194 & knn & 0.952 & random\_forest & 0.965 \\ \hline
+                svd\_randomized\_259 & knn & 0.952 & random\_forest & 0.97 \\ \hline
+                svd\_randomized\_324 & knn & 0.952 & random\_forest & 0.96 \\ \hline
+                svd\_randomized\_389 & knn & 0.952 & random\_forest & 0.965 \\ \hline
+                svd\_randomized\_454 & knn & 0.952 & random\_forest & 0.952 \\ \hline
+                svd\_randomized\_519 & knn & 0.952 & random\_forest & 0.958 \\ \hline
+                svd\_randomized\_584 & knn & 0.952 & random\_forest & 0.955 \\ \hline
+                \end{tabular}
+                \caption
+                [table singular value decomposition numerals]{Wyniki klasyfikacji dla zbioru numerals}
+                \label{table_singular_value_decomposition_numerals}
+                \end{table}
+                \FloatBarrier
+            }
+            
+            \subsubsection{Zbiór documents} {
+            \begin{table}[!htbp]
+                \centering
+                \begin{tabular}{|c|c|c|c|c|}
+                \hline
+                Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                original & knn & 0.858 & random\_forest & 0.92 \\ \hline
+                svd\_arpack\_151 & knn & 0.852 & random\_forest & 0.923 \\ \hline
+                svd\_arpack\_226 & knn & 0.849 & random\_forest & 0.898 \\ \hline
+                svd\_arpack\_302 & knn & 0.846 & random\_forest & 0.904 \\ \hline
+                svd\_arpack\_378 & knn & 0.836 & random\_forest & 0.901 \\ \hline
+                svd\_arpack\_453 & knn & 0.836 & random\_forest & 0.877 \\ \hline
+                svd\_arpack\_529 & knn & 0.836 & random\_forest & 0.883 \\ \hline
+                svd\_arpack\_604 & knn & 0.84 & random\_forest & 0.883 \\ \hline
+                svd\_arpack\_680 & knn & 0.858 & random\_forest & 0.898 \\ \hline
+                svd\_randomized\_151 & knn & 0.852 & random\_forest & 0.907 \\ \hline
+                svd\_randomized\_226 & knn & 0.846 & random\_forest & 0.907 \\ \hline
+                svd\_randomized\_302 & knn & 0.846 & random\_forest & 0.892 \\ \hline
+                svd\_randomized\_378 & knn & 0.836 & random\_forest & 0.914 \\ \hline
+                svd\_randomized\_453 & knn & 0.836 & random\_forest & 0.898 \\ \hline
+                svd\_randomized\_529 & knn & 0.849 & random\_forest & 0.883 \\ \hline
+                svd\_randomized\_604 & knn & 0.833 & random\_forest & 0.883 \\ \hline
+                svd\_randomized\_680 & knn & 0.858 & random\_forest & 0.898 \\ \hline
+                \end{tabular}
+                \caption
+                [table singular value decomposition documents]{Wyniki klasyfikacji dla zbioru documents}
+                \label{table_singular_value_decomposition_documents}
+                \end{table}
+                \FloatBarrier
+            }
+        }
+
+        \subsection{Analiza wariancji} {
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+original & knn & 0.92 & random\_forest & 0.94 \\ \hline
+va\_0.01\_6 & knn & 0.266 & random\_forest & 0.257 \\ \hline
+va\_0.02\_12 & knn & 0.52 & random\_forest & 0.561 \\ \hline
+va\_0.03\_18 & knn & 0.648 & random\_forest & 0.69 \\ \hline
+va\_0.04\_24 & knn & 0.693 & random\_forest & 0.737 \\ \hline
+va\_0.05\_30 & knn & 0.706 & random\_forest & 0.76 \\ \hline
+va\_0.08\_49 & knn & 0.766 & random\_forest & 0.824 \\ \hline
+va\_0.1\_61 & knn & 0.807 & random\_forest & 0.852 \\ \hline
+va\_0.2\_123 & knn & 0.847 & random\_forest & 0.895 \\ \hline
+va\_0.3\_185 & knn & 0.906 & random\_forest & 0.93 \\ \hline
+va\_0.4\_246 & knn & 0.918 & random\_forest & 0.935 \\ \hline
+va\_0.5\_308 & knn & 0.913 & random\_forest & 0.934 \\ \hline
+va\_0.6\_370 & knn & 0.914 & random\_forest & 0.94 \\ \hline
+va\_0.7\_431 & knn & 0.925 & random\_forest & 0.939 \\ \hline
+va\_0.8\_493 & knn & 0.926 & random\_forest & 0.942 \\ \hline
+va\_0.9\_555 & knn & 0.923 & random\_forest & 0.942 \\ \hline
+\end{tabular}
+\caption{Wyniki klasyfikacji po analizie wariancji dla zbioru ,,letters''}
+\label{table_variance_analysis_letters}
+\end{table}
+\FloatBarrier
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+original & knn & 0.952 & random\_forest & 0.985 \\ \hline
+va\_0.01\_6 & knn & 0.738 & random\_forest & 0.917 \\ \hline
+va\_0.02\_12 & knn & 0.85 & random\_forest & 0.95 \\ \hline
+va\_0.03\_19 & knn & 0.835 & random\_forest & 0.972 \\ \hline
+va\_0.04\_25 & knn & 0.83 & random\_forest & 0.98 \\ \hline
+va\_0.05\_32 & knn & 0.84 & random\_forest & 0.982 \\ \hline
+va\_0.08\_51 & knn & 0.907 & random\_forest & 0.985 \\ \hline
+va\_0.1\_64 & knn & 0.92 & random\_forest & 0.987 \\ \hline
+va\_0.2\_129 & knn & 0.937 & random\_forest & 0.987 \\ \hline
+va\_0.3\_194 & knn & 0.938 & random\_forest & 0.988 \\ \hline
+va\_0.4\_259 & knn & 0.947 & random\_forest & 0.978 \\ \hline
+va\_0.5\_324 & knn & 0.948 & random\_forest & 0.982 \\ \hline
+va\_0.6\_389 & knn & 0.948 & random\_forest & 0.983 \\ \hline
+va\_0.7\_454 & knn & 0.948 & random\_forest & 0.982 \\ \hline
+va\_0.8\_519 & knn & 0.948 & random\_forest & 0.985 \\ \hline
+va\_0.9\_584 & knn & 0.948 & random\_forest & 0.983 \\ \hline
+\end{tabular}
+\caption{Wyniki klasyfikacji po analizie wariancji dla zbioru ,,numerals''}
+\label{table_variance_analysis_numerals}
+\end{table}
+\FloatBarrier
+
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+original & knn & 0.867 & random\_forest & 0.92 \\ \hline
+va\_0.01\_8 & knn & 0.444 & random\_forest & 0.469 \\ \hline
+va\_0.02\_17 & knn & 0.722 & random\_forest & 0.741 \\ \hline
+va\_0.03\_25 & knn & 0.738 & random\_forest & 0.809 \\ \hline
+va\_0.04\_34 & knn & 0.79 & random\_forest & 0.824 \\ \hline
+va\_0.05\_42 & knn & 0.79 & random\_forest & 0.824 \\ \hline
+va\_0.08\_68 & knn & 0.846 & random\_forest & 0.889 \\ \hline
+va\_0.1\_85 & knn & 0.867 & random\_forest & 0.898 \\ \hline
+va\_0.2\_171 & knn & 0.873 & random\_forest & 0.886 \\ \hline
+va\_0.3\_256 & knn & 0.861 & random\_forest & 0.907 \\ \hline
+va\_0.4\_342 & knn & 0.873 & random\_forest & 0.904 \\ \hline
+va\_0.5\_428 & knn & 0.873 & random\_forest & 0.904 \\ \hline
+va\_0.6\_513 & knn & 0.877 & random\_forest & 0.914 \\ \hline
+va\_0.7\_599 & knn & 0.88 & random\_forest & 0.904 \\ \hline
+va\_0.8\_684 & knn & 0.873 & random\_forest & 0.923 \\ \hline
+va\_0.9\_770 & knn & 0.867 & random\_forest & 0.926 \\ \hline
+\end{tabular}
+\caption{Wyniki klasyfikacji po analizie wariancji dla zbioru ,,documents''}
+\label{table_variance_analysis_documents}
+\end{table}
+\FloatBarrier
+
+        }
+
+        \subsection{Correlation-based Feature Selection} {
+            \subsubsection{Zbiór letters} {
+            \begin{table}[!htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Liczba klas w zbiorze & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+original & knn & 0.92 & random\_forest & 0.94 \\ \hline
+1 & knn & 0.106 & random\_forest & 0.096 \\ \hline
+2 & knn & 0.165 & random\_forest & 0.167 \\ \hline
+3 & knn & 0.279 & random\_forest & 0.274 \\ \hline
+4 & knn & 0.328 & random\_forest & 0.322 \\ \hline
+5 & knn & 0.407 & random\_forest & 0.396 \\ \hline
+6 & knn & 0.474 & random\_forest & 0.519 \\ \hline
+7 & knn & 0.48 & random\_forest & 0.516 \\ \hline
+8 & knn & 0.513 & random\_forest & 0.575 \\ \hline
+9 & knn & 0.538 & random\_forest & 0.585 \\ \hline
+10 & knn & 0.571 & random\_forest & 0.613 \\ \hline
+\end{tabular}
+\caption
+[table correlation based feature selection letters]{Tabela CFS dla zbioru letters}
+\label{table_correlation_based_feature_selection_letters}
+\end{table}
+\FloatBarrier
+            }
+            \subsubsection{Zbiór numerals} {
+            \begin{table}[!htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Liczba klas w zbiorze & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+original & knn & 0.952 & random\_forest & 0.985 \\ \hline
+1 & knn & 0.345 & random\_forest & 0.357 \\ \hline
+2 & knn & 0.378 & random\_forest & 0.338 \\ \hline
+3 & knn & 0.467 & random\_forest & 0.433 \\ \hline
+4 & knn & 0.607 & random\_forest & 0.593 \\ \hline
+5 & knn & 0.708 & random\_forest & 0.672 \\ \hline
+6 & knn & 0.75 & random\_forest & 0.743 \\ \hline
+7 & knn & 0.753 & random\_forest & 0.748 \\ \hline
+8 & knn & 0.78 & random\_forest & 0.803 \\ \hline
+9 & knn & 0.813 & random\_forest & 0.848 \\ \hline
+10 & knn & 0.797 & random\_forest & 0.857 \\ \hline
+11 & knn & 0.803 & random\_forest & 0.87 \\ \hline
+12 & knn & 0.832 & random\_forest & 0.907 \\ \hline
+13 & knn & 0.852 & random\_forest & 0.902 \\ \hline
+14 & knn & 0.857 & random\_forest & 0.91 \\ \hline
+15 & knn & 0.867 & random\_forest & 0.912 \\ \hline
+16 & knn & 0.883 & random\_forest & 0.922 \\ \hline
+17 & knn & 0.882 & random\_forest & 0.92 \\ \hline
+18 & knn & 0.883 & random\_forest & 0.92 \\ \hline
+19 & knn & 0.877 & random\_forest & 0.927 \\ \hline
+20 & knn & 0.898 & random\_forest & 0.935 \\ \hline
+\end{tabular}
+\caption
+[table correlation based feature selection numerals]{Tabela CFS dla zbioru numerals}
+\label{table_correlation_based_feature_selection_numerals}
+\end{table}
+\FloatBarrier
+            }
+            \subsubsection{Zbiór documents} {
+            \begin{table}[!htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Liczba klas w zbiorze & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+original & knn & 0.867 & random\_forest & 0.92 \\ \hline
+1 & knn & 0.213 & random\_forest & 0.213 \\ \hline
+2 & knn & 0.306 & random\_forest & 0.306 \\ \hline
+3 & knn & 0.38 & random\_forest & 0.38 \\ \hline
+4 & knn & 0.451 & random\_forest & 0.451 \\ \hline
+5 & knn & 0.522 & random\_forest & 0.522 \\ \hline
+6 & knn & 0.568 & random\_forest & 0.568 \\ \hline
+7 & knn & 0.562 & random\_forest & 0.602 \\ \hline
+8 & knn & 0.577 & random\_forest & 0.617 \\ \hline
+9 & knn & 0.633 & random\_forest & 0.627 \\ \hline
+10 & knn & 0.688 & random\_forest & 0.682 \\ \hline
+11 & knn & 0.716 & random\_forest & 0.71 \\ \hline
+12 & knn & 0.744 & random\_forest & 0.744 \\ \hline
+13 & knn & 0.725 & random\_forest & 0.744 \\ \hline
+14 & knn & 0.731 & random\_forest & 0.753 \\ \hline
+15 & knn & 0.738 & random\_forest & 0.765 \\ \hline
+16 & knn & 0.701 & random\_forest & 0.744 \\ \hline
+17 & knn & 0.701 & random\_forest & 0.744 \\ \hline
+18 & knn & 0.688 & random\_forest & 0.75 \\ \hline
+19 & knn & 0.71 & random\_forest & 0.765 \\ \hline
+20 & knn & 0.728 & random\_forest & 0.784 \\ \hline
+\end{tabular}
+\caption
+[table correlation based feature selection documents]{Tabela CFS dla zbioru documents}
+\label{table_correlation_based_feature_selection_documents}
+\end{table}
+\FloatBarrier
+
+            }
+        }
+
+    }
+
+    \section{Dyskusja}
+    \label{summary} {
+
+        \subsection{Principal Component Analysis} {
+            Patrząc na wyniki dla pierwszego zbióru danych \cite{dataset_letters}
+            można zauważyć, że dla klasyfikatora KNN wartości \textit{Accuracy} bez
+            względu na parametry metody są praktycznie identyczne, różnice między
+            najbardziej skrajnymi wynika to maksymalnie \textit{0.01}. Co więcej
+            wartości te są praktycznie równe z wynikiem uzyskanym dla oryginalnego
+            zbioru danych. Przechodząc do klasyfikatora \textit{random forest} można
+            zauważyć, że wersja SVD nie wpływa jakoś szczególnie na wyniki, gdyż
+            zazwyczaj są to różnice na poziomie \textit{0.01} dla tych samych wartości
+            \textit{n\_components}. Ciekawą obserwacją jest to, że dla najmniejszej
+            wartości \textit{n\_components} równej \textit{185} co jest równe
+            \textit{30\%} uzyskano najlepszy wynik. Jest on o \textit{0.03} gorszy od
+            wyniku uzyskanego na oryginalnym zbiorze danych. Przy większej wartości
+            \textit{n\_components} wynik \textit{Accuracy} pogarsza się, w najgorzym
+            przypadku był to spadek o \textit{0.05} co i tak jest absolutnie
+            akceptowalnym wynikiem.
+
+            Patrząc na wyniki dla drugiego zbióru danych \cite{dataset_numerals}
+            można zauważyć, że dla klasyfikatora KNN wartości \textit{Accuracy}
+            jest identyczna dla oryginalnego zbioru oraz wszystkich kombinacji użycia
+            metody PCA, \textit{Accuracy} jest równe \textit{0.952}. Przechodząc do
+            klasyfikatora \textit{random forest} można zauważyć, że najlepszy wynik
+            uzyskany po zostasowaniu metody PCA jest o około \textit{0.02} gorszy od
+            wyniku dla oryginalnego zbioru. Kolejną tendencją jest to, że poszczególne
+            wyniki\textit{Accuracy} po zastosowaniu metody PCA różnią się nieznacznie
+            około \textit{0.02} i najlepszy wynik udało się uzyskać dla najmniejszej
+            liczby \textit{n\_components}.
+
+            Patrząc na wyniki dla trzeciego zbióru danych \cite{dataset_documents}
+            można zauważyć, że dla klasyfikatora KNN wartości \textit{Accuracy} były
+            najlepsze dla \textit{svd\_solver} w wersji \textit{full} natomiast najgorsze
+            dla \textit{arpack}, gdzie najgorsze można rozumieć poprzez różnice w
+            wynikach na poziomie \textit{0.03}. Co więcej w przeciwieństwie do
+            poprzednich zbiorów tutaj zmiejszanie wartości \textit{n\_components} wpływało
+            na pogorszenie wyników, w połowie przypadków dla udało się uzyskać dla
+            procentowej wartości \textit{95\%} oraz \textit{90\%} wynik identyczny jak
+            w oryginalnym zbiorze. Przechodząc do klasyfikatora \textit{random forest}
+            można ponowie zauważyć, że wybór \textit{svd\_solver} nie wpływa znacząco
+            na uzyskiwane wyniki oraz dla różnych wartości \textit{n\_components}
+            wyniki są niemal identyczne.
+
+            Co warto wspomnieć w przypadku wybranych zbiorów danych wszystkie z nich
+            miały rozmiar większy niz \textit{500x500} co skutkowało tym, że metoda
+            \textit{auto} przełączała się na \textit{randomized} aby poprawić wydajność.
+
+        }
+
+        \subsection{Singular Value Decomposition} {
+            Analizując otrzymane wyniki można zauważyć, iż największa różnica accuracy pomiędzy oryginalnym zbiorem danych, a zredukowanym wynosi zaledwie 6.4 punkta procentowego. Dzieje się to dla zbioru letters w przypadku klasyfikatora \textit{random forest} i SVD przy algorytmie \textit{randomized} z liczbą kolumn wynoszącą \textit{555}.
+            
+            Obserwując czas działania programu i śledząc wykonywane kroki można było zauważyć, że redukcja wykonywana z algorytmem \textit{arpack} zajmuje więcej czasu dla każdego zbioru danych.
+            
+            W przypadku zbioru pierwszego zbioru danych \cite{dataset_letters} wyniki otrzymane przez klasyfikator \textit{KNN} nie wykazują dużych różnic w zależności od liczby kolumn oraz stosowanego algorytmu. Dla \textit{random forest} wraz ze zwiększaniem liczby kolumn malała wartość accuracy. Lepsze wyniki przy klasyfikacji za pomocą \textit{random forest} osiągnął algorytm \textit{arpack}.
+            
+            Wyniki klasyfikacji dla zbioru \cite{dataset_numerals} przedstawione w tabeli \ref{table_singular_value_decomposition_numerals} prezentują identyczne wartości dla klasyfikatora \textit{KNN} niezależnie od wykorzystywanego algorytmu przy SVD. Wszystkie wartości accuracy otrzymane przy tym zbiorze danych osiągają ponad 95\% Można zatem wnioskować, że większość cech obecnych w przypadku tego zbioru danych jest zbędnych (na płaszczyźnie klasyfikacji).
+            
+            Zbiór \cite{dataset_documents} pozwala zaobserwować wyniki podobne do tych otrzymanych w przypadku pierwszego zbioru danych. Tutaj również wraz ze zwiększeniem liczby kolumn danych wyjściowych maleje wartość accuracy, a zmiana algorytmu nie wpływa praktycznie wcale na otrzymane wyniki.
+        }
+
+        \subsection{Analiza wariancji} {
+            Tabele \ref{table_variance_analysis_letters}, \ref{table_variance_analysis_numerals}, \ref{table_variance_analysis_documents} prezentują dokładność klasyfikacji po selekcji cech opartej o analizę wariancji. W pierwszej kolumnie każdej tabeli widzimy skrót zawierający dwie liczby - pierwsza z nich oznacza procent całkowitej liczby cech, a druga bezwzględną liczbę cech, zgodną z tym procentem dla wybranego zbioru danych. Skrót ,,original'' oznacza zbiór przed redukcją wymiarów (wszystkie cechy obecne). Jak widać, we wszystkich trzech zbiorach udało się już przy około $30\%$ osiągnąć dokładność klasyfikacji równą lub różniącą się o zaledwie kilka procent od tej, którą otrzymano dla pełnego zbioru danych. Zdecydowana większość cech jest więc zbędna. Warto wspomnieć, że nie mamy tutaj do czynienia z tworzeniem nowych cech na podstawie już istniejących - nadmiarowe cechy są po prostu usuwane i nie ma po nich żadnego śladu. Kluczowym obszarem, na którym zmienia się znacząco dokładność klasyfikacji jest pierwsze $10\%$ liczby cech, a więc w przypadku analizowanych zbiorów, pierwsze kilkadziesiąt, a nawet kilkanaście.
+            
+            Zdecydowanie najwięcej cech można było zredukować w przypadku zbioru ,,numerals'', gdzie już pierwszych $6$ cech (czyli zaledwie $1\%$), pozwoliło osiągnąć, z wykorzystaniem lasu losowego, $90\%$ dokładności klasyfikacji. Przy $10\%$ cech, wynik jest zdecydowanie bliski najlepszemu możliwemu. Zbiór ,,documents'', choć trudniejszy do klasyfikacji, co widać po niższych wartościach dokładności dla obu klasyfikatorów, również udało się stosunkowo dobrze zredukować - przy $10\%$ cech wynik jest również zbliżony do najlepszego. Najtrudniej było zredukować zbiór ,,letters'' - przy $1\%$ liczby cech dokładność jest rzędu $0.25$, zatem zdecydowanie niewystarczająca. $5\%$ daje już natomiast znacznie lepsze wyniki, bo ponad $0.7$. Jednakże, aby osiągnąć wynik zbliżony do najlepszego (różniący się o kilka procent), trzeba już około $30\%$ wszystkich cech, a więc kilka razy więcej, niż dla pozostałych zbiorów. Nasuwają się więc wnioski związane z wpływem charakterystyki zbioru na wyniki klasyfikacji po redukcji wymiarów. Czym bardziej abstrakcyjne i trudniejsze dane reprezentuje zbiór, tym więcej cech wymaga taki zbiór do poprawnej klasyfikacji. W przypadku przeprowadzonych eksperymentów, zbiór ,,letters'' było najtrudniej zredukować - reprezentuje on natomiast nagrania ludzkiej mowy, która jest stosunkowo trudna w interpretacji przez maszynę. Najłatwiej udało się natomiast ze zbiorem ,,numerals'', który reprezentuje nieskomplikowane dane graficzne - kilka podstawowych kształtów, które składają się na $10$ cyfr. Faktem jest też, że dla tego drugiego wyekstrahowano po prostu zdecydowanie za dużo cech.
+            
+            Warto jeszcze zastanowić się chwilę nad różnicą w wynikach dla różnych klasyfikatorów. Tak więc można zauważyć, że las losowy (\emph{random forest}) radzi sobie w ogóle lepiej z klasyfikacją badanych zbiorów danych. Prawie wszystkie dokładności klasyfikacji są dla niego wyższe. Potrzebuje również mniej cech, aby móc dobrze klasyfikować. W przeciwieństwie do niego, znacznie mniej złożony KNN, potrzebuje więcej cech aby osiągnąć możliwie dobre wyniki. Widać to zwłaszcza na przykładzie zbioru danych ,,numerals''. Po drugie, z przeprowadzonych eksperymentów wynika, że las losowy (z dokładnością do części setnych wartości miary \emph{accuracy}) zazwyczaj osiąga lepsze wyniki wraz ze wzrostem liczby cech. W przypadku klasyfikatora KNN, wartości te bardziej się wahają i zdarzyło się nawet, tak jak w przypadku zbioru danych ,,documents'', że najlepsza jakość klasyfikacji jest wyższa o ponad $2\%$ dla zredukowanego zbioru danych, niż dla pełnego zbioru danych. Jest to zgodne z zasadą działania tego klasyfikatora, dla której decydujące znaczenie może mieć obecność pojedynczych próbek i wartości w zbiorze uczącym.
+        }
+
+        \subsection{Correlation-based Feature Selection} {
+Niestety, dla zbioru \cite{dataset_letters} nie udało się w akceptowalnym okresie czasu znaleźć optymalnej liczby elementów w podzbiorze klas, która nie wpłynęłaby na dokładność klasyfikacji. Jednakże warto zauważyć że dla liczby \textit{10} wartości dokładności klasyfikacji to kolejno \textit{0,571} i \textit{0,613}. Jeżeli weźmiemy również szybkość wzrostu tych wartości dla kolejnych \textit{n} to pozwala to przypuszczać, że przy większej liczbie czasu i zasobów, możliwe stałoby się wyznaczenie takiego podzbioru, dla którego klasyfikator klasyfikowałby równie dobrze, co dla całego zbioru.
+
+
+Dla zbioru \cite{dataset_numerals} udało się uzyskać wysoką dokładność klasyfikacji już dla liczby klas równej \textit{9}, wraz ze wzrostem liczby klas w podzbiorze, dokładność rosła. Za wyjątkiem wartości \textit{10}, gdyż dla klasyfikatora \textit{knn} zanotowano tutaj drobny spadek dokładności.
+
+
+Zachowanie klasyfikacji dla zbioru \cite{dataset_documents} wygląda podobnie jak dla zbioru \cite{dataset_letters}, tzn. można zaobserwować powolny wzrost dokładności, dla obu klasyfikatorów tendencja jest wzrostowa, z pojedynczymi zawahaniami. 
+        }
+
+    }
+
+    \section{Wnioski}
+    \label{conclusions} {
+        Podsumowując wykonane zadanie wnioskujemy, że:
+        \begin{itemize}
+            \item W metodzie \textit{PCA} przy wybranych zbiorach zmiana
+            \textit{svd\_solver} nie wpływała znacząco na wyniki
+            \item W metodzie \textit{PCA} najlepsze wyniki uzyskiwano dla najmniejszych
+            wartości \textit{n\_components}
+            \item W metodzie \textit{SVD} przy wybranych zbiorach danych zmiana
+            algorytmu nie wpływała znacząco na wyniki
+            \item W metodzie \textit{SVD} najlepsze wyniki uzyskiwano dla najmniejszych
+            wartości \textit{n\_components}
+            \item Trudno znaleźć szybko działającą implementację metody \textit{CFS}
+            \item Duży wpływ na działanie metody \textit{CFS} ma wartość korelacji pomiędzy klasami zbioru.
+            \item W metodzie \textit{CFS} można zaobserwować, że nie wszystkie wyznaczone przez algorytm podzbiory są lepsze od pozostałych, tzn. nie można z całkowitą pewnością powiedzieć, że im więcej elementów ma podzbiór klas, tym na jego podstawie klasyfikacja będzie dokładniejsza.
+            \item Czasami udaje się uzyskać wyższą jakość klasyfikacji na zredukowanym zbiorze danych, niż na oryginalnym
+            \item Często zdarza się, że większość cech w zbiorze danych jest nadmiarowa
+            \item Czym bardziej abstrakcyjne i złożone dane reprezentuje zbiór, tym więcej cech wymaga taki zbiór do poprawnej klasyfikacji.
+            \item Niektóre klasyfikatory (jak las losowy) radzą sobie lepiej ze zredukowanymi zbiorami danych, a inne (np. KNN), są bardziej podatne na pojedyncze braki w wartościach cech próbek uczących
+
+        \end{itemize}
+    }
+
+    \begin{thebibliography}{0}
+        \bibitem{dataset_letters}{https://archive.ics.uci.edu/ml/datasets/isolet}
+        \bibitem{dataset_numerals}{https://archive.ics.uci.edu/ml/datasets/Multiple+Features}
+        \bibitem{dataset_documents}{https://archive.ics.uci.edu/ml/datasets/CNAE-9}
+    \end{thebibliography}
+
+\end{document}
