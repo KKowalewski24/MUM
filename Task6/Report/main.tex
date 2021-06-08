@@ -67,17 +67,48 @@
             kolumn, która ma zostać na 185.
         }
         \subsection{Singular Value Decomposition} {
-            Tak jak w przypadku metody \textit{Principal Component Analysis} podczas eksperymentów, zmianie ulegały wartości dwóch parametrów. Pierwszym z nich jest liczba komponentów - \textit{n\_components}, która przyjmowała wartość liczby kolumn pomnożonej przez liczby z przedziału od 0.2 do 0.9 (które reprezentują procenty nominalnej liczby kolumn). Drugim z badanych parametrów był rodzaj algorytmu wykorzystywany przy redukcji wielowymiarowości. Do dyspozycji były 2 warianty - \textit{arpack} oraz \textit{randomized}. Analogicznie do \textit{Principal Component Analysis} znajduje to odzwierciedlenie w wartościach zapisanych w kolumnie \textit{parametry metody} - \textit{svd\_arpack\_123} oznacza wykorzystanie metody SVD z algorytmem \textit{arpack} i liczbą kolumn równą 123.
+            Tak jak w przypadku metody \textit{Principal Component Analysis} podczas
+            eksperymentów, zmianie ulegały wartości dwóch parametrów. Pierwszym z nich
+            jest liczba komponentów - \textit{n\_components}, która przyjmowała wartość
+            liczby kolumn pomnożonej przez liczby z przedziału od 0.2 do 0.9 (które
+            reprezentują procenty nominalnej liczby kolumn). Drugim z badanych
+            parametrów był rodzaj algorytmu wykorzystywany przy redukcji
+            wielowymiarowości. Do dyspozycji były 2 warianty - \textit{arpack} oraz
+            \textit{randomized}. Analogicznie do \textit{Principal Component Analysis}
+            znajduje to odzwierciedlenie w wartościach zapisanych w kolumnie
+            \textit{parametry metody} - \textit{svd\_arpack\_123} oznacza wykorzystanie
+            metody SVD z algorytmem \textit{arpack} i liczbą kolumn równą 123.
         }
         \subsection{Analiza wariancji} {
-            Metoda selekcji cech (a tym samym redukcji wymiarów) oparta o analizę wariancji sprowadza się do oceny ,,ważności'' cech, na podstawie prostego kryterium: im większa wariancja danej cechy w całym zbiorze treningowym i im mniejsza wariancja tej cechy w ramach każdej z klas, tym lepsza jest ta cecha. Tak więc każda cecha ma przyporządkowaną wagę, zgodną ze wzorem:
+            Metoda selekcji cech (a tym samym redukcji wymiarów) oparta o analizę
+            wariancji sprowadza się do oceny ,,ważności'' cech, na podstawie prostego
+            kryterium: im większa wariancja danej cechy w całym zbiorze treningowym i
+            im mniejsza wariancja tej cechy w ramach każdej z klas, tym lepsza jest ta
+            cecha. Tak więc każda cecha ma przyporządkowaną wagę, zgodną ze wzorem:
             \begin{equation}
                     w_j = \frac{\sigma_j}{\frac{1}{K} \sum_{k=1}^{K} \sigma_{j}^{k}}
             \end{equation}
-            gdzie $w_j$ to waga j-tej cechy, $\sigma_j$ to wariancja j-tej cechy we wszystkich próbkach uczących, a $\sigma_{j}^{k}$ to wariancja j-tej cechy w ramach próbek z klasy $k$ (wszystkich klas jest $K$). Tak więc czym większa wariancja w ramach całego zbioru i czym mniejsza wariancja w ramach poszczególnych klas, tym cecha jest lepsza. Dodatkowo, jeżeli wartości w liczebniku i mianowniku są równe $0$, to cecha taka jest uznawana za całkowicie nieprzydatną i ma przypisaną możliwie małą wagę. Po wycenie wszystkich cech można przystąpić do właściwiej selekcji, która sprowadza się do posortowania cech od najlepszej (z największą wagą) do najgorszej i wybraniu $n$ (czyli ile się chce) najlepszych cech.
+            gdzie $w_j$ to waga j-tej cechy, $\sigma_j$ to wariancja j-tej cechy we
+            wszystkich próbkach uczących, a $\sigma_{j}^{k}$ to wariancja j-tej cechy w
+            ramach próbek z klasy $k$ (wszystkich klas jest $K$). Tak więc czym większa
+            wariancja w ramach całego zbioru i czym mniejsza wariancja w ramach
+            poszczególnych klas, tym cecha jest lepsza. Dodatkowo, jeżeli wartości w
+            liczebniku i mianowniku są równe $0$, to cecha taka jest uznawana za
+            całkowicie nieprzydatną i ma przypisaną możliwie małą wagę. Po wycenie
+            wszystkich cech można przystąpić do właściwiej selekcji, która sprowadza
+            się do posortowania cech od najlepszej (z największą wagą) do najgorszej i
+            wybraniu $n$ (czyli ile się chce) najlepszych cech.
         }
      \subsection{Correlation-based Feature Selection} {
-     Jednym z najbardziej zwięzłych, a przy tym najlepiej opisującym działanie metody CFS jest zdanie: \textit{"Dobre podzbiory cech zawierają cechy silnie skorelowane z klasyfikacją, ale nieskorelowane między sobą."}. Metoda ta oblicza metrykę "merit" dla każdego podzbioru, a następnie na podstawie tych wartości tworzy najlepszy (według metody CFS) podzbiór dla danego zbioru. Na skutek liczby obliczeń, które musi wykonać program realizujący ten algorytm, dostępne implementacje są mało wydajne, przez co znalezienie podzbioru klas, składającego się z więcej niż 20 elementów, jeżeli weźmie się pod uwagę złożone zbiory danych, trwa bardzo długo.
+         Jednym z najbardziej zwięzłych, a przy tym najlepiej opisującym działanie
+         metody CFS jest zdanie: \textit{"Dobre podzbiory cech zawierają cechy silnie
+         skorelowane z klasyfikacją, ale nieskorelowane między sobą."}. Metoda ta
+         oblicza metrykę "merit" dla każdego podzbioru, a następnie na podstawie tych
+         wartości tworzy najlepszy (według metody CFS) podzbiór dla danego zbioru. Na
+         skutek liczby obliczeń, które musi wykonać program realizujący ten algorytm,
+         dostępne implementacje są mało wydajne, przez co znalezienie podzbioru klas,
+         składającego się z więcej niż 20 elementów, jeżeli weźmie się pod uwagę
+         złożone zbiory danych, trwa bardzo długo.
     }
         \subsection{Opis zbiorów danych}
         \label{opis_zbiorow_intro} {
@@ -700,33 +731,118 @@ original & knn & 0.867 & random\_forest & 0.92 \\ \hline
         }
 
         \subsection{Singular Value Decomposition} {
-            Analizując otrzymane wyniki można zauważyć, iż największa różnica accuracy pomiędzy oryginalnym zbiorem danych, a zredukowanym wynosi zaledwie 6.4 punkta procentowego. Dzieje się to dla zbioru letters w przypadku klasyfikatora \textit{random forest} i SVD przy algorytmie \textit{randomized} z liczbą kolumn wynoszącą \textit{555}.
-            
-            Obserwując czas działania programu i śledząc wykonywane kroki można było zauważyć, że redukcja wykonywana z algorytmem \textit{arpack} zajmuje więcej czasu dla każdego zbioru danych.
-            
-            W przypadku zbioru pierwszego zbioru danych \cite{dataset_letters} wyniki otrzymane przez klasyfikator \textit{KNN} nie wykazują dużych różnic w zależności od liczby kolumn oraz stosowanego algorytmu. Dla \textit{random forest} wraz ze zwiększaniem liczby kolumn malała wartość accuracy. Lepsze wyniki przy klasyfikacji za pomocą \textit{random forest} osiągnął algorytm \textit{arpack}.
-            
-            Wyniki klasyfikacji dla zbioru \cite{dataset_numerals} przedstawione w tabeli \ref{table_singular_value_decomposition_numerals} prezentują identyczne wartości dla klasyfikatora \textit{KNN} niezależnie od wykorzystywanego algorytmu przy SVD. Wszystkie wartości accuracy otrzymane przy tym zbiorze danych osiągają ponad 95\% Można zatem wnioskować, że większość cech obecnych w przypadku tego zbioru danych jest zbędnych (na płaszczyźnie klasyfikacji).
-            
-            Zbiór \cite{dataset_documents} pozwala zaobserwować wyniki podobne do tych otrzymanych w przypadku pierwszego zbioru danych. Tutaj również wraz ze zwiększeniem liczby kolumn danych wyjściowych maleje wartość accuracy, a zmiana algorytmu nie wpływa praktycznie wcale na otrzymane wyniki.
+            Analizując otrzymane wyniki można zauważyć, iż największa różnica accuracy
+            pomiędzy oryginalnym zbiorem danych, a zredukowanym wynosi zaledwie 6.4
+            punkta procentowego. Dzieje się to dla zbioru letters w przypadku
+            klasyfikatora \textit{random forest} i SVD przy algorytmie
+            \textit{randomized} z liczbą kolumn wynoszącą \textit{555}.
+
+            Obserwując czas działania programu i śledząc wykonywane kroki można było
+            zauważyć, że redukcja wykonywana z algorytmem \textit{arpack} zajmuje
+            więcej czasu dla każdego zbioru danych.
+
+            W przypadku zbioru pierwszego zbioru danych \cite{dataset_letters} wyniki
+            otrzymane przez klasyfikator \textit{KNN} nie wykazują dużych różnic w
+            zależności od liczby kolumn oraz stosowanego algorytmu. Dla \textit{random
+            forest} wraz ze zwiększaniem liczby kolumn malała wartość accuracy. Lepsze
+            wyniki przy klasyfikacji za pomocą \textit{random forest} osiągnął algorytm
+            \textit{arpack}.
+
+            Wyniki klasyfikacji dla zbioru \cite{dataset_numerals} przedstawione w
+            tabeli \ref{table_singular_value_decomposition_numerals} prezentują
+            identyczne wartości dla klasyfikatora \textit{KNN} niezależnie od
+            wykorzystywanego algorytmu przy SVD. Wszystkie wartości accuracy otrzymane
+            przy tym zbiorze danych osiągają ponad 95\% Można zatem wnioskować, że
+            większość cech obecnych w przypadku tego zbioru danych jest zbędnych (na
+            płaszczyźnie klasyfikacji).
+
+            Zbiór \cite{dataset_documents} pozwala zaobserwować wyniki podobne do tych
+            otrzymanych w przypadku pierwszego zbioru danych. Tutaj również wraz ze
+            zwiększeniem liczby kolumn danych wyjściowych maleje wartość accuracy, a
+            zmiana algorytmu nie wpływa praktycznie wcale na otrzymane wyniki.
         }
 
         \subsection{Analiza wariancji} {
-            Tabele \ref{table_variance_analysis_letters}, \ref{table_variance_analysis_numerals}, \ref{table_variance_analysis_documents} prezentują dokładność klasyfikacji po selekcji cech opartej o analizę wariancji. W pierwszej kolumnie każdej tabeli widzimy skrót zawierający dwie liczby - pierwsza z nich oznacza procent całkowitej liczby cech, a druga bezwzględną liczbę cech, zgodną z tym procentem dla wybranego zbioru danych. Skrót ,,original'' oznacza zbiór przed redukcją wymiarów (wszystkie cechy obecne). Jak widać, we wszystkich trzech zbiorach udało się już przy około $30\%$ osiągnąć dokładność klasyfikacji równą lub różniącą się o zaledwie kilka procent od tej, którą otrzymano dla pełnego zbioru danych. Zdecydowana większość cech jest więc zbędna. Warto wspomnieć, że nie mamy tutaj do czynienia z tworzeniem nowych cech na podstawie już istniejących - nadmiarowe cechy są po prostu usuwane i nie ma po nich żadnego śladu. Kluczowym obszarem, na którym zmienia się znacząco dokładność klasyfikacji jest pierwsze $10\%$ liczby cech, a więc w przypadku analizowanych zbiorów, pierwsze kilkadziesiąt, a nawet kilkanaście.
-            
-            Zdecydowanie najwięcej cech można było zredukować w przypadku zbioru ,,numerals'', gdzie już pierwszych $6$ cech (czyli zaledwie $1\%$), pozwoliło osiągnąć, z wykorzystaniem lasu losowego, $90\%$ dokładności klasyfikacji. Przy $10\%$ cech, wynik jest zdecydowanie bliski najlepszemu możliwemu. Zbiór ,,documents'', choć trudniejszy do klasyfikacji, co widać po niższych wartościach dokładności dla obu klasyfikatorów, również udało się stosunkowo dobrze zredukować - przy $10\%$ cech wynik jest również zbliżony do najlepszego. Najtrudniej było zredukować zbiór ,,letters'' - przy $1\%$ liczby cech dokładność jest rzędu $0.25$, zatem zdecydowanie niewystarczająca. $5\%$ daje już natomiast znacznie lepsze wyniki, bo ponad $0.7$. Jednakże, aby osiągnąć wynik zbliżony do najlepszego (różniący się o kilka procent), trzeba już około $30\%$ wszystkich cech, a więc kilka razy więcej, niż dla pozostałych zbiorów. Nasuwają się więc wnioski związane z wpływem charakterystyki zbioru na wyniki klasyfikacji po redukcji wymiarów. Czym bardziej abstrakcyjne i trudniejsze dane reprezentuje zbiór, tym więcej cech wymaga taki zbiór do poprawnej klasyfikacji. W przypadku przeprowadzonych eksperymentów, zbiór ,,letters'' było najtrudniej zredukować - reprezentuje on natomiast nagrania ludzkiej mowy, która jest stosunkowo trudna w interpretacji przez maszynę. Najłatwiej udało się natomiast ze zbiorem ,,numerals'', który reprezentuje nieskomplikowane dane graficzne - kilka podstawowych kształtów, które składają się na $10$ cyfr. Faktem jest też, że dla tego drugiego wyekstrahowano po prostu zdecydowanie za dużo cech.
-            
-            Warto jeszcze zastanowić się chwilę nad różnicą w wynikach dla różnych klasyfikatorów. Tak więc można zauważyć, że las losowy (\emph{random forest}) radzi sobie w ogóle lepiej z klasyfikacją badanych zbiorów danych. Prawie wszystkie dokładności klasyfikacji są dla niego wyższe. Potrzebuje również mniej cech, aby móc dobrze klasyfikować. W przeciwieństwie do niego, znacznie mniej złożony KNN, potrzebuje więcej cech aby osiągnąć możliwie dobre wyniki. Widać to zwłaszcza na przykładzie zbioru danych ,,numerals''. Po drugie, z przeprowadzonych eksperymentów wynika, że las losowy (z dokładnością do części setnych wartości miary \emph{accuracy}) zazwyczaj osiąga lepsze wyniki wraz ze wzrostem liczby cech. W przypadku klasyfikatora KNN, wartości te bardziej się wahają i zdarzyło się nawet, tak jak w przypadku zbioru danych ,,documents'', że najlepsza jakość klasyfikacji jest wyższa o ponad $2\%$ dla zredukowanego zbioru danych, niż dla pełnego zbioru danych. Jest to zgodne z zasadą działania tego klasyfikatora, dla której decydujące znaczenie może mieć obecność pojedynczych próbek i wartości w zbiorze uczącym.
+            Tabele \ref{table_variance_analysis_letters},
+            \ref{table_variance_analysis_numerals},
+            \ref{table_variance_analysis_documents} prezentują dokładność klasyfikacji
+            po selekcji cech opartej o analizę wariancji. W pierwszej kolumnie każdej
+            tabeli widzimy skrót zawierający dwie liczby - pierwsza z nich oznacza
+            procent całkowitej liczby cech, a druga bezwzględną liczbę cech, zgodną z
+            tym procentem dla wybranego zbioru danych. Skrót ,,original'' oznacza zbiór
+            przed redukcją wymiarów (wszystkie cechy obecne). Jak widać, we wszystkich
+            trzech zbiorach udało się już przy około $30\%$ osiągnąć dokładność
+            klasyfikacji równą lub różniącą się o zaledwie kilka procent od tej, którą
+            otrzymano dla pełnego zbioru danych. Zdecydowana większość cech jest więc
+            zbędna. Warto wspomnieć, że nie mamy tutaj do czynienia z tworzeniem nowych
+            cech na podstawie już istniejących - nadmiarowe cechy są po prostu usuwane
+            i nie ma po nich żadnego śladu. Kluczowym obszarem, na którym zmienia się
+            znacząco dokładność klasyfikacji jest pierwsze $10\%$ liczby cech, a więc w
+            przypadku analizowanych zbiorów, pierwsze kilkadziesiąt, a nawet kilkanaście.
+
+            Zdecydowanie najwięcej cech można było zredukować w przypadku zbioru ,,
+            numerals'', gdzie już pierwszych $6$ cech (czyli zaledwie $1\%$), pozwoliło
+            osiągnąć, z wykorzystaniem lasu losowego, $90\%$ dokładności klasyfikacji.
+            Przy $10\%$ cech, wynik jest zdecydowanie bliski najlepszemu możliwemu.
+            Zbiór ,,documents'', choć trudniejszy do klasyfikacji, co widać po niższych
+            wartościach dokładności dla obu klasyfikatorów, również udało się
+            stosunkowo dobrze zredukować - przy $10\%$ cech wynik jest również zbliżony
+            do najlepszego. Najtrudniej było zredukować zbiór ,,letters'' - przy $1\%$
+            liczby cech dokładność jest rzędu $0.25$, zatem zdecydowanie
+            niewystarczająca. $5\%$ daje już natomiast znacznie lepsze wyniki, bo ponad
+            $0.7$. Jednakże, aby osiągnąć wynik zbliżony do najlepszego (różniący się o
+            kilka procent), trzeba już około $30\%$ wszystkich cech, a więc kilka razy
+            więcej, niż dla pozostałych zbiorów. Nasuwają się więc wnioski związane z
+            wpływem charakterystyki zbioru na wyniki klasyfikacji po redukcji wymiarów.
+            Czym bardziej abstrakcyjne i trudniejsze dane reprezentuje zbiór, tym
+            więcej cech wymaga taki zbiór do poprawnej klasyfikacji. W przypadku
+            przeprowadzonych eksperymentów, zbiór ,,letters'' było najtrudniej
+            zredukować - reprezentuje on natomiast nagrania ludzkiej mowy, która jest
+            stosunkowo trudna w interpretacji przez maszynę. Najłatwiej udało się
+            natomiast ze zbiorem ,,numerals'', który reprezentuje nieskomplikowane dane
+            graficzne - kilka podstawowych kształtów, które składają się na $10$ cyfr.
+            Faktem jest też, że dla tego drugiego wyekstrahowano po prostu zdecydowanie
+            za dużo cech.
+
+            Warto jeszcze zastanowić się chwilę nad różnicą w wynikach dla różnych
+            klasyfikatorów. Tak więc można zauważyć, że las losowy (\emph{random
+            forest}) radzi sobie w ogóle lepiej z klasyfikacją badanych zbiorów danych.
+            Prawie wszystkie dokładności klasyfikacji są dla niego wyższe. Potrzebuje
+            również mniej cech, aby móc dobrze klasyfikować. W przeciwieństwie do
+            niego, znacznie mniej złożony KNN, potrzebuje więcej cech aby osiągnąć
+            możliwie dobre wyniki. Widać to zwłaszcza na przykładzie zbioru danych ,,
+            numerals''. Po drugie, z przeprowadzonych eksperymentów wynika, że las
+            losowy (z dokładnością do części setnych wartości miary \emph{accuracy})
+            zazwyczaj osiąga lepsze wyniki wraz ze wzrostem liczby cech. W przypadku
+            klasyfikatora KNN, wartości te bardziej się wahają i zdarzyło się nawet,
+            tak jak w przypadku zbioru danych ,,documents'', że najlepsza jakość
+            klasyfikacji jest wyższa o ponad $2\%$ dla zredukowanego zbioru danych, niż
+            dla pełnego zbioru danych. Jest to zgodne z zasadą działania tego
+            klasyfikatora, dla której decydujące znaczenie może mieć obecność
+            pojedynczych próbek i wartości w zbiorze uczącym.
         }
 
         \subsection{Correlation-based Feature Selection} {
-Niestety, dla zbioru \cite{dataset_letters} nie udało się w akceptowalnym okresie czasu znaleźć optymalnej liczby elementów w podzbiorze klas, która nie wpłynęłaby na dokładność klasyfikacji. Jednakże warto zauważyć że dla liczby \textit{10} wartości dokładności klasyfikacji to kolejno \textit{0,571} i \textit{0,613}. Jeżeli weźmiemy również szybkość wzrostu tych wartości dla kolejnych \textit{n} to pozwala to przypuszczać, że przy większej liczbie czasu i zasobów, możliwe stałoby się wyznaczenie takiego podzbioru, dla którego klasyfikator klasyfikowałby równie dobrze, co dla całego zbioru.
+            Niestety, dla zbioru \cite{dataset_letters} nie udało się w akceptowalnym
+            okresie czasu znaleźć optymalnej liczby elementów w podzbiorze klas, która
+            nie wpłynęłaby na dokładność klasyfikacji. Jednakże warto zauważyć że dla
+            liczby \textit{10} wartości dokładności klasyfikacji to kolejno \textit{0,
+            571} i \textit{0,613}. Jeżeli weźmiemy również szybkość wzrostu tych
+            wartości dla kolejnych \textit{n} to pozwala to przypuszczać, że przy
+            większej liczbie czasu i zasobów, możliwe stałoby się wyznaczenie takiego
+            podzbioru, dla którego klasyfikator klasyfikowałby równie dobrze, co dla całego zbioru.
 
 
-Dla zbioru \cite{dataset_numerals} udało się uzyskać wysoką dokładność klasyfikacji już dla liczby klas równej \textit{9}, wraz ze wzrostem liczby klas w podzbiorze, dokładność rosła. Za wyjątkiem wartości \textit{10}, gdyż dla klasyfikatora \textit{knn} zanotowano tutaj drobny spadek dokładności.
+            Dla zbioru \cite{dataset_numerals} udało się uzyskać wysoką dokładność
+            klasyfikacji już dla liczby klas równej \textit{9}, wraz ze wzrostem liczby
+            klas w podzbiorze, dokładność rosła. Za wyjątkiem wartości \textit{10},
+            gdyż dla klasyfikatora \textit{knn} zanotowano tutaj drobny spadek dokładności.
 
 
-Zachowanie klasyfikacji dla zbioru \cite{dataset_documents} wygląda podobnie jak dla zbioru \cite{dataset_letters}, tzn. można zaobserwować powolny wzrost dokładności, dla obu klasyfikatorów tendencja jest wzrostowa, z pojedynczymi zawahaniami. 
+            Zachowanie klasyfikacji dla zbioru \cite{dataset_documents} wygląda
+            podobnie jak dla zbioru \cite{dataset_letters}, tzn. można zaobserwować
+            powolny wzrost dokładności, dla obu klasyfikatorów tendencja jest
+            wzrostowa, z pojedynczymi zawahaniami.
         }
 
     }
@@ -745,11 +861,15 @@ Zachowanie klasyfikacji dla zbioru \cite{dataset_documents} wygląda podobnie ja
             wartości \textit{n\_components}
             \item Trudno znaleźć szybko działającą implementację metody \textit{CFS}
             \item Duży wpływ na działanie metody \textit{CFS} ma wartość korelacji pomiędzy klasami zbioru.
-            \item W metodzie \textit{CFS} można zaobserwować, że nie wszystkie wyznaczone przez algorytm podzbiory są lepsze od pozostałych, tzn. nie można z całkowitą pewnością powiedzieć, że im więcej elementów ma podzbiór klas, tym na jego podstawie klasyfikacja będzie dokładniejsza.
+            \item W metodzie \textit{CFS} można zaobserwować, że nie wszystkie wyznaczone przez
+            algorytm podzbiory są lepsze od pozostałych, tzn. nie można z całkowitą pewnością powiedzieć,
+            że im więcej elementów ma podzbiór klas, tym na jego podstawie klasyfikacja będzie dokładniejsza.
             \item Czasami udaje się uzyskać wyższą jakość klasyfikacji na zredukowanym zbiorze danych, niż na oryginalnym
             \item Często zdarza się, że większość cech w zbiorze danych jest nadmiarowa
-            \item Czym bardziej abstrakcyjne i złożone dane reprezentuje zbiór, tym więcej cech wymaga taki zbiór do poprawnej klasyfikacji.
-            \item Niektóre klasyfikatory (jak las losowy) radzą sobie lepiej ze zredukowanymi zbiorami danych, a inne (np. KNN), są bardziej podatne na pojedyncze braki w wartościach cech próbek uczących
+            \item Czym bardziej abstrakcyjne i złożone dane reprezentuje zbiór, tym więcej cech wymaga
+            taki zbiór do poprawnej klasyfikacji.
+            \item Niektóre klasyfikatory (jak las losowy) radzą sobie lepiej ze zredukowanymi zbiorami
+            danych, a inne (np. KNN), są bardziej podatne na pojedyncze braki w wartościach cech próbek uczących
 
         \end{itemize}
     }
