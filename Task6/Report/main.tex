@@ -498,182 +498,185 @@
 
         \subsection{Analiza wariancji} {
 
-\begin{table}[!htbp]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
-original & knn & 0.92 & random\_forest & 0.94 \\ \hline
-va\_0.01\_6 & knn & 0.266 & random\_forest & 0.257 \\ \hline
-va\_0.02\_12 & knn & 0.52 & random\_forest & 0.561 \\ \hline
-va\_0.03\_18 & knn & 0.648 & random\_forest & 0.69 \\ \hline
-va\_0.04\_24 & knn & 0.693 & random\_forest & 0.737 \\ \hline
-va\_0.05\_30 & knn & 0.706 & random\_forest & 0.76 \\ \hline
-va\_0.08\_49 & knn & 0.766 & random\_forest & 0.824 \\ \hline
-va\_0.1\_61 & knn & 0.807 & random\_forest & 0.852 \\ \hline
-va\_0.2\_123 & knn & 0.847 & random\_forest & 0.895 \\ \hline
-va\_0.3\_185 & knn & 0.906 & random\_forest & 0.93 \\ \hline
-va\_0.4\_246 & knn & 0.918 & random\_forest & 0.935 \\ \hline
-va\_0.5\_308 & knn & 0.913 & random\_forest & 0.934 \\ \hline
-va\_0.6\_370 & knn & 0.914 & random\_forest & 0.94 \\ \hline
-va\_0.7\_431 & knn & 0.925 & random\_forest & 0.939 \\ \hline
-va\_0.8\_493 & knn & 0.926 & random\_forest & 0.942 \\ \hline
-va\_0.9\_555 & knn & 0.923 & random\_forest & 0.942 \\ \hline
-\end{tabular}
-\caption{Wyniki klasyfikacji po analizie wariancji dla zbioru ,,letters''}
-\label{table_variance_analysis_letters}
-\end{table}
-\FloatBarrier
+            \begin{table}[!htbp]
+                \centering
+                \begin{tabular}{|c|c|c|c|c|}
+                    \hline
+                    Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                    original & knn & 0.92 & random\_forest & 0.94 \\ \hline
+                    va\_0.01\_6 & knn & 0.266 & random\_forest & 0.257 \\ \hline
+                    va\_0.02\_12 & knn & 0.52 & random\_forest & 0.561 \\ \hline
+                    va\_0.03\_18 & knn & 0.648 & random\_forest & 0.69 \\ \hline
+                    va\_0.04\_24 & knn & 0.693 & random\_forest & 0.737 \\ \hline
+                    va\_0.05\_30 & knn & 0.706 & random\_forest & 0.76 \\ \hline
+                    va\_0.08\_49 & knn & 0.766 & random\_forest & 0.824 \\ \hline
+                    va\_0.1\_61 & knn & 0.807 & random\_forest & 0.852 \\ \hline
+                    va\_0.2\_123 & knn & 0.847 & random\_forest & 0.895 \\ \hline
+                    va\_0.3\_185 & knn & 0.906 & random\_forest & 0.93 \\ \hline
+                    va\_0.4\_246 & knn & 0.918 & random\_forest & 0.935 \\ \hline
+                    va\_0.5\_308 & knn & 0.913 & random\_forest & 0.934 \\ \hline
+                    va\_0.6\_370 & knn & 0.914 & random\_forest & 0.94 \\ \hline
+                    va\_0.7\_431 & knn & 0.925 & random\_forest & 0.939 \\ \hline
+                    va\_0.8\_493 & knn & 0.926 & random\_forest & 0.942 \\ \hline
+                    va\_0.9\_555 & knn & 0.923 & random\_forest & 0.942 \\ \hline
+                \end{tabular}
+                \caption{Wyniki klasyfikacji po analizie wariancji dla zbioru ,,letters''}
+                \label{table_variance_analysis_letters}
+            \end{table}
+            \FloatBarrier
 
-\begin{table}[!htbp]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
-original & knn & 0.952 & random\_forest & 0.985 \\ \hline
-va\_0.01\_6 & knn & 0.738 & random\_forest & 0.917 \\ \hline
-va\_0.02\_12 & knn & 0.85 & random\_forest & 0.95 \\ \hline
-va\_0.03\_19 & knn & 0.835 & random\_forest & 0.972 \\ \hline
-va\_0.04\_25 & knn & 0.83 & random\_forest & 0.98 \\ \hline
-va\_0.05\_32 & knn & 0.84 & random\_forest & 0.982 \\ \hline
-va\_0.08\_51 & knn & 0.907 & random\_forest & 0.985 \\ \hline
-va\_0.1\_64 & knn & 0.92 & random\_forest & 0.987 \\ \hline
-va\_0.2\_129 & knn & 0.937 & random\_forest & 0.987 \\ \hline
-va\_0.3\_194 & knn & 0.938 & random\_forest & 0.988 \\ \hline
-va\_0.4\_259 & knn & 0.947 & random\_forest & 0.978 \\ \hline
-va\_0.5\_324 & knn & 0.948 & random\_forest & 0.982 \\ \hline
-va\_0.6\_389 & knn & 0.948 & random\_forest & 0.983 \\ \hline
-va\_0.7\_454 & knn & 0.948 & random\_forest & 0.982 \\ \hline
-va\_0.8\_519 & knn & 0.948 & random\_forest & 0.985 \\ \hline
-va\_0.9\_584 & knn & 0.948 & random\_forest & 0.983 \\ \hline
-\end{tabular}
-\caption{Wyniki klasyfikacji po analizie wariancji dla zbioru ,,numerals''}
-\label{table_variance_analysis_numerals}
-\end{table}
-\FloatBarrier
+            \begin{table}[!htbp]
+                \centering
+                \begin{tabular}{|c|c|c|c|c|}
+                    \hline
+                    Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                    original & knn & 0.952 & random\_forest & 0.985 \\ \hline
+                    va\_0.01\_6 & knn & 0.738 & random\_forest & 0.917 \\ \hline
+                    va\_0.02\_12 & knn & 0.85 & random\_forest & 0.95 \\ \hline
+                    va\_0.03\_19 & knn & 0.835 & random\_forest & 0.972 \\ \hline
+                    va\_0.04\_25 & knn & 0.83 & random\_forest & 0.98 \\ \hline
+                    va\_0.05\_32 & knn & 0.84 & random\_forest & 0.982 \\ \hline
+                    va\_0.08\_51 & knn & 0.907 & random\_forest & 0.985 \\ \hline
+                    va\_0.1\_64 & knn & 0.92 & random\_forest & 0.987 \\ \hline
+                    va\_0.2\_129 & knn & 0.937 & random\_forest & 0.987 \\ \hline
+                    va\_0.3\_194 & knn & 0.938 & random\_forest & 0.988 \\ \hline
+                    va\_0.4\_259 & knn & 0.947 & random\_forest & 0.978 \\ \hline
+                    va\_0.5\_324 & knn & 0.948 & random\_forest & 0.982 \\ \hline
+                    va\_0.6\_389 & knn & 0.948 & random\_forest & 0.983 \\ \hline
+                    va\_0.7\_454 & knn & 0.948 & random\_forest & 0.982 \\ \hline
+                    va\_0.8\_519 & knn & 0.948 & random\_forest & 0.985 \\ \hline
+                    va\_0.9\_584 & knn & 0.948 & random\_forest & 0.983 \\ \hline
+                \end{tabular}
+                \caption{Wyniki klasyfikacji po analizie wariancji dla zbioru ,,
+                numerals''}
+                \label{table_variance_analysis_numerals}
+            \end{table}
+            \FloatBarrier
 
 
-\begin{table}[!htbp]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
-original & knn & 0.867 & random\_forest & 0.92 \\ \hline
-va\_0.01\_8 & knn & 0.444 & random\_forest & 0.469 \\ \hline
-va\_0.02\_17 & knn & 0.722 & random\_forest & 0.741 \\ \hline
-va\_0.03\_25 & knn & 0.738 & random\_forest & 0.809 \\ \hline
-va\_0.04\_34 & knn & 0.79 & random\_forest & 0.824 \\ \hline
-va\_0.05\_42 & knn & 0.79 & random\_forest & 0.824 \\ \hline
-va\_0.08\_68 & knn & 0.846 & random\_forest & 0.889 \\ \hline
-va\_0.1\_85 & knn & 0.867 & random\_forest & 0.898 \\ \hline
-va\_0.2\_171 & knn & 0.873 & random\_forest & 0.886 \\ \hline
-va\_0.3\_256 & knn & 0.861 & random\_forest & 0.907 \\ \hline
-va\_0.4\_342 & knn & 0.873 & random\_forest & 0.904 \\ \hline
-va\_0.5\_428 & knn & 0.873 & random\_forest & 0.904 \\ \hline
-va\_0.6\_513 & knn & 0.877 & random\_forest & 0.914 \\ \hline
-va\_0.7\_599 & knn & 0.88 & random\_forest & 0.904 \\ \hline
-va\_0.8\_684 & knn & 0.873 & random\_forest & 0.923 \\ \hline
-va\_0.9\_770 & knn & 0.867 & random\_forest & 0.926 \\ \hline
-\end{tabular}
-\caption{Wyniki klasyfikacji po analizie wariancji dla zbioru ,,documents''}
-\label{table_variance_analysis_documents}
-\end{table}
-\FloatBarrier
+            \begin{table}[!htbp]
+                \centering
+                \begin{tabular}{|c|c|c|c|c|}
+                    \hline
+                    Parametry metody & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                    original & knn & 0.867 & random\_forest & 0.92 \\ \hline
+                    va\_0.01\_8 & knn & 0.444 & random\_forest & 0.469 \\ \hline
+                    va\_0.02\_17 & knn & 0.722 & random\_forest & 0.741 \\ \hline
+                    va\_0.03\_25 & knn & 0.738 & random\_forest & 0.809 \\ \hline
+                    va\_0.04\_34 & knn & 0.79 & random\_forest & 0.824 \\ \hline
+                    va\_0.05\_42 & knn & 0.79 & random\_forest & 0.824 \\ \hline
+                    va\_0.08\_68 & knn & 0.846 & random\_forest & 0.889 \\ \hline
+                    va\_0.1\_85 & knn & 0.867 & random\_forest & 0.898 \\ \hline
+                    va\_0.2\_171 & knn & 0.873 & random\_forest & 0.886 \\ \hline
+                    va\_0.3\_256 & knn & 0.861 & random\_forest & 0.907 \\ \hline
+                    va\_0.4\_342 & knn & 0.873 & random\_forest & 0.904 \\ \hline
+                    va\_0.5\_428 & knn & 0.873 & random\_forest & 0.904 \\ \hline
+                    va\_0.6\_513 & knn & 0.877 & random\_forest & 0.914 \\ \hline
+                    va\_0.7\_599 & knn & 0.88 & random\_forest & 0.904 \\ \hline
+                    va\_0.8\_684 & knn & 0.873 & random\_forest & 0.923 \\ \hline
+                    va\_0.9\_770 & knn & 0.867 & random\_forest & 0.926 \\ \hline
+                \end{tabular}
+                \caption{Wyniki klasyfikacji po analizie wariancji dla zbioru ,,documents''}
+                \label{table_variance_analysis_documents}
+            \end{table}
+            \FloatBarrier
 
         }
 
         \subsection{Correlation-based Feature Selection} {
             \subsubsection{Zbiór letters} {
-            \begin{table}[!htbp]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-Liczba klas w zbiorze & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
-original & knn & 0.92 & random\_forest & 0.94 \\ \hline
-1 & knn & 0.106 & random\_forest & 0.096 \\ \hline
-2 & knn & 0.165 & random\_forest & 0.167 \\ \hline
-3 & knn & 0.279 & random\_forest & 0.274 \\ \hline
-4 & knn & 0.328 & random\_forest & 0.322 \\ \hline
-5 & knn & 0.407 & random\_forest & 0.396 \\ \hline
-6 & knn & 0.474 & random\_forest & 0.519 \\ \hline
-7 & knn & 0.48 & random\_forest & 0.516 \\ \hline
-8 & knn & 0.513 & random\_forest & 0.575 \\ \hline
-9 & knn & 0.538 & random\_forest & 0.585 \\ \hline
-10 & knn & 0.571 & random\_forest & 0.613 \\ \hline
-\end{tabular}
-\caption
-[table correlation based feature selection letters]{Tabela CFS dla zbioru letters}
-\label{table_correlation_based_feature_selection_letters}
-\end{table}
-\FloatBarrier
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Liczba klas w zbiorze & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                        original & knn & 0.92 & random\_forest & 0.94 \\ \hline
+                        1 & knn & 0.106 & random\_forest & 0.096 \\ \hline
+                        2 & knn & 0.165 & random\_forest & 0.167 \\ \hline
+                        3 & knn & 0.279 & random\_forest & 0.274 \\ \hline
+                        4 & knn & 0.328 & random\_forest & 0.322 \\ \hline
+                        5 & knn & 0.407 & random\_forest & 0.396 \\ \hline
+                        6 & knn & 0.474 & random\_forest & 0.519 \\ \hline
+                        7 & knn & 0.48 & random\_forest & 0.516 \\ \hline
+                        8 & knn & 0.513 & random\_forest & 0.575 \\ \hline
+                        9 & knn & 0.538 & random\_forest & 0.585 \\ \hline
+                        10 & knn & 0.571 & random\_forest & 0.613 \\ \hline
+                    \end{tabular}
+                    \caption
+                    [table correlation based feature selection letters]{Tabela CFS dla
+                    zbioru letters}
+                    \label{table_correlation_based_feature_selection_letters}
+                \end{table}
+                \FloatBarrier
             }
             \subsubsection{Zbiór numerals} {
-            \begin{table}[!htbp]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-Liczba klas w zbiorze & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
-original & knn & 0.952 & random\_forest & 0.985 \\ \hline
-1 & knn & 0.345 & random\_forest & 0.357 \\ \hline
-2 & knn & 0.378 & random\_forest & 0.338 \\ \hline
-3 & knn & 0.467 & random\_forest & 0.433 \\ \hline
-4 & knn & 0.607 & random\_forest & 0.593 \\ \hline
-5 & knn & 0.708 & random\_forest & 0.672 \\ \hline
-6 & knn & 0.75 & random\_forest & 0.743 \\ \hline
-7 & knn & 0.753 & random\_forest & 0.748 \\ \hline
-8 & knn & 0.78 & random\_forest & 0.803 \\ \hline
-9 & knn & 0.813 & random\_forest & 0.848 \\ \hline
-10 & knn & 0.797 & random\_forest & 0.857 \\ \hline
-11 & knn & 0.803 & random\_forest & 0.87 \\ \hline
-12 & knn & 0.832 & random\_forest & 0.907 \\ \hline
-13 & knn & 0.852 & random\_forest & 0.902 \\ \hline
-14 & knn & 0.857 & random\_forest & 0.91 \\ \hline
-15 & knn & 0.867 & random\_forest & 0.912 \\ \hline
-16 & knn & 0.883 & random\_forest & 0.922 \\ \hline
-17 & knn & 0.882 & random\_forest & 0.92 \\ \hline
-18 & knn & 0.883 & random\_forest & 0.92 \\ \hline
-19 & knn & 0.877 & random\_forest & 0.927 \\ \hline
-20 & knn & 0.898 & random\_forest & 0.935 \\ \hline
-\end{tabular}
-\caption
-[table correlation based feature selection numerals]{Tabela CFS dla zbioru numerals}
-\label{table_correlation_based_feature_selection_numerals}
-\end{table}
-\FloatBarrier
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Liczba klas w zbiorze & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                        original & knn & 0.952 & random\_forest & 0.985 \\ \hline
+                        1 & knn & 0.345 & random\_forest & 0.357 \\ \hline
+                        2 & knn & 0.378 & random\_forest & 0.338 \\ \hline
+                        3 & knn & 0.467 & random\_forest & 0.433 \\ \hline
+                        4 & knn & 0.607 & random\_forest & 0.593 \\ \hline
+                        5 & knn & 0.708 & random\_forest & 0.672 \\ \hline
+                        6 & knn & 0.75 & random\_forest & 0.743 \\ \hline
+                        7 & knn & 0.753 & random\_forest & 0.748 \\ \hline
+                        8 & knn & 0.78 & random\_forest & 0.803 \\ \hline
+                        9 & knn & 0.813 & random\_forest & 0.848 \\ \hline
+                        10 & knn & 0.797 & random\_forest & 0.857 \\ \hline
+                        11 & knn & 0.803 & random\_forest & 0.87 \\ \hline
+                        12 & knn & 0.832 & random\_forest & 0.907 \\ \hline
+                        13 & knn & 0.852 & random\_forest & 0.902 \\ \hline
+                        14 & knn & 0.857 & random\_forest & 0.91 \\ \hline
+                        15 & knn & 0.867 & random\_forest & 0.912 \\ \hline
+                        16 & knn & 0.883 & random\_forest & 0.922 \\ \hline
+                        17 & knn & 0.882 & random\_forest & 0.92 \\ \hline
+                        18 & knn & 0.883 & random\_forest & 0.92 \\ \hline
+                        19 & knn & 0.877 & random\_forest & 0.927 \\ \hline
+                        20 & knn & 0.898 & random\_forest & 0.935 \\ \hline
+                    \end{tabular}
+                    \caption
+                    [table correlation based feature selection numerals]{Tabela CFS dla
+                    zbioru numerals}
+                    \label{table_correlation_based_feature_selection_numerals}
+                \end{table}
+                \FloatBarrier
             }
             \subsubsection{Zbiór documents} {
-            \begin{table}[!htbp]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-Liczba klas w zbiorze & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
-original & knn & 0.867 & random\_forest & 0.92 \\ \hline
-1 & knn & 0.213 & random\_forest & 0.213 \\ \hline
-2 & knn & 0.306 & random\_forest & 0.306 \\ \hline
-3 & knn & 0.38 & random\_forest & 0.38 \\ \hline
-4 & knn & 0.451 & random\_forest & 0.451 \\ \hline
-5 & knn & 0.522 & random\_forest & 0.522 \\ \hline
-6 & knn & 0.568 & random\_forest & 0.568 \\ \hline
-7 & knn & 0.562 & random\_forest & 0.602 \\ \hline
-8 & knn & 0.577 & random\_forest & 0.617 \\ \hline
-9 & knn & 0.633 & random\_forest & 0.627 \\ \hline
-10 & knn & 0.688 & random\_forest & 0.682 \\ \hline
-11 & knn & 0.716 & random\_forest & 0.71 \\ \hline
-12 & knn & 0.744 & random\_forest & 0.744 \\ \hline
-13 & knn & 0.725 & random\_forest & 0.744 \\ \hline
-14 & knn & 0.731 & random\_forest & 0.753 \\ \hline
-15 & knn & 0.738 & random\_forest & 0.765 \\ \hline
-16 & knn & 0.701 & random\_forest & 0.744 \\ \hline
-17 & knn & 0.701 & random\_forest & 0.744 \\ \hline
-18 & knn & 0.688 & random\_forest & 0.75 \\ \hline
-19 & knn & 0.71 & random\_forest & 0.765 \\ \hline
-20 & knn & 0.728 & random\_forest & 0.784 \\ \hline
-\end{tabular}
-\caption
-[table correlation based feature selection documents]{Tabela CFS dla zbioru documents}
-\label{table_correlation_based_feature_selection_documents}
-\end{table}
-\FloatBarrier
+                \begin{table}[!htbp]
+                    \centering
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Liczba klas w zbiorze & Klasyfikator & Accuracy & Klasyfikator & Accuracy \\ \hline
+                        original & knn & 0.867 & random\_forest & 0.92 \\ \hline
+                        1 & knn & 0.213 & random\_forest & 0.213 \\ \hline
+                        2 & knn & 0.306 & random\_forest & 0.306 \\ \hline
+                        3 & knn & 0.38 & random\_forest & 0.38 \\ \hline
+                        4 & knn & 0.451 & random\_forest & 0.451 \\ \hline
+                        5 & knn & 0.522 & random\_forest & 0.522 \\ \hline
+                        6 & knn & 0.568 & random\_forest & 0.568 \\ \hline
+                        7 & knn & 0.562 & random\_forest & 0.602 \\ \hline
+                        8 & knn & 0.577 & random\_forest & 0.617 \\ \hline
+                        9 & knn & 0.633 & random\_forest & 0.627 \\ \hline
+                        10 & knn & 0.688 & random\_forest & 0.682 \\ \hline
+                        11 & knn & 0.716 & random\_forest & 0.71 \\ \hline
+                        12 & knn & 0.744 & random\_forest & 0.744 \\ \hline
+                        13 & knn & 0.725 & random\_forest & 0.744 \\ \hline
+                        14 & knn & 0.731 & random\_forest & 0.753 \\ \hline
+                        15 & knn & 0.738 & random\_forest & 0.765 \\ \hline
+                        16 & knn & 0.701 & random\_forest & 0.744 \\ \hline
+                        17 & knn & 0.701 & random\_forest & 0.744 \\ \hline
+                        18 & knn & 0.688 & random\_forest & 0.75 \\ \hline
+                        19 & knn & 0.71 & random\_forest & 0.765 \\ \hline
+                        20 & knn & 0.728 & random\_forest & 0.784 \\ \hline
+                    \end{tabular}
+                    \caption
+                    [table correlation based feature selection documents]{Tabela CFS dla zbioru documents}
+                    \label{table_correlation_based_feature_selection_documents}
+                \end{table}
+                \FloatBarrier
 
             }
         }
