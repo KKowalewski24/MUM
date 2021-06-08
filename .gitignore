@@ -171,3 +171,5 @@ Task2/Program/results/
 Task3/Program/knn/
 
 Task3/Program/svm/
+
+*.iml
