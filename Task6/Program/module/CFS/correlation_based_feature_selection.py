@@ -1,7 +1,8 @@
 from typing import Dict, Tuple
-from module.CFS.CFS import cfs
 
 import numpy as np
+
+from module.CFS.CFS import cfs
 
 
 def correlation_based_feature_selection(
@@ -13,15 +14,14 @@ def correlation_based_feature_selection(
         d = X_train.shape[1]
         idx = cfs(X_train, y_train, d)
         for n in [.01, .05, .1, .3, .5, .75]:
-            indexes = idx[:int(n*d)]
-            X_train_transformed = X_train[:,indexes]
-            X_test_transformed = X_test[:,indexes]
+            indexes = idx[:int(n * d)]
+            X_train_transformed = X_train[:, indexes]
+            X_test_transformed = X_test[:, indexes]
 
             key: str = "cfs_" + str(n) + "_n"
             datasets[ds_name][key] = (X_train_transformed, X_test_transformed, y_train, y_test)
 
-
-### WYLICZONE wartosci indexow dla:
+# WYLICZONE wartosci indexow dla:
 # ds_name:  letters
 # 461, 471, 418, 460, 7, 358, 384, 452, 578, 470
 #
